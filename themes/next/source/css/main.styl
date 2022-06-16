@@ -45,3 +45,26 @@ for $inject_mixin in hexo-config('injects.mixin')
 // --------------------------------------------------
 for $inject_style in hexo-config('injects.style')
   @import $inject_style;
+
+.vpower.txt-right {
+  display: none
+}
+.headband {
+  display: none
+}
+body {
+    background: url(/images/sky.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+}
+.content-wrap {
+    opacity: 0.8;
+}
+.header-inner {
+    opacity: 1;
+}
+.sidebar {
+    opacity: 0.8;
+}
