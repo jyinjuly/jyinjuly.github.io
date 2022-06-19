@@ -135,3 +135,5 @@ live2d:
     position: right
     width: 200
     height: 200
+  mobile:
+    show: false
