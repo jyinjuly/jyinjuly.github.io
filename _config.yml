@@ -102,12 +102,20 @@ theme: next
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
-  type: 'git'
+- type: 'git'
   repo: 'git@github.com:jyinjuly/jyinjuly.github.io.git'
   branch: 'master'
+- type: baidu_url_submitter
 
 search:
   path: search.xml
   field: post
   format: html
   limit: 10000
+
+# 设置百度主动推送
+baidu_url_submit:
+  count: 200
+  host: jyinjuly.github.io
+  token: GPdkX4z2lQwRCm3z
+  path: baidu_urls.txt
