@@ -119,3 +119,19 @@ baidu_url_submit:
   host: jyinjuly.github.io
   token: GPdkX4z2lQwRCm3z
   path: baidu_urls.txt
+
+#二次元
+live2d:
+  enable: true
+  scriptFrom: local
+  pluginRootPath: live2dw/
+  pluginJsPath: lib/
+  pluginModelPath: assets/
+  tagMode: false
+  debug: false
+  model:
+    use:  live2d-widget-model-hijiki
+  display:
+    position: right
+    width: 200
+    height: 200
