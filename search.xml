@@ -1,15 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Hello World</title>
-    <url>/2022/06/19/hello-world/</url>
-    <content><![CDATA[<h2 id="我的第一篇博客"><a href="#我的第一篇博客" class="headerlink" title="我的第一篇博客"></a>我的第一篇博客</h2><p><img src="/2022/06/19/hello-world/%E8%B7%AF%E9%A3%9E.jpg" alt="路飞"></p>
-<span id="more"></span>]]></content>
+    <title>Zookeeper单机版安装</title>
+    <url>/2022/06/19/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/</url>
+    <content><![CDATA[<h1 id="安装Zookeeper"><a href="#安装Zookeeper" class="headerlink" title="安装Zookeeper"></a>安装Zookeeper</h1><h2 id="安装java环境"><a href="#安装java环境" class="headerlink" title="安装java环境"></a>安装java环境</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># java version &quot;1.8.0_271&quot;</span></span><br><span class="line">java -version</span><br></pre></td></tr></table></figure>
+<h2 id="下载并解压Zookeeper"><a href="#下载并解压Zookeeper" class="headerlink" title="下载并解压Zookeeper"></a>下载并解压Zookeeper</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 下载安装包</span><br><span class="line">wget https://mirror.bit.edu.cn/apache/zookeeper/zookeeper‐3.5.8/apache‐zookeeper‐3.5.8‐bin.tar.gz</span><br><span class="line"># 解压安装包</span><br><span class="line">tar ‐zxvf apache‐zookeeper‐3.5.8‐bin.tar.gz</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<h2 id="备份配置文件（非必须）"><a href="#备份配置文件（非必须）" class="headerlink" title="备份配置文件（非必须）"></a>备份配置文件（非必须）</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入配置文件目录</span></span><br><span class="line"><span class="built_in">cd</span> apache-zookeeper-3.5.8-bin/conf/</span><br><span class="line"><span class="comment"># 备份配置文件</span></span><br><span class="line"><span class="built_in">cp</span> zoo_sample.cfg zoo.cfg</span><br></pre></td></tr></table></figure>
+<h2 id="启动Zookeeper"><a href="#启动Zookeeper" class="headerlink" title="启动Zookeeper"></a>启动Zookeeper</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入脚本文件目录</span></span><br><span class="line"><span class="built_in">cd</span> apache-zookeeper-3.5.8-bin/bin/</span><br><span class="line"><span class="comment"># 启动Zookeeper</span></span><br><span class="line">./zkServer.sh start ../conf/zoo.cfg</span><br><span class="line"><span class="comment"># 检测是否启动</span></span><br><span class="line">ps -ef | grep zookeeper</span><br></pre></td></tr></table></figure>
+<h1 id="客户端连接"><a href="#客户端连接" class="headerlink" title="客户端连接"></a>客户端连接</h1><h2 id="终端方式连接"><a href="#终端方式连接" class="headerlink" title="终端方式连接"></a>终端方式连接</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入脚本文件目录</span></span><br><span class="line"><span class="built_in">cd</span> apache-zookeeper-3.5.8-bin/bin/</span><br><span class="line"><span class="comment"># 连接zookeeper</span></span><br><span class="line">./zkCli.sh -server 192.168.175.175:2181</span><br><span class="line"><span class="comment"># 查看所有节点</span></span><br><span class="line"><span class="built_in">ls</span> -R /</span><br></pre></td></tr></table></figure>
+<h2 id="可视化工具（ZooInspector）连接"><a href="#可视化工具（ZooInspector）连接" class="headerlink" title="可视化工具（ZooInspector）连接"></a>可视化工具（ZooInspector）连接</h2><ul>
+<li>下载工具：<a href="https://issues.apache.org/jira/secure/attachment/12436620/ZooInspector.zip">https://issues.apache.org/jira/secure/attachment/12436620/ZooInspector.zip</a></li>
+<li>解压，进入目录ZooInspector\build</li>
+<li>创建zkClient.bat脚本文件，内容如下：<figure class="highlight bat"><table><tr><td class="code"><pre><span class="line">java -jar D:\ZooInspector\build\zookeeper-dev-ZooInspector.jar</span><br></pre></td></tr></table></figure></li>
+<li>右键zkClient.bat文件，创建桌面快捷方式，然后修改一个自己喜欢的图标</li>
+<li>双击快捷方式，打开可视化工具——ZooInspector，输入连接信息<br><img src="/2022/06/19/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/ZooInspector1.png" alt="ZooInspector1.png"></li>
+<li>点击OK，连接成功<br><img src="/2022/06/19/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/ZooInspector2.png" alt="ZooInspector2.png"></li>
+</ul>
+]]></content>
       <categories>
-        <category>测试分类</category>
+        <category>Zookeeper</category>
       </categories>
       <tags>
-        <tag>测试标签</tag>
+        <tag>Zookeeper</tag>
+        <tag>CentOS7</tag>
+        <tag>客户端工具</tag>
       </tags>
   </entry>
 </search>
