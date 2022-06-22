@@ -15,6 +15,7 @@ public enum EventType {
     NodeChildrenChanged (4);    // 当监听节点的子节点列表发生变化时触发
 }
 ```
+<!-- more -->
 # 监听类型
 Zookeeper的监听类型总体分为两类，节点数据监听（NodeDataChanged）和节点目录监听（NodeCreated、NodeDeleted、NodeChildrenChanged）。
 ## 节点数据监听
