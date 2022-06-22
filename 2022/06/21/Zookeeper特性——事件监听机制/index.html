@@ -20,23 +20,26 @@
     var CONFIG = {"hostname":"jyinjuly.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"right","width":300,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Zookeeper有两大特性——文件系统和事件监听机制，本篇介绍文件系统。 文件系统简介Zookeeper维护一个类似文件系统的数据结构，如下图：">
+  <meta name="description" content="Zookeeper有两大特性——文件系统和事件监听机制，本篇介绍事件监听机制。 事件类型Zookeeper中的事件类型有五种，如下： 1234567public enum EventType &amp;#123;    None (-1),    NodeCreated (1),            &#x2F;&#x2F; 当监听节点被创建时触发    NodeDeleted (2),            &#x2F;&#x2F; 当监听">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Zookeeper特性——文件系统">
-<meta property="og:url" content="https://jyinjuly.github.io/2022/06/20/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/index.html">
+<meta property="og:title" content="Zookeeper特性——事件监听机制">
+<meta property="og:url" content="https://jyinjuly.github.io/2022/06/21/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/index.html">
 <meta property="og:site_name" content="Jyinjulyの博客">
-<meta property="og:description" content="Zookeeper有两大特性——文件系统和事件监听机制，本篇介绍文件系统。 文件系统简介Zookeeper维护一个类似文件系统的数据结构，如下图：">
+<meta property="og:description" content="Zookeeper有两大特性——文件系统和事件监听机制，本篇介绍事件监听机制。 事件类型Zookeeper中的事件类型有五种，如下： 1234567public enum EventType &amp;#123;    None (-1),    NodeCreated (1),            &#x2F;&#x2F; 当监听节点被创建时触发    NodeDeleted (2),            &#x2F;&#x2F; 当监听">
 <meta property="og:locale">
-<meta property="og:image" content="https://jyinjuly.github.io/2022/06/20/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/Znode.png">
-<meta property="article:published_time" content="2022-06-20T12:31:22.111Z">
-<meta property="article:modified_time" content="2022-06-22T03:05:51.922Z">
+<meta property="og:image" content="https://jyinjuly.github.io/2022/06/21/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/%E8%8A%82%E7%82%B9%E6%95%B0%E6%8D%AE%E7%9B%91%E5%90%AC.png">
+<meta property="og:image" content="https://jyinjuly.github.io/2022/06/21/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/%E8%8A%82%E7%82%B9%E7%9B%AE%E5%BD%95%E7%9B%91%E5%90%AC1.png">
+<meta property="og:image" content="https://jyinjuly.github.io/2022/06/21/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/%E8%8A%82%E7%82%B9%E7%9B%AE%E5%BD%95%E7%9B%91%E5%90%AC2.png">
+<meta property="article:published_time" content="2022-06-21T12:43:58.758Z">
+<meta property="article:modified_time" content="2022-06-22T04:39:18.273Z">
 <meta property="article:author" content="Jyinjuly">
 <meta property="article:tag" content="Zookeeper">
-<meta property="article:tag" content="文件系统">
+<meta property="article:tag" content="事件监听机制">
+<meta property="article:tag" content="一次性监听">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://jyinjuly.github.io/2022/06/20/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/Znode.png">
+<meta name="twitter:image" content="https://jyinjuly.github.io/2022/06/21/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/%E8%8A%82%E7%82%B9%E6%95%B0%E6%8D%AE%E7%9B%91%E5%90%AC.png">
 
-<link rel="canonical" href="https://jyinjuly.github.io/2022/06/20/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/">
+<link rel="canonical" href="https://jyinjuly.github.io/2022/06/21/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/">
 
 
 <script id="page-configurations">
@@ -49,7 +52,7 @@
   };
 </script>
 
-  <title>Zookeeper特性——文件系统 | Jyinjulyの博客</title>
+  <title>Zookeeper特性——事件监听机制 | Jyinjulyの博客</title>
   
 
 
@@ -198,7 +201,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="https://jyinjuly.github.io/2022/06/20/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/">
+    <link itemprop="mainEntityOfPage" href="https://jyinjuly.github.io/2022/06/21/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpeg">
@@ -211,7 +214,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Zookeeper特性——文件系统
+          Zookeeper特性——事件监听机制
         </h1>
 
         <div class="post-meta">
@@ -221,7 +224,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-06-20 20:31:22" itemprop="dateCreated datePublished" datetime="2022-06-20T20:31:22+08:00">2022-06-20</time>
+              <time title="创建时间：2022-06-21 20:43:58" itemprop="dateCreated datePublished" datetime="2022-06-21T20:43:58+08:00">2022-06-21</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -242,8 +245,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2022/06/20/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2022/06/20/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/" itemprop="commentCount"></span>
+    <a title="valine" href="/2022/06/21/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/06/21/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -253,14 +256,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.7k</span>
+              <span>1.4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
+              <span>1 分钟</span>
             </span>
 
         </div>
@@ -272,81 +275,68 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>Zookeeper有两大特性——文件系统和事件监听机制，本篇介绍文件系统。</p>
-<h1 id="文件系统简介"><a href="#文件系统简介" class="headerlink" title="文件系统简介"></a>文件系统简介</h1><p>Zookeeper维护一个类似文件系统的数据结构，如下图：<br><img src="/2022/06/20/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/Znode.png" alt="Znode.png"></p>
-<span id="more"></span>
-<p>其中每个目录项都被称为<strong>Znode（节点）</strong>，节点之下还可以增加子节点。每个节点拥有唯一路径path，并且均以根路径&#x2F;开头，节点还可以保存数据。</p>
-<h1 id="节点Znode类型"><a href="#节点Znode类型" class="headerlink" title="节点Znode类型"></a>节点Znode类型</h1><h2 id="持久化节点"><a href="#持久化节点" class="headerlink" title="持久化节点"></a>持久化节点</h2><p>PERSISTENT（默认类型节点），客户端与Zookeeper断开连接后，节点依旧存在。只要不手动删除，这类节点将永远存在。</p>
-<h2 id="持久化序号节点"><a href="#持久化序号节点" class="headerlink" title="持久化序号节点"></a>持久化序号节点</h2><p>PERSISTENT_SEQUENTIAL，与持久化节点一样，只是Zookeeper会自动给节点名称进行顺序编号。</p>
+        <p>Zookeeper有两大特性——文件系统和事件监听机制，本篇介绍事件监听机制。</p>
+<h1 id="事件类型"><a href="#事件类型" class="headerlink" title="事件类型"></a>事件类型</h1><p>Zookeeper中的事件类型有五种，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> <span class="title class_">EventType</span> &#123;</span><br><span class="line">    None (-<span class="number">1</span>),</span><br><span class="line">    NodeCreated (<span class="number">1</span>),            <span class="comment">// 当监听节点被创建时触发</span></span><br><span class="line">    NodeDeleted (<span class="number">2</span>),            <span class="comment">// 当监听节点被删除时触发</span></span><br><span class="line">    NodeDataChanged (<span class="number">3</span>),        <span class="comment">// 当监听节点的节点数据发生变化时触发</span></span><br><span class="line">    NodeChildrenChanged (<span class="number">4</span>);    <span class="comment">// 当监听节点的子节点列表发生变化时触发</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="监听类型"><a href="#监听类型" class="headerlink" title="监听类型"></a>监听类型</h1><p>Zookeeper的监听类型总体分为两类，节点数据监听（NodeDataChanged）和节点目录监听（NodeCreated、NodeDeleted、NodeChildrenChanged）。</p>
+<h2 id="节点数据监听"><a href="#节点数据监听" class="headerlink" title="节点数据监听"></a>节点数据监听</h2><p>节点数据监听只能针对单个节点设置。当节点的节点数据发生变化时，Zookeeper服务端会向所有注册了该节点数据监听的客户端发送一个NodeDataChanged事件。</p>
 <blockquote>
-<p>create -s</p>
+<p>注意：节点数据并不单指节点存储的数据，还包括节点的元数据（状态信息）。</p>
 </blockquote>
-<h2 id="临时节点"><a href="#临时节点" class="headerlink" title="临时节点"></a>临时节点</h2><p>EPHEMERAL­，客户端与Zookeeper断开连接后，节点会被删除。</p>
-<blockquote>
-<p>create -e</p>
-</blockquote>
-<h2 id="临时序号节点"><a href="#临时序号节点" class="headerlink" title="临时序号节点"></a>临时序号节点</h2><p>EPHEMERAL_SEQUENTIAL，与临时节点一样，只是Zookeeper会自动给节点名称进行顺序编号。</p>
-<blockquote>
-<p>create -s -e</p>
-</blockquote>
-<h2 id="容器节点"><a href="#容器节点" class="headerlink" title="容器节点"></a>容器节点</h2><p>Container，3.5.3版本新增。容器节点的表现形式和持久化节点是一样的，区别在于Zookeeper服务端启动后，会有一个单独的线程去扫描所有的容器节点，当发现容器节点的子节点数量为0时，会自动删除该节点，除此之外和持久化节点没有区别。官方注释说是可以用在leader或者锁的场景中。</p>
-<blockquote>
-<p>create -c</p>
-</blockquote>
-<h2 id="TTL节点"><a href="#TTL节点" class="headerlink" title="TTL节点"></a>TTL节点</h2><p>带有存活时间的节点，简单来说就是当该节点下面没有子节点的话，超过了TTL指定时间后就会被自动删除，特性跟上面的容器节点很像，只是容器节点没有超时时间而已。默认禁用，只能通过系统配置<code>zookeeper.extendedTypesEnabled=true</code>开启，不稳定。</p>
-<blockquote>
-<p>create -t</p>
-</blockquote>
-<h1 id="节点Znode操作"><a href="#节点Znode操作" class="headerlink" title="节点Znode操作"></a>节点Znode操作</h1><h2 id="新增节点"><a href="#新增节点" class="headerlink" title="新增节点"></a>新增节点</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create [‐s] [‐e] [‐c] [‐t ttl] path [data] [acl]</span><br></pre></td></tr></table></figure>
+<h2 id="节点目录监听"><a href="#节点目录监听" class="headerlink" title="节点目录监听"></a>节点目录监听</h2><p>节点目录监听对应三种事件，所以我们也可以将节点目录监听分为三类：</p>
 <ul>
-<li>新增持久化序号节点<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create -s /node</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>Created &#x2F;node0000000001</p>
+<li>节点创建监听（NodeCreated）<blockquote>
+<p>当一个节点被创建时，Zookeeper服务端会向所有注册了该节点创建监听的客户端发送一个NodeCreated事件。这里可能会有疑问，如何向一个不存在的节点注册监听？确实，Zookeeper原生客户端不支持这种操作，但是Zookeeper的Java客户端的一些API是支持的。</p>
 </blockquote>
 </li>
-<li>新增临时节点<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create -e /node1</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>Created &#x2F;node1</p>
+<li>节点删除监听（NodeDeleted）<blockquote>
+<p>当一个节点被删除时，Zookeeper服务端会向所有注册了该节点删除监听的客户端发送一个NodeDeleted事件。</p>
 </blockquote>
 </li>
-<li>新增持久化节点，并添加数据<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create /node2 node-data</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>Created &#x2F;node2</p>
+<li>子节点列表监听（NodeChildrenChanged）<blockquote>
+<p>当一个节点发生子节点数量变化（新增、删除）时，Zookeeper服务端会向所有注册了该子节点列表监听的客户端发送一个NodeChildrenChanged事件。</p>
 </blockquote>
 </li>
 </ul>
-<h2 id="删除节点"><a href="#删除节点" class="headerlink" title="删除节点"></a>删除节点</h2><ul>
-<li>删除指定节点（不能包含子节点）<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">delete path</span><br></pre></td></tr></table></figure></li>
-<li>递归删除节点及其下级所有节点<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">deleteall path</span><br></pre></td></tr></table></figure></li>
+<blockquote>
+<p>注意，节点目录监听不仅可以针对单个节点设置，还可以递归对节点及其所有下级节点进行设置。</p>
+</blockquote>
+<h1 id="监听操作（原生API）"><a href="#监听操作（原生API）" class="headerlink" title="监听操作（原生API）"></a>监听操作（原生API）</h1><h2 id="增加监听"><a href="#增加监听" class="headerlink" title="增加监听"></a>增加监听</h2><ul>
+<li>增加节点数据监听<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">get -w path</span><br><span class="line"><span class="built_in">stat</span> -w path</span><br></pre></td></tr></table></figure>
+<img src="/2022/06/21/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/%E8%8A%82%E7%82%B9%E6%95%B0%E6%8D%AE%E7%9B%91%E5%90%AC.png" alt="节点数据监听.png"></li>
+<li>增加节点目录监听<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> -w path</span><br></pre></td></tr></table></figure>
+<img src="/2022/06/21/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/%E8%8A%82%E7%82%B9%E7%9B%AE%E5%BD%95%E7%9B%91%E5%90%AC1.png" alt="节点目录监听1.png"></li>
+<li>递归增加节点目录监听<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> -R -w path</span><br></pre></td></tr></table></figure>
+<img src="/2022/06/21/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/%E8%8A%82%E7%82%B9%E7%9B%AE%E5%BD%95%E7%9B%91%E5%90%AC2.png" alt="节点目录监听2.png"><br>这里执行了5条命令，每条命令都有其意义所在：<ul>
+<li>ls -R -w &#x2F;：列出所有节点，并给所有节点增加节点目录监听。也就是说有且仅有这7个节点被注册了节点目录监听。</li>
+<li>delete &#x2F;test&#x2F;a：触发了<code>/test/a</code>节点的NodeDeleted事件；触发了<code>/test</code>节点的NodeChildrenChanged事件。</li>
+<li>delete &#x2F;test&#x2F;b：触发了<code>/test/b</code>节点的NodeDeleted事件；但是没有触发<code>/test</code>节点的NodeChildrenChanged事件，因为上一步已经触发过了。</li>
+<li>create &#x2F;test&#x2F;c：新增一个节点，目的是为了测试新节点是否会被注册事件监听。</li>
+<li>create &#x2F;test&#x2F;c&#x2F;1：没有触发<code>/test/c</code>节点的NodeChildrenChanged事件，证明新节点不会被注册事件监听。</li>
 </ul>
-<h2 id="查询（子）节点"><a href="#查询（子）节点" class="headerlink" title="查询（子）节点"></a>查询（子）节点</h2><ul>
-<li>查询指定节点的子节点<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> path</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>ls &#x2F;zookeeper<br>[config, quota]</p>
-</blockquote>
-</li>
-<li>递归查询节点及其下级所有节点<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> -R path</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>ls -R &#x2F;<br>&#x2F;<br>&#x2F;zookeeper<br>&#x2F;zookeeper&#x2F;config<br>&#x2F;zookeeper&#x2F;quota</p>
-</blockquote>
-</li>
-</ul>
-<h2 id="节点数据"><a href="#节点数据" class="headerlink" title="节点数据"></a>节点数据</h2><ul>
-<li>设置（修改）节点数据<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> path node-data</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>set &#x2F;zookeeper zookeeper</p>
-</blockquote>
-</li>
-<li>获取节点数据<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">get [-s] path</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>get &#x2F;zookeeper<br>zookeeper<br>-s代表同时获取节点状态</p>
-</blockquote>
 </li>
 </ul>
-<h2 id="节点状态"><a href="#节点状态" class="headerlink" title="节点状态"></a>节点状态</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">stat</span> path</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>stat &#x2F;zookeeper<br>cZxid &#x3D; 0x0 —— 创建Znode的事务ID<br>ctime &#x3D; Thu Jan 01 08:00:00 CST 1970 —— Znode的创建时间<br>mZxid &#x3D; 0x34 —— 最后修改Znode的事务ID<br>mtime &#x3D; Mon Jun 20 22:32:50 CST 2022 —— Znode的最后修改时间<br>pZxid &#x3D; 0x0 —— 最后添加或删除子节点的事务ID（子节点列表发生变化才会发生改变）<br>cversion &#x3D; -2 —— Znode的子节点结果集版本（子节点增加、删除都会影响这个版本）<br>dataVersion &#x3D; 2 —— Znode的数据版本<br>aclVersion &#x3D; 0 —— Znode的ACL版本<br>ephemeralOwner &#x3D; 0x0 —— 临时节点所有者的 session ID（零代表为非临时节点）。<br>dataLength &#x3D; 9 —— Znode数据字段的长度<br>numChildren &#x3D; 2 —— Znode子节点的数量</p>
-</blockquote>
+<h2 id="移除监听"><a href="#移除监听" class="headerlink" title="移除监听"></a>移除监听</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">removewatches path</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     </div>
 
@@ -358,7 +348,8 @@
           
           <div class="post-tags">
               <a href="/tags/Zookeeper/" rel="tag"><i class="fa fa-tag"></i> Zookeeper</a>
-              <a href="/tags/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/" rel="tag"><i class="fa fa-tag"></i> 文件系统</a>
+              <a href="/tags/%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/" rel="tag"><i class="fa fa-tag"></i> 事件监听机制</a>
+              <a href="/tags/%E4%B8%80%E6%AC%A1%E6%80%A7%E7%9B%91%E5%90%AC/" rel="tag"><i class="fa fa-tag"></i> 一次性监听</a>
           </div>
 
         
@@ -367,13 +358,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/06/19/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/" rel="prev" title="Zookeeper单机版安装">
-      <i class="fa fa-chevron-left"></i> Zookeeper单机版安装
+    <a href="/2022/06/20/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/" rel="prev" title="Zookeeper特性——文件系统">
+      <i class="fa fa-chevron-left"></i> Zookeeper特性——文件系统
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2022/06/21/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/" rel="next" title="Zookeeper特性——事件监听机制">
-      Zookeeper特性——事件监听机制 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -433,7 +421,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">文件系统简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%8A%82%E7%82%B9Znode%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">节点Znode类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%81%E4%B9%85%E5%8C%96%E8%8A%82%E7%82%B9"><span class="nav-number">2.1.</span> <span class="nav-text">持久化节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%81%E4%B9%85%E5%8C%96%E5%BA%8F%E5%8F%B7%E8%8A%82%E7%82%B9"><span class="nav-number">2.2.</span> <span class="nav-text">持久化序号节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%B4%E6%97%B6%E8%8A%82%E7%82%B9"><span class="nav-number">2.3.</span> <span class="nav-text">临时节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%B4%E6%97%B6%E5%BA%8F%E5%8F%B7%E8%8A%82%E7%82%B9"><span class="nav-number">2.4.</span> <span class="nav-text">临时序号节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%B9%E5%99%A8%E8%8A%82%E7%82%B9"><span class="nav-number">2.5.</span> <span class="nav-text">容器节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TTL%E8%8A%82%E7%82%B9"><span class="nav-number">2.6.</span> <span class="nav-text">TTL节点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%8A%82%E7%82%B9Znode%E6%93%8D%E4%BD%9C"><span class="nav-number">3.</span> <span class="nav-text">节点Znode操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B0%E5%A2%9E%E8%8A%82%E7%82%B9"><span class="nav-number">3.1.</span> <span class="nav-text">新增节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E8%8A%82%E7%82%B9"><span class="nav-number">3.2.</span> <span class="nav-text">删除节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%EF%BC%88%E5%AD%90%EF%BC%89%E8%8A%82%E7%82%B9"><span class="nav-number">3.3.</span> <span class="nav-text">查询（子）节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8A%82%E7%82%B9%E6%95%B0%E6%8D%AE"><span class="nav-number">3.4.</span> <span class="nav-text">节点数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8A%82%E7%82%B9%E7%8A%B6%E6%80%81"><span class="nav-number">3.5.</span> <span class="nav-text">节点状态</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">事件类型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9B%91%E5%90%AC%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">监听类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8A%82%E7%82%B9%E6%95%B0%E6%8D%AE%E7%9B%91%E5%90%AC"><span class="nav-number">2.1.</span> <span class="nav-text">节点数据监听</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8A%82%E7%82%B9%E7%9B%AE%E5%BD%95%E7%9B%91%E5%90%AC"><span class="nav-number">2.2.</span> <span class="nav-text">节点目录监听</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9B%91%E5%90%AC%E6%93%8D%E4%BD%9C%EF%BC%88%E5%8E%9F%E7%94%9FAPI%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">监听操作（原生API）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A2%9E%E5%8A%A0%E7%9B%91%E5%90%AC"><span class="nav-number">3.1.</span> <span class="nav-text">增加监听</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A7%BB%E9%99%A4%E7%9B%91%E5%90%AC"><span class="nav-number">3.2.</span> <span class="nav-text">移除监听</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
