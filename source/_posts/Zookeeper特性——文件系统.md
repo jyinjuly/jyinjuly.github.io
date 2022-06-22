@@ -3,7 +3,7 @@ title: Zookeeper特性——文件系统
 tags: ["Zookeeper", "文件系统"]
 categories: ["Zookeeper"]
 ---
-Zookeeper有两大特性——文件系统和监听机制，本篇介绍文件系统。
+Zookeeper有两大特性——文件系统和事件监听机制，本篇介绍文件系统。
 # 文件系统简介
 Zookeeper维护一个类似文件系统的数据结构，如下图：
 ![Znode.png](Znode.png)
