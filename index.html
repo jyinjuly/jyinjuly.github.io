@@ -257,66 +257,14 @@
           <p>Zookeeper有两大特性——文件系统和事件监听机制，本篇介绍事件监听机制。</p>
 <h1 id="事件类型"><a href="#事件类型" class="headerlink" title="事件类型"></a>事件类型</h1><p>Zookeeper中的事件类型有五种，如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> <span class="title class_">EventType</span> &#123;</span><br><span class="line">    None (-<span class="number">1</span>),</span><br><span class="line">    NodeCreated (<span class="number">1</span>),            <span class="comment">// 当监听节点被创建时触发</span></span><br><span class="line">    NodeDeleted (<span class="number">2</span>),            <span class="comment">// 当监听节点被删除时触发</span></span><br><span class="line">    NodeDataChanged (<span class="number">3</span>),        <span class="comment">// 当监听节点的节点数据发生变化时触发</span></span><br><span class="line">    NodeChildrenChanged (<span class="number">4</span>);    <span class="comment">// 当监听节点的子节点列表发生变化时触发</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="监听类型"><a href="#监听类型" class="headerlink" title="监听类型"></a>监听类型</h1><p>Zookeeper的监听类型总体分为两类，节点数据监听（NodeDataChanged）和节点目录监听（NodeCreated、NodeDeleted、NodeChildrenChanged）。</p>
-<h2 id="节点数据监听"><a href="#节点数据监听" class="headerlink" title="节点数据监听"></a>节点数据监听</h2><p>节点数据监听只能针对单个节点设置。当节点的节点数据发生变化时，Zookeeper服务端会向所有注册了该节点数据监听的客户端发送一个NodeDataChanged事件。</p>
-<blockquote>
-<p>注意：节点数据并不单指节点存储的数据，还包括节点的元数据（状态信息）。</p>
-</blockquote>
-<h2 id="节点目录监听"><a href="#节点目录监听" class="headerlink" title="节点目录监听"></a>节点目录监听</h2><p>节点目录监听对应三种事件，所以我们也可以将节点目录监听分为三类：</p>
-<ul>
-<li>节点创建监听（NodeCreated）<blockquote>
-<p>当一个节点被创建时，Zookeeper服务端会向所有注册了该节点创建监听的客户端发送一个NodeCreated事件。这里可能会有疑问，如何向一个不存在的节点注册监听？确实，Zookeeper原生客户端不支持这种操作，但是Zookeeper的Java客户端的一些API是支持的。</p>
-</blockquote>
-</li>
-<li>节点删除监听（NodeDeleted）<blockquote>
-<p>当一个节点被删除时，Zookeeper服务端会向所有注册了该节点删除监听的客户端发送一个NodeDeleted事件。</p>
-</blockquote>
-</li>
-<li>子节点列表监听（NodeChildrenChanged）<blockquote>
-<p>当一个节点发生子节点数量变化（新增、删除）时，Zookeeper服务端会向所有注册了该子节点列表监听的客户端发送一个NodeChildrenChanged事件。</p>
-</blockquote>
-</li>
-</ul>
-<blockquote>
-<p>注意，节点目录监听不仅可以针对单个节点设置，还可以递归对节点及其所有下级节点进行设置。</p>
-</blockquote>
-<h1 id="监听操作（原生API）"><a href="#监听操作（原生API）" class="headerlink" title="监听操作（原生API）"></a>监听操作（原生API）</h1><h2 id="增加监听"><a href="#增加监听" class="headerlink" title="增加监听"></a>增加监听</h2><ul>
-<li>增加节点数据监听<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">get -w path</span><br><span class="line"><span class="built_in">stat</span> -w path</span><br></pre></td></tr></table></figure>
-<img src="/2022/06/21/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/%E8%8A%82%E7%82%B9%E6%95%B0%E6%8D%AE%E7%9B%91%E5%90%AC.png" alt="节点数据监听.png"></li>
-<li>增加节点目录监听<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> -w path</span><br></pre></td></tr></table></figure>
-<img src="/2022/06/21/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/%E8%8A%82%E7%82%B9%E7%9B%AE%E5%BD%95%E7%9B%91%E5%90%AC1.png" alt="节点目录监听1.png"></li>
-<li>递归增加节点目录监听<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> -R -w path</span><br></pre></td></tr></table></figure>
-<img src="/2022/06/21/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/%E8%8A%82%E7%82%B9%E7%9B%AE%E5%BD%95%E7%9B%91%E5%90%AC2.png" alt="节点目录监听2.png"><br>这里执行了5条命令，每条命令都有其意义所在：<ul>
-<li>ls -R -w &#x2F;：列出所有节点，并给所有节点增加节点目录监听。也就是说有且仅有这7个节点被注册了节点目录监听。</li>
-<li>delete &#x2F;test&#x2F;a：触发了<code>/test/a</code>节点的NodeDeleted事件；触发了<code>/test</code>节点的NodeChildrenChanged事件。</li>
-<li>delete &#x2F;test&#x2F;b：触发了<code>/test/b</code>节点的NodeDeleted事件；但是没有触发<code>/test</code>节点的NodeChildrenChanged事件，因为上一步已经触发过了。</li>
-<li>create &#x2F;test&#x2F;c：新增一个节点，目的是为了测试新节点是否会被注册事件监听。</li>
-<li>create &#x2F;test&#x2F;c&#x2F;1：没有触发<code>/test/c</code>节点的NodeChildrenChanged事件，证明新节点不会被注册事件监听。</li>
-</ul>
-</li>
-</ul>
-<h2 id="移除监听"><a href="#移除监听" class="headerlink" title="移除监听"></a>移除监听</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">removewatches path</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/06/21/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
