@@ -9,10 +9,14 @@ Zookeeper中的事件类型有五种，如下：
 ```java
 public enum EventType {
     None (-1),
-    NodeCreated (1),            // 当监听节点被创建时触发
-    NodeDeleted (2),            // 当监听节点被删除时触发
-    NodeDataChanged (3),        // 当监听节点的节点数据发生变化时触发
-    NodeChildrenChanged (4);    // 当监听节点的子节点列表发生变化时触发
+    NodeCreated (1),            // 节点被创建时触发
+    NodeDeleted (2),            // 节点被删除时触发
+    NodeDataChanged (3),        // 节点的节点数据发生变化时触发
+    NodeChildrenChanged (4),    // 节点的子节点列表发生变化时触发
+    
+    // 3.5.x之后新加的事件类型
+    DataWatchRemoved (5),       // 节点的监听被移除时触发
+    ChildWatchRemoved (6);      // 节点的子节点的监听被移除时触发
 }
 ```
 <!-- more -->
@@ -53,7 +57,7 @@ ls -R -w path
 这里执行了5条命令，每条命令都有其意义所在：
     * ls -R -w /：列出所有节点，并给所有节点增加节点目录监听。也就是说有且仅有这7个节点被注册了节点目录监听。
     * delete /test/a：触发了`/test/a`节点的NodeDeleted事件；触发了`/test`节点的NodeChildrenChanged事件。
-    * delete /test/b：触发了`/test/b`节点的NodeDeleted事件；但是没有触发`/test`节点的NodeChildrenChanged事件，因为上一步已经触发过了。
+    * delete /test/b：触发了`/test/b`节点的NodeDeleted事件；但是没有触发`/test`节点的NodeChildrenChanged事件，因为上一步已经触发过了。**说到这里不得不提到Zookeeper监听机制一个很重要的特点，那就是所有的监听都是一次性的，一旦监听的事件被触发，监听将会被自动移除。**
     * create /test/c：新增一个节点，目的是为了测试新节点是否会被注册事件监听。
     * create /test/c/1：没有触发`/test/c`节点的NodeChildrenChanged事件，证明新节点不会被注册事件监听。
 
