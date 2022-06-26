@@ -20,19 +20,23 @@
     var CONFIG = {"hostname":"jyinjuly.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"right","width":300,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Zookeeper的ACL权限控制">
+  <meta name="description" content="Zookeeper的ACL权限控制，可以控制节点的读写操作，保证数据的安全性，Zookeeper的ACL权限设置分为3部分组成，分别是：权限模式（Scheme）、授权对象（ID）、权限信息（Permission）。最终组成一条例如“scheme:id:permission”格式的ACL请求信息。 权限模式权限模式用来设置ZooKeeper服务器进行权限验证的方式。 IP模式ZooKeeper可以针">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Zookeeper的ACL权限控制">
 <meta property="og:url" content="https://jyinjuly.github.io/2022/06/23/Zookeeper%E7%9A%84ACL%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/index.html">
 <meta property="og:site_name" content="Jyinjulyの博客">
-<meta property="og:description" content="Zookeeper的ACL权限控制">
+<meta property="og:description" content="Zookeeper的ACL权限控制，可以控制节点的读写操作，保证数据的安全性，Zookeeper的ACL权限设置分为3部分组成，分别是：权限模式（Scheme）、授权对象（ID）、权限信息（Permission）。最终组成一条例如“scheme:id:permission”格式的ACL请求信息。 权限模式权限模式用来设置ZooKeeper服务器进行权限验证的方式。 IP模式ZooKeeper可以针">
 <meta property="og:locale">
+<meta property="og:image" content="https://jyinjuly.github.io/2022/06/23/Zookeeper%E7%9A%84ACL%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/%E5%8F%A3%E4%BB%A4%E6%A8%A1%E5%BC%8F.png">
+<meta property="og:image" content="https://jyinjuly.github.io/2022/06/23/Zookeeper%E7%9A%84ACL%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/%E6%98%8E%E6%96%87%E5%8F%A3%E4%BB%A4%E6%A8%A1%E5%BC%8F.png">
+<meta property="og:image" content="https://jyinjuly.github.io/2022/06/23/Zookeeper%E7%9A%84ACL%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/%E8%B6%85%E7%BA%A7%E7%AE%A1%E7%90%86%E5%91%98%E6%A8%A1%E5%BC%8F.png">
 <meta property="article:published_time" content="2022-06-23T14:06:44.962Z">
-<meta property="article:modified_time" content="2022-06-23T15:08:53.866Z">
+<meta property="article:modified_time" content="2022-06-26T05:34:44.498Z">
 <meta property="article:author" content="Jyinjuly">
 <meta property="article:tag" content="Zookeeper">
 <meta property="article:tag" content="ACL">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://jyinjuly.github.io/2022/06/23/Zookeeper%E7%9A%84ACL%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/%E5%8F%A3%E4%BB%A4%E6%A8%A1%E5%BC%8F.png">
 
 <link rel="canonical" href="https://jyinjuly.github.io/2022/06/23/Zookeeper%E7%9A%84ACL%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/">
 
@@ -251,14 +255,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>17</span>
+              <span>1.9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -270,7 +274,70 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="Zookeeper的ACL权限控制"><a href="#Zookeeper的ACL权限控制" class="headerlink" title="Zookeeper的ACL权限控制"></a>Zookeeper的ACL权限控制</h1>
+        <p>Zookeeper的ACL权限控制，可以控制节点的读写操作，保证数据的安全性，Zookeeper的ACL权限设置分为3部分组成，分别是：权限模式（Scheme）、授权对象（ID）、权限信息（Permission）。最终组成一条例如“scheme:id:permission”格式的ACL请求信息。</p>
+<h1 id="权限模式"><a href="#权限模式" class="headerlink" title="权限模式"></a>权限模式</h1><p>权限模式用来设置ZooKeeper服务器进行权限验证的方式。</p>
+<h2 id="IP模式"><a href="#IP模式" class="headerlink" title="IP模式"></a>IP模式</h2><p>ZooKeeper可以针对一个IP或者一段IP地址授予某种权限。比如我们可以让一个IP地址为“ip:192.168.0.110”的机器对服务器上的某个数据节点具有写入的权限。或者也可以通过“ip:192.168.0.1&#x2F;24”给一段IP地址的机器赋权。</p>
+<blockquote>
+<p>ip:192.168.175.175:rw</p>
+</blockquote>
+<span id="more"></span>
+<h2 id="口令模式"><a href="#口令模式" class="headerlink" title="口令模式"></a>口令模式</h2><p>也可以理解为用户名密码的方式。在ZooKeeper中这种验证方式是Digest认证，而Digest这种认证方式首先在客户端传送“username:password”这种形式的权限表示符后，ZooKeeper服务端会对密码部分使用SHA-1和BASE64算法进行加密，以保证安全性。</p>
+<h2 id="超级管理员模式"><a href="#超级管理员模式" class="headerlink" title="超级管理员模式"></a>超级管理员模式</h2><p>Super可以认为是一种特殊的Digest认证。具有Super权限的客户端可以对ZooKeepers上的任意数据节点进行任意操作。</p>
+<h2 id="World模式"><a href="#World模式" class="headerlink" title="World模式"></a>World模式</h2><p>world模式表示授权所有用户，一般搭配anyone使用。</p>
+<blockquote>
+<p>world:anyone:cwrda</p>
+</blockquote>
+<h1 id="授权对象"><a href="#授权对象" class="headerlink" title="授权对象"></a>授权对象</h1><p>授权对象就是说我们要把权限赋予谁，而对应于不同的权限模式来说，授权对象有所不同。如下：</p>
+<table>
+<thead>
+<tr>
+<th>IP模式</th>
+<th>口令模式</th>
+<th>超级管理员模式</th>
+<th>World模式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ip地址&#x2F;ip地址列表（多个ip地址以逗号隔开）&#x2F;ip地址段</td>
+<td>用户名</td>
+<td>用户名</td>
+<td>所有用户</td>
+</tr>
+</tbody></table>
+<h1 id="权限信息"><a href="#权限信息" class="headerlink" title="权限信息"></a>权限信息</h1><h2 id="创建权限（c-create）"><a href="#创建权限（c-create）" class="headerlink" title="创建权限（c:create）"></a>创建权限（c:create）</h2><p>授予权限的对象可以在数据节点下<strong>创建子节点</strong></p>
+<h2 id="删除权限（d-delete）"><a href="#删除权限（d-delete）" class="headerlink" title="删除权限（d:delete）"></a>删除权限（d:delete）</h2><p>授予权限的对象可以删除该节点的<strong>子节点</strong></p>
+<h2 id="读取权限（r-read）"><a href="#读取权限（r-read）" class="headerlink" title="读取权限（r:read）"></a>读取权限（r:read）</h2><p>授予权限的对象可以读取该节点的节点数据以及子节点的列表信息</p>
+<h2 id="更新权限（w-write）"><a href="#更新权限（w-write）" class="headerlink" title="更新权限（w:write）"></a>更新权限（w:write）</h2><p>授予权限的对象可以更新该节点的节点数据</p>
+<h2 id="管理权限（a-admin）"><a href="#管理权限（a-admin）" class="headerlink" title="管理权限（a:admin）"></a>管理权限（a:admin）</h2><p>授予权限的对象可以对该节点体进行ACL权限设置</p>
+<h1 id="权限操作（API）"><a href="#权限操作（API）" class="headerlink" title="权限操作（API）"></a>权限操作（API）</h1><h2 id="getAcl"><a href="#getAcl" class="headerlink" title="getAcl"></a>getAcl</h2><p>获取某个节点的acl权限信息</p>
+<h2 id="setAcl"><a href="#setAcl" class="headerlink" title="setAcl"></a>setAcl</h2><p>设置某个节点的acl权限信息</p>
+<h2 id="addauth"><a href="#addauth" class="headerlink" title="addauth"></a>addauth</h2><p>输入认证授权信息，相当于登录</p>
+<h1 id="ACL实操"><a href="#ACL实操" class="headerlink" title="ACL实操"></a>ACL实操</h1><h2 id="IP模式-1"><a href="#IP模式-1" class="headerlink" title="IP模式"></a>IP模式</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create /test test-data ip:192.168.175.175:rw</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>创建节点，并授予ip地址为192.168.175.175的客户端该节点的读写权限</p>
+</blockquote>
+<h2 id="口令模式-1"><a href="#口令模式-1" class="headerlink" title="口令模式"></a>口令模式</h2><p>口令模式首先需要生成口令，有两种方式：</p>
+<ul>
+<li>通过命令直接生成<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> ‐n &lt;user&gt;:&lt;password&gt; | openssl dgst ‐binary ‐sha1 | openssl <span class="built_in">base64</span></span><br></pre></td></tr></table></figure></li>
+<li>通过Java API生成<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">testGenerateDigest</span><span class="params">()</span> <span class="keyword">throws</span> NoSuchAlgorithmException &#123;</span><br><span class="line">    log.info(DigestAuthenticationProvider.generateDigest(<span class="string">&quot;user1:password1&quot;</span>)); <span class="comment">// user1:XDkd2dsEuhc9ImU3q8pa8UOdtpI=</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create /test2 test2-data digest:user1:XDkd2dsEuhc9ImU3q8pa8UOdtpI=:rw</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>创建节点，并授予用户user1该节点的读写权限</p>
+</blockquote>
+<p><img src="/2022/06/23/Zookeeper%E7%9A%84ACL%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/%E5%8F%A3%E4%BB%A4%E6%A8%A1%E5%BC%8F.png" alt="口令模式.png"></p>
+<p>还有一种明文的口令模式，和digest用法一样，只需要在授权的时候把digest替换成auth即可。只不过需要在登录状态下才可以使用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create /test3 test3-data auth:user1:password1</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/06/23/Zookeeper%E7%9A%84ACL%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/%E6%98%8E%E6%96%87%E5%8F%A3%E4%BB%A4%E6%A8%A1%E5%BC%8F.png" alt="明文口令模式.png"></p>
+<h2 id="超级管理员模式-1"><a href="#超级管理员模式-1" class="headerlink" title="超级管理员模式"></a>超级管理员模式</h2><p>这是一种特殊的Digest模式， 在Super模式下超级管理员用户可以对Zookeeper上的任意节点进行任何操作。需要在启动时通过JVM系统参数开启：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">‐Dzookeeper.DigestAuthenticationProvider.superDigest=user1:XDkd2dsEuhc9ImU3q8pa8UOdtpI=</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其中user1为超级管理员用户名，password1为超级管理员密码</p>
+</blockquote>
+<p>可以通过修改zkServer.sh来启用超级管理员：<br><img src="/2022/06/23/Zookeeper%E7%9A%84ACL%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/%E8%B6%85%E7%BA%A7%E7%AE%A1%E7%90%86%E5%91%98%E6%A8%A1%E5%BC%8F.png" alt="超级管理员模式.png"></p>
+<h2 id="跳过ACL认证"><a href="#跳过ACL认证" class="headerlink" title="跳过ACL认证"></a>跳过ACL认证</h2><p>可以通过系统参数zookeeper.skipACL&#x3D;yes进行配置，默认是no。可以配置为yes，则配置过的ACL将不再进行权限检测。</p>
+
     </div>
 
     
@@ -353,7 +420,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Zookeeper%E7%9A%84ACL%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6"><span class="nav-number">1.</span> <span class="nav-text">Zookeeper的ACL权限控制</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9D%83%E9%99%90%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">权限模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#IP%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.1.</span> <span class="nav-text">IP模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%A3%E4%BB%A4%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.2.</span> <span class="nav-text">口令模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B6%85%E7%BA%A7%E7%AE%A1%E7%90%86%E5%91%98%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.3.</span> <span class="nav-text">超级管理员模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#World%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.4.</span> <span class="nav-text">World模式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8E%88%E6%9D%83%E5%AF%B9%E8%B1%A1"><span class="nav-number">2.</span> <span class="nav-text">授权对象</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9D%83%E9%99%90%E4%BF%A1%E6%81%AF"><span class="nav-number">3.</span> <span class="nav-text">权限信息</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E6%9D%83%E9%99%90%EF%BC%88c-create%EF%BC%89"><span class="nav-number">3.1.</span> <span class="nav-text">创建权限（c:create）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E6%9D%83%E9%99%90%EF%BC%88d-delete%EF%BC%89"><span class="nav-number">3.2.</span> <span class="nav-text">删除权限（d:delete）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%BB%E5%8F%96%E6%9D%83%E9%99%90%EF%BC%88r-read%EF%BC%89"><span class="nav-number">3.3.</span> <span class="nav-text">读取权限（r:read）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0%E6%9D%83%E9%99%90%EF%BC%88w-write%EF%BC%89"><span class="nav-number">3.4.</span> <span class="nav-text">更新权限（w:write）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%A1%E7%90%86%E6%9D%83%E9%99%90%EF%BC%88a-admin%EF%BC%89"><span class="nav-number">3.5.</span> <span class="nav-text">管理权限（a:admin）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9D%83%E9%99%90%E6%93%8D%E4%BD%9C%EF%BC%88API%EF%BC%89"><span class="nav-number">4.</span> <span class="nav-text">权限操作（API）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#getAcl"><span class="nav-number">4.1.</span> <span class="nav-text">getAcl</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#setAcl"><span class="nav-number">4.2.</span> <span class="nav-text">setAcl</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#addauth"><span class="nav-number">4.3.</span> <span class="nav-text">addauth</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ACL%E5%AE%9E%E6%93%8D"><span class="nav-number">5.</span> <span class="nav-text">ACL实操</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#IP%E6%A8%A1%E5%BC%8F-1"><span class="nav-number">5.1.</span> <span class="nav-text">IP模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%A3%E4%BB%A4%E6%A8%A1%E5%BC%8F-1"><span class="nav-number">5.2.</span> <span class="nav-text">口令模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B6%85%E7%BA%A7%E7%AE%A1%E7%90%86%E5%91%98%E6%A8%A1%E5%BC%8F-1"><span class="nav-number">5.3.</span> <span class="nav-text">超级管理员模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B7%B3%E8%BF%87ACL%E8%AE%A4%E8%AF%81"><span class="nav-number">5.4.</span> <span class="nav-text">跳过ACL认证</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -426,12 +493,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">4k</span>
+    <span title="站点总字数">6k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">4 分钟</span>
+    <span title="站点阅读时长">5 分钟</span>
 </div>
 
         
