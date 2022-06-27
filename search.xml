@@ -28,6 +28,93 @@
       </tags>
   </entry>
   <entry>
+    <title>Zookeeper特性——文件系统</title>
+    <url>/2022/06/20/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/</url>
+    <content><![CDATA[<p>Zookeeper有两大特性——文件系统和事件监听机制，本篇介绍文件系统。</p>
+<h1 id="文件系统简介"><a href="#文件系统简介" class="headerlink" title="文件系统简介"></a>文件系统简介</h1><p>Zookeeper维护一个类似文件系统的数据结构，如下图：<br><img src="/2022/06/20/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/Znode.png" alt="Znode.png"></p>
+<span id="more"></span>
+<p>其中每个目录项都被称为<strong>Znode（节点）</strong>，节点之下还可以增加子节点。每个节点拥有唯一路径path，并且均以根路径&#x2F;开头，节点还可以保存数据。</p>
+<h1 id="节点Znode类型"><a href="#节点Znode类型" class="headerlink" title="节点Znode类型"></a>节点Znode类型</h1><h2 id="持久化节点"><a href="#持久化节点" class="headerlink" title="持久化节点"></a>持久化节点</h2><p>PERSISTENT（默认类型节点），客户端与Zookeeper断开连接后，节点依旧存在。只要不手动删除，这类节点将永远存在。</p>
+<h2 id="持久化序号节点"><a href="#持久化序号节点" class="headerlink" title="持久化序号节点"></a>持久化序号节点</h2><p>PERSISTENT_SEQUENTIAL，与持久化节点一样，只是Zookeeper会自动给节点名称进行顺序编号。</p>
+<blockquote>
+<p>create -s</p>
+</blockquote>
+<h2 id="临时节点"><a href="#临时节点" class="headerlink" title="临时节点"></a>临时节点</h2><p>EPHEMERAL­，客户端与Zookeeper断开连接后，节点会被删除。</p>
+<blockquote>
+<p>create -e</p>
+</blockquote>
+<h2 id="临时序号节点"><a href="#临时序号节点" class="headerlink" title="临时序号节点"></a>临时序号节点</h2><p>EPHEMERAL_SEQUENTIAL，与临时节点一样，只是Zookeeper会自动给节点名称进行顺序编号。</p>
+<blockquote>
+<p>create -s -e</p>
+</blockquote>
+<h2 id="容器节点"><a href="#容器节点" class="headerlink" title="容器节点"></a>容器节点</h2><p>Container，3.5.3版本新增。容器节点的表现形式和持久化节点是一样的，区别在于Zookeeper服务端启动后，会有一个单独的线程去扫描所有的容器节点，当发现容器节点的子节点数量为0时，会自动删除该节点，除此之外和持久化节点没有区别。官方注释说是可以用在leader或者锁的场景中。</p>
+<blockquote>
+<p>create -c</p>
+</blockquote>
+<h2 id="TTL节点"><a href="#TTL节点" class="headerlink" title="TTL节点"></a>TTL节点</h2><p>带有存活时间的节点，简单来说就是当该节点下面没有子节点的话，超过了TTL指定时间后就会被自动删除，特性跟上面的容器节点很像，只是容器节点没有超时时间而已。默认禁用，只能通过系统配置<code>zookeeper.extendedTypesEnabled=true</code>开启，不稳定。</p>
+<blockquote>
+<p>create -t</p>
+</blockquote>
+<h1 id="节点Znode操作"><a href="#节点Znode操作" class="headerlink" title="节点Znode操作"></a>节点Znode操作</h1><h2 id="新增节点"><a href="#新增节点" class="headerlink" title="新增节点"></a>新增节点</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">create [‐s] [‐e] [‐c] [‐t ttl] path [data] [acl]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>新增持久化序号节点<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">create -s /node</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Created &#x2F;node0000000001</p>
+</blockquote>
+</li>
+<li>新增临时节点<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">create -e /node1</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Created &#x2F;node1</p>
+</blockquote>
+</li>
+<li>新增持久化节点，并添加数据<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">create /node2 node-data</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Created &#x2F;node2</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="删除节点"><a href="#删除节点" class="headerlink" title="删除节点"></a>删除节点</h2><ul>
+<li>删除指定节点（不能包含子节点）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">delete path</span><br></pre></td></tr></table></figure></li>
+<li>递归删除节点及其下级所有节点<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">deleteall path</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="查询（子）节点"><a href="#查询（子）节点" class="headerlink" title="查询（子）节点"></a>查询（子）节点</h2><ul>
+<li>查询指定节点的子节点<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">ls</span> path</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>ls &#x2F;zookeeper<br>[config, quota]</p>
+</blockquote>
+</li>
+<li>递归查询节点及其下级所有节点<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">ls</span> -R path</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>ls -R &#x2F;<br>&#x2F;<br>&#x2F;zookeeper<br>&#x2F;zookeeper&#x2F;config<br>&#x2F;zookeeper&#x2F;quota</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="节点数据"><a href="#节点数据" class="headerlink" title="节点数据"></a>节点数据</h2><ul>
+<li>设置（修改）节点数据<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">set</span> path node-data</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>set &#x2F;zookeeper zookeeper</p>
+</blockquote>
+</li>
+<li>获取节点数据<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">get [-s] path</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>get &#x2F;zookeeper<br>zookeeper<br>-s代表同时获取节点状态</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="节点状态"><a href="#节点状态" class="headerlink" title="节点状态"></a>节点状态</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">stat</span> path</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>stat &#x2F;zookeeper<br>cZxid &#x3D; 0x0 —— 创建Znode的事务ID<br>ctime &#x3D; Thu Jan 01 08:00:00 CST 1970 —— Znode的创建时间<br>mZxid &#x3D; 0x34 —— 最后修改Znode的事务ID<br>mtime &#x3D; Mon Jun 20 22:32:50 CST 2022 —— Znode的最后修改时间<br>pZxid &#x3D; 0x0 —— 最后添加或删除子节点的事务ID（子节点列表发生变化才会发生改变）<br>cversion &#x3D; -2 —— Znode的子节点结果集版本（子节点增加、删除都会影响这个版本）<br>dataVersion &#x3D; 2 —— Znode的数据版本<br>aclVersion &#x3D; 0 —— Znode的ACL版本<br>ephemeralOwner &#x3D; 0x0 —— 临时节点所有者的 session ID（零代表为非临时节点）。<br>dataLength &#x3D; 9 —— Znode数据字段的长度<br>numChildren &#x3D; 2 —— Znode子节点的数量</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>Zookeeper</category>
+      </categories>
+      <tags>
+        <tag>Zookeeper</tag>
+        <tag>文件系统</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Zookeeper特性——事件监听机制</title>
     <url>/2022/06/21/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/</url>
     <content><![CDATA[<p>Zookeeper有两大特性——文件系统和事件监听机制，本篇介绍事件监听机制。</p>
@@ -179,90 +266,38 @@
       </tags>
   </entry>
   <entry>
-    <title>Zookeeper特性——文件系统</title>
-    <url>/2022/06/20/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/</url>
-    <content><![CDATA[<p>Zookeeper有两大特性——文件系统和事件监听机制，本篇介绍文件系统。</p>
-<h1 id="文件系统简介"><a href="#文件系统简介" class="headerlink" title="文件系统简介"></a>文件系统简介</h1><p>Zookeeper维护一个类似文件系统的数据结构，如下图：<br><img src="/2022/06/20/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/Znode.png" alt="Znode.png"></p>
+    <title>Zookeeper集群搭建</title>
+    <url>/2022/06/27/Zookeeper%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<p>本篇以<strong>一主双从+一观察者</strong>为例搭建Zookeeper集群，旨在介绍集群中的一些概念以及特性。</p>
+<h1 id="集群角色"><a href="#集群角色" class="headerlink" title="集群角色"></a>集群角色</h1><h2 id="Leader"><a href="#Leader" class="headerlink" title="Leader"></a>Leader</h2><p>领导者，也可以叫做主节点。主节点可以处理读写请求，集群中只能有一个主节点。</p>
+<h2 id="Follower"><a href="#Follower" class="headerlink" title="Follower"></a>Follower</h2><p>跟随者，也可以叫做从节点。从节点只处理读请求，同时作为Leader节点的候选节点。即如果Leader宕机，Follower节点会参与到新的Leader选举中，有可能成为新的Leader节点。</p>
+<h2 id="Observer"><a href="#Observer" class="headerlink" title="Observer"></a>Observer</h2><p>观察者，只能处理读请求，并且不参与选举。通常是为了缓解整个集群的压力，提升集群的并发能力。</p>
 <span id="more"></span>
-<p>其中每个目录项都被称为<strong>Znode（节点）</strong>，节点之下还可以增加子节点。每个节点拥有唯一路径path，并且均以根路径&#x2F;开头，节点还可以保存数据。</p>
-<h1 id="节点Znode类型"><a href="#节点Znode类型" class="headerlink" title="节点Znode类型"></a>节点Znode类型</h1><h2 id="持久化节点"><a href="#持久化节点" class="headerlink" title="持久化节点"></a>持久化节点</h2><p>PERSISTENT（默认类型节点），客户端与Zookeeper断开连接后，节点依旧存在。只要不手动删除，这类节点将永远存在。</p>
-<h2 id="持久化序号节点"><a href="#持久化序号节点" class="headerlink" title="持久化序号节点"></a>持久化序号节点</h2><p>PERSISTENT_SEQUENTIAL，与持久化节点一样，只是Zookeeper会自动给节点名称进行顺序编号。</p>
-<blockquote>
-<p>create -s</p>
-</blockquote>
-<h2 id="临时节点"><a href="#临时节点" class="headerlink" title="临时节点"></a>临时节点</h2><p>EPHEMERAL­，客户端与Zookeeper断开连接后，节点会被删除。</p>
-<blockquote>
-<p>create -e</p>
-</blockquote>
-<h2 id="临时序号节点"><a href="#临时序号节点" class="headerlink" title="临时序号节点"></a>临时序号节点</h2><p>EPHEMERAL_SEQUENTIAL，与临时节点一样，只是Zookeeper会自动给节点名称进行顺序编号。</p>
-<blockquote>
-<p>create -s -e</p>
-</blockquote>
-<h2 id="容器节点"><a href="#容器节点" class="headerlink" title="容器节点"></a>容器节点</h2><p>Container，3.5.3版本新增。容器节点的表现形式和持久化节点是一样的，区别在于Zookeeper服务端启动后，会有一个单独的线程去扫描所有的容器节点，当发现容器节点的子节点数量为0时，会自动删除该节点，除此之外和持久化节点没有区别。官方注释说是可以用在leader或者锁的场景中。</p>
-<blockquote>
-<p>create -c</p>
-</blockquote>
-<h2 id="TTL节点"><a href="#TTL节点" class="headerlink" title="TTL节点"></a>TTL节点</h2><p>带有存活时间的节点，简单来说就是当该节点下面没有子节点的话，超过了TTL指定时间后就会被自动删除，特性跟上面的容器节点很像，只是容器节点没有超时时间而已。默认禁用，只能通过系统配置<code>zookeeper.extendedTypesEnabled=true</code>开启，不稳定。</p>
-<blockquote>
-<p>create -t</p>
-</blockquote>
-<h1 id="节点Znode操作"><a href="#节点Znode操作" class="headerlink" title="节点Znode操作"></a>节点Znode操作</h1><h2 id="新增节点"><a href="#新增节点" class="headerlink" title="新增节点"></a>新增节点</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">create [‐s] [‐e] [‐c] [‐t ttl] path [data] [acl]</span><br></pre></td></tr></table></figure>
+
+<h1 id="集群架构"><a href="#集群架构" class="headerlink" title="集群架构"></a>集群架构</h1><p><img src="/2022/06/27/Zookeeper%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/Zookeeper%E9%9B%86%E7%BE%A4.png" alt="Zookeeper集群.png"></p>
+<h1 id="集群搭建"><a href="#集群搭建" class="headerlink" title="集群搭建"></a>集群搭建</h1><h2 id="创建节点唯一ID"><a href="#创建节点唯一ID" class="headerlink" title="创建节点唯一ID"></a>创建节点唯一ID</h2><p>在Zookeeper的安装目录下，创建如下data目录结构：<br><img src="/2022/06/27/Zookeeper%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/%E8%8A%82%E7%82%B9%E5%94%AF%E4%B8%80ID.png" alt="节点唯一ID.png"><br>其中的myid文件（文件名固定，不可随意起名）存储代表各个节点的唯一ID，如下：<br><img src="/2022/06/27/Zookeeper%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/%E8%8A%82%E7%82%B9%E5%94%AF%E4%B8%80ID2.png" alt="节点唯一ID2.png"></p>
+<h2 id="编辑配置文件"><a href="#编辑配置文件" class="headerlink" title="编辑配置文件"></a>编辑配置文件</h2><p>在conf目录下，复制zoo_sample.cfg四份，分别命名：zk1.cfg、zk2.cfg、zk3.cfg、zk4.cfg，并进行如下配置：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-- zk2、zk3、zk4</span><br><span class="line">dataDir=/usr/local/apache-zookeeper-3.5.8-bin/data/zk1</span><br><span class="line"></span><br><span class="line">-- 2182、2183、2184</span><br><span class="line">clientPort=2181</span><br><span class="line"></span><br><span class="line">server.1=192.168.175.175:2001:3001</span><br><span class="line">server.2=192.168.175.175:2002:3002</span><br><span class="line">server.3=192.168.175.175:2003:3003</span><br><span class="line">server.4=192.168.175.175:2004:3004:observer</span><br></pre></td></tr></table></figure>
+<p>其中server.A&#x3D;B:C:D:E，各自含义如下：</p>
 <ul>
-<li>新增持久化序号节点<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">create -s /node</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>Created &#x2F;node0000000001</p>
-</blockquote>
-</li>
-<li>新增临时节点<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">create -e /node1</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>Created &#x2F;node1</p>
-</blockquote>
-</li>
-<li>新增持久化节点，并添加数据<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">create /node2 node-data</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>Created &#x2F;node2</p>
-</blockquote>
-</li>
+<li>A：节点唯一ID</li>
+<li>B：节点IP</li>
+<li>C：集群通讯端口</li>
+<li>D：集群选举端口</li>
+<li>E：集群角色，默认是participant，即参与者，也就是参与过半机制的角色。另一个是observer，观察者，不参与过半机制。</li>
 </ul>
-<h2 id="删除节点"><a href="#删除节点" class="headerlink" title="删除节点"></a>删除节点</h2><ul>
-<li>删除指定节点（不能包含子节点）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">delete path</span><br></pre></td></tr></table></figure></li>
-<li>递归删除节点及其下级所有节点<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">deleteall path</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="查询（子）节点"><a href="#查询（子）节点" class="headerlink" title="查询（子）节点"></a>查询（子）节点</h2><ul>
-<li>查询指定节点的子节点<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">ls</span> path</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>ls &#x2F;zookeeper<br>[config, quota]</p>
+<p>过半机制有两个场景，第一是选举，第二是事务请求过半提交。</p>
 </blockquote>
-</li>
-<li>递归查询节点及其下级所有节点<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">ls</span> -R path</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>ls -R &#x2F;<br>&#x2F;<br>&#x2F;zookeeper<br>&#x2F;zookeeper&#x2F;config<br>&#x2F;zookeeper&#x2F;quota</p>
-</blockquote>
-</li>
-</ul>
-<h2 id="节点数据"><a href="#节点数据" class="headerlink" title="节点数据"></a>节点数据</h2><ul>
-<li>设置（修改）节点数据<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">set</span> path node-data</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>set &#x2F;zookeeper zookeeper</p>
-</blockquote>
-</li>
-<li>获取节点数据<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">get [-s] path</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>get &#x2F;zookeeper<br>zookeeper<br>-s代表同时获取节点状态</p>
-</blockquote>
-</li>
-</ul>
-<h2 id="节点状态"><a href="#节点状态" class="headerlink" title="节点状态"></a>节点状态</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">stat</span> path</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>stat &#x2F;zookeeper<br>cZxid &#x3D; 0x0 —— 创建Znode的事务ID<br>ctime &#x3D; Thu Jan 01 08:00:00 CST 1970 —— Znode的创建时间<br>mZxid &#x3D; 0x34 —— 最后修改Znode的事务ID<br>mtime &#x3D; Mon Jun 20 22:32:50 CST 2022 —— Znode的最后修改时间<br>pZxid &#x3D; 0x0 —— 最后添加或删除子节点的事务ID（子节点列表发生变化才会发生改变）<br>cversion &#x3D; -2 —— Znode的子节点结果集版本（子节点增加、删除都会影响这个版本）<br>dataVersion &#x3D; 2 —— Znode的数据版本<br>aclVersion &#x3D; 0 —— Znode的ACL版本<br>ephemeralOwner &#x3D; 0x0 —— 临时节点所有者的 session ID（零代表为非临时节点）。<br>dataLength &#x3D; 9 —— Znode数据字段的长度<br>numChildren &#x3D; 2 —— Znode子节点的数量</p>
-</blockquote>
+<h2 id="集群启动"><a href="#集群启动" class="headerlink" title="集群启动"></a>集群启动</h2><p>集群的启动没有什么特殊之处，就是依次启动各个节点。<br><img src="/2022/06/27/Zookeeper%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/%E9%9B%86%E7%BE%A4%E5%90%AF%E5%8A%A8.png" alt="集群启动.png"><br>然后查看一下集群状态：<br><img src="/2022/06/27/Zookeeper%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/%E9%9B%86%E7%BE%A4%E7%8A%B6%E6%80%81.png" alt="集群状态.png"><br>可以看到：主节点为zk2，从节点为zk1、zk3，观察者如配置为zk4。</p>
 ]]></content>
       <categories>
         <category>Zookeeper</category>
       </categories>
       <tags>
         <tag>Zookeeper</tag>
-        <tag>文件系统</tag>
+        <tag>集群</tag>
+        <tag>高可用</tag>
       </tags>
   </entry>
 </search>
