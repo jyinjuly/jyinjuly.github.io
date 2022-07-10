@@ -68,7 +68,7 @@ create /test2 test2-data digest:user1:XDkd2dsEuhc9ImU3q8pa8UOdtpI=:rw
 
 ![口令模式.png](口令模式.png)
 
-还有一种明文的口令模式，和digest用法一样，只需要在授权的时候把digest替换成auth即可。只不过需要在登录状态下才可以使用：
+还有一种明文的口令模式，和digest用法一样，只需要在授权的时候把digest替换成auth即可。只不过需要在登录状态下才可以使用（并且只能授权当前登录用户）：
 ```bash
 create /test3 test3-data auth:user1:password1
 ```
@@ -77,12 +77,13 @@ create /test3 test3-data auth:user1:password1
 ## 超级管理员模式
 这是一种特殊的Digest模式， 在Super模式下超级管理员用户可以对Zookeeper上的任意节点进行任何操作。需要在启动时通过JVM系统参数开启：
 ```shell
-‐Dzookeeper.DigestAuthenticationProvider.superDigest=user1:XDkd2dsEuhc9ImU3q8pa8UOdtpI=
+-Dzookeeper.DigestAuthenticationProvider.superDigest=super:BBO7K8dPkoek/JxIHqXxM75QRpI=
 ```
-> 其中user1为超级管理员用户名，password1为超级管理员密码
+> 其中super为超级管理员用户名，123456为超级管理员密码
 
 可以通过修改zkServer.sh来启用超级管理员：
 ![超级管理员模式.png](超级管理员模式.png)
+> 可以通过`nohup`快捷搜索定位
 
 ## 跳过ACL认证
 可以通过系统参数zookeeper.skipACL=yes进行配置，默认是no。可以配置为yes，则配置过的ACL将不再进行权限检测。
