@@ -86,7 +86,8 @@ create /test3 test3-data auth:user1:password1
 > 可以通过`nohup`快捷搜索定位
 
 ## 跳过ACL认证
-可以通过系统参数zookeeper.skipACL=yes进行配置，默认是no。可以配置为yes，则配置过的ACL将不再进行权限检测。
+可以通过系统参数`-Dzookeeper.skipACL=yes`进行配置，默认是no。可以配置为yes，则配置过的ACL将不再进行权限检测。
+![跳过权限认证.png](跳过权限认证.png)
 
 
 
