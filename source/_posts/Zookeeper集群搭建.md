@@ -52,11 +52,63 @@ server.4=192.168.175.175:2004:3004:observer
 ![集群状态.png](集群状态.png)
 可以看到：主节点为zk2，从节点为zk1、zk3，观察者如配置为zk4。
 
+# 集群动态配置
+Zookeeper 3.5.0 以前，Zookeeper集群角色要发生改变的话，只能通过停掉所有的Zookeeper服务，修改集群配置，重启服务来完成，这样集群服务将有一段不可用的状态，为了应对高可用需求，Zookeeper 3.5.0 提供了支持动态扩容/缩容的新特性。但是通过客户端API可以变更服务端集群状态是件很危险的事情，所以在zookeeper 3.5.3 版本要用动态配置，需要开启超级管理员身份验证模式 ACLs。如果是在一个安全的环境也可以通过配置系统参数`-Dzookeeper.skipACL=yes`来避免配置维护acl权限配置。下面我们就承接上文的集群架构，来看看如何进行集群的动态配置。
 
+## 权限处理
+可以通过**添加超级管理员**或者**跳过权限认证**
 
+## 修改配置文件
+修改所有集群节点的配置文件（zk1.cfg, zk2.cfg, zk3.cfg, zk4.cfg），如下：
+* 移除clientPort配置
+* 移除集群server.x配置
+* 添加reconfigEnabled配置，设置为true开启动态配置
+* 添加dynamicConfigFile配置，指定动态配置文件的位置
 
+## 添加动态配置文件
+约定俗成，文件以.dynamic结尾，如下：
+![动态配置.png](动态配置.png)
+文件内容如下：
+```bash
+server.1=192.168.175.175:2001:3001:participant;192.168.175.175:2181
+server.2=192.168.175.175:2002:3002:participant;192.168.175.175:2182
+server.3=192.168.175.175:2003:3003:participant;192.168.175.175:2183
+server.4=192.168.175.175:2004:3004:observer;192.168.175.175:2184
+```
+> 在原来集群配置`server.A=B:C:D:E`的基础上加了一个F，变成了`server.A=B:C:D:E;F`，F代表服务ip:端口，**注意E和F以分号隔开**
 
+## 客户端操作
+依次启动所有节点，连接任意一台服务进行操作：
+```bash
+# 启动节点
+./bin/zkServer.sh start conf/zk1.cfg
+./bin/zkServer.sh start conf/zk2.cfg
+./bin/zkServer.sh start conf/zk3.cfg
+./bin/zkServer.sh start conf/zk4.cfg
 
+# 查看节点状态
+./bin/zkServer.sh status conf/zk1.cfg
+./bin/zkServer.sh status conf/zk2.cfg
+./bin/zkServer.sh status conf/zk3.cfg
+./bin/zkServer.sh status conf/zk4.cfg
+
+# 如果要修改集群状态，需要超级管理员登录（或者跳过授权）
+addauth digest super:123456
+
+# 移除id为3的机器
+reconfig -remove 3
+
+# 添加对应机器
+reconfig -add server.3=192.168.175.175:2003:3003:participant;192.168.175.175:2183
+```
+可以看到该过程集群配置变化如下：
+![集群动态配置.png](集群动态配置.png)
+> 如果要变更或者添加新的服务，需要满足以下几点：
+* 新服务必须是动态配置节点（配置文件要符合要求）
+* 要将新服务添加到配置文件zk1.cfg.dynamic（注意并不是zk1.cfg.dynamic.xxx）中
+* 新服务要处于启动状态
+* 连接任意一个集群客户端，执行`reconfig -add`操作
+* 保证服务列表中participant角色能够形成集群（过半机制）
 
 
 
