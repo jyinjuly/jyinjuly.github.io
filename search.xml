@@ -1,6 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Zookeeper单机版安装</title>
+    <url>/2022/06/19/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/</url>
+    <content><![CDATA[<h1 id="安装Zookeeper"><a href="#安装Zookeeper" class="headerlink" title="安装Zookeeper"></a>安装Zookeeper</h1><h2 id="安装java环境"><a href="#安装java环境" class="headerlink" title="安装java环境"></a>安装java环境</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># java version &quot;1.8.0_271&quot;</span></span><br><span class="line">java -version</span><br></pre></td></tr></table></figure>
+<h2 id="下载并解压Zookeeper"><a href="#下载并解压Zookeeper" class="headerlink" title="下载并解压Zookeeper"></a>下载并解压Zookeeper</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 下载安装包</span><br><span class="line">wget https://mirror.bit.edu.cn/apache/zookeeper/zookeeper‐3.5.8/apache‐zookeeper‐3.5.8‐bin.tar.gz</span><br><span class="line"># 解压安装包</span><br><span class="line">tar ‐zxvf apache‐zookeeper‐3.5.8‐bin.tar.gz</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<h2 id="备份配置文件（非必须）"><a href="#备份配置文件（非必须）" class="headerlink" title="备份配置文件（非必须）"></a>备份配置文件（非必须）</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入配置文件目录</span></span><br><span class="line"><span class="built_in">cd</span> apache-zookeeper-3.5.8-bin/conf/</span><br><span class="line"><span class="comment"># 备份配置文件</span></span><br><span class="line"><span class="built_in">cp</span> zoo_sample.cfg zoo.cfg</span><br></pre></td></tr></table></figure>
+<h2 id="启动Zookeeper"><a href="#启动Zookeeper" class="headerlink" title="启动Zookeeper"></a>启动Zookeeper</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入脚本文件目录</span></span><br><span class="line"><span class="built_in">cd</span> apache-zookeeper-3.5.8-bin/bin/</span><br><span class="line"><span class="comment"># 启动Zookeeper</span></span><br><span class="line">./zkServer.sh start ../conf/zoo.cfg</span><br><span class="line"><span class="comment"># 检测是否启动</span></span><br><span class="line">ps -ef | grep zookeeper</span><br></pre></td></tr></table></figure>
+<h1 id="客户端连接"><a href="#客户端连接" class="headerlink" title="客户端连接"></a>客户端连接</h1><h2 id="终端方式连接"><a href="#终端方式连接" class="headerlink" title="终端方式连接"></a>终端方式连接</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入脚本文件目录</span></span><br><span class="line"><span class="built_in">cd</span> apache-zookeeper-3.5.8-bin/bin/</span><br><span class="line"><span class="comment"># 连接zookeeper</span></span><br><span class="line">./zkCli.sh -server 192.168.175.175:2181</span><br><span class="line"><span class="comment"># 查看所有节点</span></span><br><span class="line"><span class="built_in">ls</span> -R /</span><br></pre></td></tr></table></figure>
+<h2 id="可视化工具（ZooInspector）连接"><a href="#可视化工具（ZooInspector）连接" class="headerlink" title="可视化工具（ZooInspector）连接"></a>可视化工具（ZooInspector）连接</h2><ul>
+<li>下载工具：<a href="https://issues.apache.org/jira/secure/attachment/12436620/ZooInspector.zip">https://issues.apache.org/jira/secure/attachment/12436620/ZooInspector.zip</a></li>
+<li>解压，进入目录ZooInspector\build</li>
+<li>创建zkClient.bat脚本文件，内容如下：<figure class="highlight bat"><table><tr><td class="code"><pre><span class="line">java -jar D:\ZooInspector\build\zookeeper-dev-ZooInspector.jar</span><br></pre></td></tr></table></figure></li>
+<li>右键zkClient.bat文件，创建桌面快捷方式，然后修改一个自己喜欢的图标</li>
+<li>双击快捷方式，打开可视化工具——ZooInspector，输入连接信息<br><img src="/2022/06/19/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/ZooInspector1.png" alt="ZooInspector1.png"></li>
+<li>点击OK，连接成功<br><img src="/2022/06/19/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/ZooInspector2.png" alt="ZooInspector2.png"></li>
+</ul>
+]]></content>
+      <categories>
+        <category>Zookeeper</category>
+      </categories>
+      <tags>
+        <tag>Zookeeper</tag>
+        <tag>CentOS7</tag>
+        <tag>客户端工具</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Zookeeper特性——事件监听机制</title>
     <url>/2022/06/21/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/</url>
     <content><![CDATA[<p>Zookeeper有两大特性——文件系统和事件监听机制，本篇介绍事件监听机制。</p>
@@ -74,33 +101,6 @@
         <tag>Zookeeper</tag>
         <tag>事件监听机制</tag>
         <tag>一次性监听</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Zookeeper单机版安装</title>
-    <url>/2022/06/19/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/</url>
-    <content><![CDATA[<h1 id="安装Zookeeper"><a href="#安装Zookeeper" class="headerlink" title="安装Zookeeper"></a>安装Zookeeper</h1><h2 id="安装java环境"><a href="#安装java环境" class="headerlink" title="安装java环境"></a>安装java环境</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># java version &quot;1.8.0_271&quot;</span></span><br><span class="line">java -version</span><br></pre></td></tr></table></figure>
-<h2 id="下载并解压Zookeeper"><a href="#下载并解压Zookeeper" class="headerlink" title="下载并解压Zookeeper"></a>下载并解压Zookeeper</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 下载安装包</span><br><span class="line">wget https://mirror.bit.edu.cn/apache/zookeeper/zookeeper‐3.5.8/apache‐zookeeper‐3.5.8‐bin.tar.gz</span><br><span class="line"># 解压安装包</span><br><span class="line">tar ‐zxvf apache‐zookeeper‐3.5.8‐bin.tar.gz</span><br></pre></td></tr></table></figure>
-<span id="more"></span>
-<h2 id="备份配置文件（非必须）"><a href="#备份配置文件（非必须）" class="headerlink" title="备份配置文件（非必须）"></a>备份配置文件（非必须）</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入配置文件目录</span></span><br><span class="line"><span class="built_in">cd</span> apache-zookeeper-3.5.8-bin/conf/</span><br><span class="line"><span class="comment"># 备份配置文件</span></span><br><span class="line"><span class="built_in">cp</span> zoo_sample.cfg zoo.cfg</span><br></pre></td></tr></table></figure>
-<h2 id="启动Zookeeper"><a href="#启动Zookeeper" class="headerlink" title="启动Zookeeper"></a>启动Zookeeper</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入脚本文件目录</span></span><br><span class="line"><span class="built_in">cd</span> apache-zookeeper-3.5.8-bin/bin/</span><br><span class="line"><span class="comment"># 启动Zookeeper</span></span><br><span class="line">./zkServer.sh start ../conf/zoo.cfg</span><br><span class="line"><span class="comment"># 检测是否启动</span></span><br><span class="line">ps -ef | grep zookeeper</span><br></pre></td></tr></table></figure>
-<h1 id="客户端连接"><a href="#客户端连接" class="headerlink" title="客户端连接"></a>客户端连接</h1><h2 id="终端方式连接"><a href="#终端方式连接" class="headerlink" title="终端方式连接"></a>终端方式连接</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入脚本文件目录</span></span><br><span class="line"><span class="built_in">cd</span> apache-zookeeper-3.5.8-bin/bin/</span><br><span class="line"><span class="comment"># 连接zookeeper</span></span><br><span class="line">./zkCli.sh -server 192.168.175.175:2181</span><br><span class="line"><span class="comment"># 查看所有节点</span></span><br><span class="line"><span class="built_in">ls</span> -R /</span><br></pre></td></tr></table></figure>
-<h2 id="可视化工具（ZooInspector）连接"><a href="#可视化工具（ZooInspector）连接" class="headerlink" title="可视化工具（ZooInspector）连接"></a>可视化工具（ZooInspector）连接</h2><ul>
-<li>下载工具：<a href="https://issues.apache.org/jira/secure/attachment/12436620/ZooInspector.zip">https://issues.apache.org/jira/secure/attachment/12436620/ZooInspector.zip</a></li>
-<li>解压，进入目录ZooInspector\build</li>
-<li>创建zkClient.bat脚本文件，内容如下：<figure class="highlight bat"><table><tr><td class="code"><pre><span class="line">java -jar D:\ZooInspector\build\zookeeper-dev-ZooInspector.jar</span><br></pre></td></tr></table></figure></li>
-<li>右键zkClient.bat文件，创建桌面快捷方式，然后修改一个自己喜欢的图标</li>
-<li>双击快捷方式，打开可视化工具——ZooInspector，输入连接信息<br><img src="/2022/06/19/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/ZooInspector1.png" alt="ZooInspector1.png"></li>
-<li>点击OK，连接成功<br><img src="/2022/06/19/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/ZooInspector2.png" alt="ZooInspector2.png"></li>
-</ul>
-]]></content>
-      <categories>
-        <category>Zookeeper</category>
-      </categories>
-      <tags>
-        <tag>Zookeeper</tag>
-        <tag>CentOS7</tag>
-        <tag>客户端工具</tag>
       </tags>
   </entry>
   <entry>
@@ -258,7 +258,7 @@
 <blockquote>
 <p>可以通过<code>nohup</code>快捷搜索定位</p>
 </blockquote>
-<h2 id="跳过ACL认证"><a href="#跳过ACL认证" class="headerlink" title="跳过ACL认证"></a>跳过ACL认证</h2><p>可以通过系统参数zookeeper.skipACL&#x3D;yes进行配置，默认是no。可以配置为yes，则配置过的ACL将不再进行权限检测。</p>
+<h2 id="跳过ACL认证"><a href="#跳过ACL认证" class="headerlink" title="跳过ACL认证"></a>跳过ACL认证</h2><p>可以通过系统参数<code>-Dzookeeper.skipACL=yes</code>进行配置，默认是no。可以配置为yes，则配置过的ACL将不再进行权限检测。<br><img src="/2022/06/23/Zookeeper%E7%9A%84ACL%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/%E8%B7%B3%E8%BF%87%E6%9D%83%E9%99%90%E8%AE%A4%E8%AF%81.png" alt="跳过权限认证.png"></p>
 ]]></content>
       <categories>
         <category>Zookeeper</category>
