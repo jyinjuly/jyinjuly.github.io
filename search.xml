@@ -1,8 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>CentOS安装Docker</title>
+    <url>/2022/10/16/CentOS%E5%AE%89%E8%A3%85Docker/</url>
+    <content><![CDATA[<h1 id="卸载旧版本"><a href="#卸载旧版本" class="headerlink" title="卸载旧版本"></a>卸载旧版本</h1><p>较旧的 Docker 版本称为 docker 或 docker-engine 。如果已安装这些程序，请卸载它们以及相关的依赖项。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo yum remove docker \</span><br><span class="line">                  docker-client \</span><br><span class="line">                  docker-client-latest \</span><br><span class="line">                  docker-common \</span><br><span class="line">                  docker-latest \</span><br><span class="line">                  docker-latest-logrotate \</span><br><span class="line">                  docker-logrotate \</span><br><span class="line">                  docker-engine</span><br></pre></td></tr></table></figure>
+<h1 id="安装-Docker"><a href="#安装-Docker" class="headerlink" title="安装 Docker"></a>安装 Docker</h1><h2 id="安装前置依赖"><a href="#安装前置依赖" class="headerlink" title="安装前置依赖"></a>安装前置依赖</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo yum install -y yum-utils \</span><br><span class="line">  device-mapper-persistent-data \</span><br><span class="line">  lvm2</span><br></pre></td></tr></table></figure>
+<h2 id="设置-Docker-仓库"><a href="#设置-Docker-仓库" class="headerlink" title="设置 Docker 仓库"></a>设置 Docker 仓库</h2><h3 id="官方源"><a href="#官方源" class="headerlink" title="官方源"></a>官方源</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo yum-config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    https://download.docker.com/linux/centos/docker-ce.repo</span><br></pre></td></tr></table></figure>
+<h3 id="阿里云源"><a href="#阿里云源" class="headerlink" title="阿里云源"></a>阿里云源</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo yum-config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</span><br></pre></td></tr></table></figure>
+<h3 id="清华大学源"><a href="#清华大学源" class="headerlink" title="清华大学源"></a>清华大学源</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo yum-config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/docker-ce.repo</span><br></pre></td></tr></table></figure>
+<h2 id="执行-Docker-安装"><a href="#执行-Docker-安装" class="headerlink" title="执行 Docker 安装"></a>执行 Docker 安装</h2><h3 id="最新版本"><a href="#最新版本" class="headerlink" title="最新版本"></a>最新版本</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo yum install docker-ce docker-ce-cli containerd.io docker-compose-plugin</span><br></pre></td></tr></table></figure>
+<h3 id="指定版本"><a href="#指定版本" class="headerlink" title="指定版本"></a>指定版本</h3><p>要安装特定版本的 Docker，请在存储库中列出可用版本，然后选择并安装</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum list docker-ce --showduplicates | <span class="built_in">sort</span> -r</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/10/16/CentOS%E5%AE%89%E8%A3%85Docker/Docker%E7%89%88%E6%9C%AC%E9%80%89%E6%8B%A9.png" alt="Docker版本选择.png"><br>通过其完整的软件包名称安装特定版本，该软件包名称是软件包名称（docker-ce）加上版本字符串（第二列），从第一个冒号（:）一直到第一个连字符，并用连字符（-）分隔。例如：docker-ce-18.09.1。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo yum install docker-ce-&lt;VERSION_STRING&gt; docker-ce-cli-&lt;VERSION_STRING&gt; containerd.io</span><br></pre></td></tr></table></figure>
+<h1 id="启动-Docker"><a href="#启动-Docker" class="headerlink" title="启动 Docker"></a>启动 Docker</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo systemctl start docker</span><br></pre></td></tr></table></figure>
+<h1 id="验证启动"><a href="#验证启动" class="headerlink" title="验证启动"></a>验证启动</h1><p>通过运行 hello-world 镜像来验证是否启动成功（首次运行可能需要先拉取镜像）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo docker run hello-world</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/10/16/CentOS%E5%AE%89%E8%A3%85Docker/Docker%E5%90%AF%E5%8A%A8%E9%AA%8C%E8%AF%81.png" alt="Docker启动验证.png"></p>
+<h1 id="关闭-Docker"><a href="#关闭-Docker" class="headerlink" title="关闭 Docker"></a>关闭 Docker</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo systemctl stop docker</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/10/16/CentOS%E5%AE%89%E8%A3%85Docker/Docker%E8%87%AA%E5%8A%A8%E5%94%A4%E9%86%92%E6%9C%BA%E5%88%B6.png" alt="Docker自动唤醒机制.png"></p>
+<h1 id="卸载-Docker"><a href="#卸载-Docker" class="headerlink" title="卸载 Docker"></a>卸载 Docker</h1><p>删除安装包：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum remove docker-ce</span><br></pre></td></tr></table></figure>
+<p>删除镜像、容器、配置文件等内容：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">rm</span> -rf /var/lib/docker</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>Docker</category>
+      </categories>
+      <tags>
+        <tag>CentOS</tag>
+        <tag>Docker</tag>
+        <tag>容器</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Windows安装Nginx</title>
+    <url>/2022/10/16/Windows%E5%AE%89%E8%A3%85Nginx/</url>
+    <content><![CDATA[<h1 id="下载安装包"><a href="#下载安装包" class="headerlink" title="下载安装包"></a>下载安装包</h1><p>官网地址：<code>http://nginx.org/en/download.html</code><br><img src="/2022/10/16/Windows%E5%AE%89%E8%A3%85Nginx/Nginx%E4%B8%8B%E8%BD%BD.png" alt="Nginx下载.png"></p>
+<h1 id="解压Nginx"><a href="#解压Nginx" class="headerlink" title="解压Nginx"></a>解压Nginx</h1><p><img src="/2022/10/16/Windows%E5%AE%89%E8%A3%85Nginx/%E8%A7%A3%E5%8E%8BNginx.png" alt="解压Nginx.png"></p>
+<h1 id="启动Nginx"><a href="#启动Nginx" class="headerlink" title="启动Nginx"></a>启动Nginx</h1><h2 id="快捷启动"><a href="#快捷启动" class="headerlink" title="快捷启动"></a>快捷启动</h2><p>直接双击Nginx目录下的nginx.exe，双击后一个黑色的弹窗一闪而过，启动就完成了<br><img src="/2022/10/16/Windows%E5%AE%89%E8%A3%85Nginx/Nginx%E5%BF%AB%E6%8D%B7%E5%90%AF%E5%8A%A8.png" alt="Nginx快捷启动.png"></p>
+<h2 id="命令启动"><a href="#命令启动" class="headerlink" title="命令启动"></a>命令启动</h2><p>cmd窗口下，切换到Nginx安装目录，输入start nginx，回车启动<br><img src="/2022/10/16/Windows%E5%AE%89%E8%A3%85Nginx/Nginx%E5%91%BD%E4%BB%A4%E5%90%AF%E5%8A%A8.png" alt="Nginx命令启动.png"></p>
+<h2 id="启动验证"><a href="#启动验证" class="headerlink" title="启动验证"></a>启动验证</h2><p>打开浏览器，输入<code>localhost</code>，回车，进入Nginx首页<br><img src="/2022/10/16/Windows%E5%AE%89%E8%A3%85Nginx/Nginx%E9%A6%96%E9%A1%B5.png" alt="Nginx首页.png"></p>
+<h1 id="关闭Nginx"><a href="#关闭Nginx" class="headerlink" title="关闭Nginx"></a>关闭Nginx</h1><p>cmd窗口下，切换到Nginx安装目录，输入以下命令，关闭Nginx</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-- 快速停止nginx</span><br><span class="line">nginx -s stop</span><br><span class="line"></span><br><span class="line">-- 完整有序地停止nginx</span><br><span class="line">nginx -s quit</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>Nginx</category>
+      </categories>
+      <tags>
+        <tag>Nginx</tag>
+        <tag>负载均衡</tag>
+        <tag>反向代理</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Zookeeper单机版安装</title>
-    <url>/2022/06/19/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/</url>
+    <url>/2022/10/13/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/</url>
     <content><![CDATA[<h1 id="安装Zookeeper"><a href="#安装Zookeeper" class="headerlink" title="安装Zookeeper"></a>安装Zookeeper</h1><h2 id="安装java环境"><a href="#安装java环境" class="headerlink" title="安装java环境"></a>安装java环境</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># java version &quot;1.8.0_271&quot;</span></span><br><span class="line">java -version</span><br></pre></td></tr></table></figure>
 <h2 id="下载并解压Zookeeper"><a href="#下载并解压Zookeeper" class="headerlink" title="下载并解压Zookeeper"></a>下载并解压Zookeeper</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 下载安装包</span><br><span class="line">wget https://mirror.bit.edu.cn/apache/zookeeper/zookeeper‐3.5.8/apache‐zookeeper‐3.5.8‐bin.tar.gz</span><br><span class="line"># 解压安装包</span><br><span class="line">tar ‐zxvf apache‐zookeeper‐3.5.8‐bin.tar.gz</span><br></pre></td></tr></table></figure>
 <span id="more"></span>
@@ -14,8 +104,8 @@
 <li>解压，进入目录ZooInspector\build</li>
 <li>创建zkClient.bat脚本文件，内容如下：<figure class="highlight bat"><table><tr><td class="code"><pre><span class="line">java -jar D:\ZooInspector\build\zookeeper-dev-ZooInspector.jar</span><br></pre></td></tr></table></figure></li>
 <li>右键zkClient.bat文件，创建桌面快捷方式，然后修改一个自己喜欢的图标</li>
-<li>双击快捷方式，打开可视化工具——ZooInspector，输入连接信息<br><img src="/2022/06/19/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/ZooInspector1.png" alt="ZooInspector1.png"></li>
-<li>点击OK，连接成功<br><img src="/2022/06/19/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/ZooInspector2.png" alt="ZooInspector2.png"></li>
+<li>双击快捷方式，打开可视化工具——ZooInspector，输入连接信息<br><img src="/2022/10/13/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/ZooInspector1.png" alt="ZooInspector1.png"></li>
+<li>点击OK，连接成功<br><img src="/2022/10/13/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/ZooInspector2.png" alt="ZooInspector2.png"></li>
 </ul>
 ]]></content>
       <categories>
@@ -29,7 +119,7 @@
   </entry>
   <entry>
     <title>Zookeeper特性——事件监听机制</title>
-    <url>/2022/06/21/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/</url>
+    <url>/2022/10/13/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/</url>
     <content><![CDATA[<p>Zookeeper有两大特性——文件系统和事件监听机制，本篇介绍事件监听机制。</p>
 <h1 id="事件类型"><a href="#事件类型" class="headerlink" title="事件类型"></a>事件类型</h1><p>Zookeeper中的事件类型有五种，如下：</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> <span class="title class_">EventType</span> &#123;</span><br><span class="line">    None (-<span class="number">1</span>),</span><br><span class="line">    NodeCreated (<span class="number">1</span>),            <span class="comment">// 节点被创建时触发</span></span><br><span class="line">    NodeDeleted (<span class="number">2</span>),            <span class="comment">// 节点被删除时触发</span></span><br><span class="line">    NodeDataChanged (<span class="number">3</span>),        <span class="comment">// 节点的节点数据发生变化时触发</span></span><br><span class="line">    NodeChildrenChanged (<span class="number">4</span>),    <span class="comment">// 节点的子节点列表发生变化时触发</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 3.5.x之后新加的事件类型</span></span><br><span class="line">    DataWatchRemoved (<span class="number">5</span>),       <span class="comment">// 节点的监听被移除时触发</span></span><br><span class="line">    ChildWatchRemoved (<span class="number">6</span>);      <span class="comment">// 节点的子节点的监听被移除时触发</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -59,11 +149,11 @@
 </blockquote>
 <h1 id="监听操作（原生API）"><a href="#监听操作（原生API）" class="headerlink" title="监听操作（原生API）"></a>监听操作（原生API）</h1><h2 id="增加监听"><a href="#增加监听" class="headerlink" title="增加监听"></a>增加监听</h2><ul>
 <li>增加节点数据监听<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">get -w path</span><br><span class="line"><span class="built_in">stat</span> -w path</span><br></pre></td></tr></table></figure>
-<img src="/2022/06/21/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/%E8%8A%82%E7%82%B9%E6%95%B0%E6%8D%AE%E7%9B%91%E5%90%AC.png" alt="节点数据监听.png"></li>
+<img src="/2022/10/13/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/%E8%8A%82%E7%82%B9%E6%95%B0%E6%8D%AE%E7%9B%91%E5%90%AC.png" alt="节点数据监听.png"></li>
 <li>增加节点目录监听<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">ls</span> -w path</span><br></pre></td></tr></table></figure>
-<img src="/2022/06/21/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/%E8%8A%82%E7%82%B9%E7%9B%AE%E5%BD%95%E7%9B%91%E5%90%AC1.png" alt="节点目录监听1.png"></li>
+<img src="/2022/10/13/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/%E8%8A%82%E7%82%B9%E7%9B%AE%E5%BD%95%E7%9B%91%E5%90%AC1.png" alt="节点目录监听1.png"></li>
 <li>递归增加节点目录监听<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">ls</span> -R -w path</span><br></pre></td></tr></table></figure>
-<img src="/2022/06/21/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/%E8%8A%82%E7%82%B9%E7%9B%AE%E5%BD%95%E7%9B%91%E5%90%AC2.png" alt="节点目录监听2.png"><br>这里执行了5条命令，每条命令都有其意义所在：<ul>
+<img src="/2022/10/13/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/%E8%8A%82%E7%82%B9%E7%9B%AE%E5%BD%95%E7%9B%91%E5%90%AC2.png" alt="节点目录监听2.png"><br>这里执行了5条命令，每条命令都有其意义所在：<ul>
 <li>ls -R -w &#x2F;：列出所有节点，并给所有节点增加节点目录监听。也就是说有且仅有这7个节点被注册了节点目录监听。</li>
 <li>delete &#x2F;test&#x2F;a：触发了<code>/test/a</code>节点的NodeDeleted事件；触发了<code>/test</code>节点的NodeChildrenChanged事件。</li>
 <li>delete &#x2F;test&#x2F;b：触发了<code>/test/b</code>节点的NodeDeleted事件；但是没有触发<code>/test</code>节点的NodeChildrenChanged事件，因为上一步已经触发过了。<strong>说到这里不得不提到Zookeeper监听机制一个很重要的特点，那就是所有的监听都是一次性的，一旦监听的事件被触发，监听将会被自动移除。</strong></li>
@@ -105,9 +195,9 @@
   </entry>
   <entry>
     <title>Zookeeper特性——文件系统</title>
-    <url>/2022/06/20/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/</url>
+    <url>/2022/10/13/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/</url>
     <content><![CDATA[<p>Zookeeper有两大特性——文件系统和事件监听机制，本篇介绍文件系统。</p>
-<h1 id="文件系统简介"><a href="#文件系统简介" class="headerlink" title="文件系统简介"></a>文件系统简介</h1><p>Zookeeper维护一个类似文件系统的数据结构，如下图：<br><img src="/2022/06/20/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/Znode.png" alt="Znode.png"></p>
+<h1 id="文件系统简介"><a href="#文件系统简介" class="headerlink" title="文件系统简介"></a>文件系统简介</h1><p>Zookeeper维护一个类似文件系统的数据结构，如下图：<br><img src="/2022/10/13/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/Znode.png" alt="Znode.png"></p>
 <span id="more"></span>
 <p>其中每个目录项都被称为<strong>Znode（节点）</strong>，节点之下还可以增加子节点。每个节点拥有唯一路径path，并且均以根路径&#x2F;开头，节点还可以保存数据。</p>
 <h1 id="节点Znode类型"><a href="#节点Znode类型" class="headerlink" title="节点Znode类型"></a>节点Znode类型</h1><h2 id="持久化节点"><a href="#持久化节点" class="headerlink" title="持久化节点"></a>持久化节点</h2><p>PERSISTENT（默认类型节点），客户端与Zookeeper断开连接后，节点依旧存在。只要不手动删除，这类节点将永远存在。</p>
@@ -192,7 +282,7 @@
   </entry>
   <entry>
     <title>Zookeeper的ACL权限控制</title>
-    <url>/2022/06/23/Zookeeper%E7%9A%84ACL%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/</url>
+    <url>/2022/10/13/Zookeeper%E7%9A%84ACL%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/</url>
     <content><![CDATA[<p>Zookeeper的ACL权限控制，可以控制节点的读写操作，保证数据的安全性，Zookeeper的ACL权限设置分为3部分组成，分别是：权限模式（Scheme）、授权对象（ID）、权限信息（Permission）。最终组成一条例如“scheme:id:permission”格式的ACL请求信息。</p>
 <h1 id="权限模式"><a href="#权限模式" class="headerlink" title="权限模式"></a>权限模式</h1><p>权限模式用来设置ZooKeeper服务器进行权限验证的方式。</p>
 <h2 id="IP模式"><a href="#IP模式" class="headerlink" title="IP模式"></a>IP模式</h2><p>ZooKeeper可以针对一个IP或者一段IP地址授予某种权限。比如我们可以让一个IP地址为“ip:192.168.0.110”的机器对服务器上的某个数据节点具有写入的权限。或者也可以通过“ip:192.168.0.1&#x2F;24”给一段IP地址的机器赋权。</p>
@@ -244,21 +334,21 @@
 <blockquote>
 <p>创建节点，并授予用户user1该节点的读写权限</p>
 </blockquote>
-<p><img src="/2022/06/23/Zookeeper%E7%9A%84ACL%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/%E5%8F%A3%E4%BB%A4%E6%A8%A1%E5%BC%8F.png" alt="口令模式.png"></p>
+<p><img src="/2022/10/13/Zookeeper%E7%9A%84ACL%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/%E5%8F%A3%E4%BB%A4%E6%A8%A1%E5%BC%8F.png" alt="口令模式.png"></p>
 <p>还有一种明文的口令模式，和digest用法一样，只需要在授权的时候把digest替换成auth即可。只不过需要在登录状态下才可以使用（并且只能授权当前登录用户）：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">create /test3 test3-data auth:user1:password1</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2022/06/23/Zookeeper%E7%9A%84ACL%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/%E6%98%8E%E6%96%87%E5%8F%A3%E4%BB%A4%E6%A8%A1%E5%BC%8F.png" alt="明文口令模式.png"></p>
+<p><img src="/2022/10/13/Zookeeper%E7%9A%84ACL%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/%E6%98%8E%E6%96%87%E5%8F%A3%E4%BB%A4%E6%A8%A1%E5%BC%8F.png" alt="明文口令模式.png"></p>
 <h2 id="超级管理员模式-1"><a href="#超级管理员模式-1" class="headerlink" title="超级管理员模式"></a>超级管理员模式</h2><p>这是一种特殊的Digest模式， 在Super模式下超级管理员用户可以对Zookeeper上的任意节点进行任何操作。需要在启动时通过JVM系统参数开启：</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">-Dzookeeper.DigestAuthenticationProvider.superDigest=super:BBO7K8dPkoek/JxIHqXxM75QRpI=</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>其中super为超级管理员用户名，123456为超级管理员密码</p>
 </blockquote>
-<p>可以通过修改zkServer.sh来启用超级管理员：<br><img src="/2022/06/23/Zookeeper%E7%9A%84ACL%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/%E8%B6%85%E7%BA%A7%E7%AE%A1%E7%90%86%E5%91%98%E6%A8%A1%E5%BC%8F.png" alt="超级管理员模式.png"></p>
+<p>可以通过修改zkServer.sh来启用超级管理员：<br><img src="/2022/10/13/Zookeeper%E7%9A%84ACL%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/%E8%B6%85%E7%BA%A7%E7%AE%A1%E7%90%86%E5%91%98%E6%A8%A1%E5%BC%8F.png" alt="超级管理员模式.png"></p>
 <blockquote>
 <p>可以通过<code>nohup</code>快捷搜索定位</p>
 </blockquote>
-<h2 id="跳过ACL认证"><a href="#跳过ACL认证" class="headerlink" title="跳过ACL认证"></a>跳过ACL认证</h2><p>可以通过系统参数<code>-Dzookeeper.skipACL=yes</code>进行配置，默认是no。可以配置为yes，则配置过的ACL将不再进行权限检测。<br><img src="/2022/06/23/Zookeeper%E7%9A%84ACL%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/%E8%B7%B3%E8%BF%87%E6%9D%83%E9%99%90%E8%AE%A4%E8%AF%81.png" alt="跳过权限认证.png"></p>
+<h2 id="跳过ACL认证"><a href="#跳过ACL认证" class="headerlink" title="跳过ACL认证"></a>跳过ACL认证</h2><p>可以通过系统参数<code>-Dzookeeper.skipACL=yes</code>进行配置，默认是no。可以配置为yes，则配置过的ACL将不再进行权限检测。<br><img src="/2022/10/13/Zookeeper%E7%9A%84ACL%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/%E8%B7%B3%E8%BF%87%E6%9D%83%E9%99%90%E8%AE%A4%E8%AF%81.png" alt="跳过权限认证.png"></p>
 ]]></content>
       <categories>
         <category>Zookeeper</category>
@@ -270,15 +360,15 @@
   </entry>
   <entry>
     <title>Zookeeper集群搭建</title>
-    <url>/2022/06/27/Zookeeper%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
+    <url>/2022/10/13/Zookeeper%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/</url>
     <content><![CDATA[<p>本篇以<strong>一主双从+一观察者</strong>为例搭建Zookeeper集群，旨在介绍集群中的一些概念以及特性。</p>
 <h1 id="集群角色"><a href="#集群角色" class="headerlink" title="集群角色"></a>集群角色</h1><h2 id="Leader"><a href="#Leader" class="headerlink" title="Leader"></a>Leader</h2><p>领导者，也可以叫做主节点。主节点可以处理读写请求，集群中只能有一个主节点。</p>
 <h2 id="Follower"><a href="#Follower" class="headerlink" title="Follower"></a>Follower</h2><p>跟随者，也可以叫做从节点。从节点只处理读请求，同时作为Leader节点的候选节点。即如果Leader宕机，Follower节点会参与到新的Leader选举中，有可能成为新的Leader节点。</p>
 <h2 id="Observer"><a href="#Observer" class="headerlink" title="Observer"></a>Observer</h2><p>观察者，只能处理读请求，并且不参与选举。通常是为了缓解整个集群的压力，提升集群的并发能力。</p>
 <span id="more"></span>
 
-<h1 id="集群架构"><a href="#集群架构" class="headerlink" title="集群架构"></a>集群架构</h1><p><img src="/2022/06/27/Zookeeper%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/Zookeeper%E9%9B%86%E7%BE%A4.png" alt="Zookeeper集群.png"></p>
-<h1 id="集群搭建"><a href="#集群搭建" class="headerlink" title="集群搭建"></a>集群搭建</h1><h2 id="创建节点唯一ID"><a href="#创建节点唯一ID" class="headerlink" title="创建节点唯一ID"></a>创建节点唯一ID</h2><p>在Zookeeper的安装目录下，创建如下data目录结构：<br><img src="/2022/06/27/Zookeeper%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/%E8%8A%82%E7%82%B9%E5%94%AF%E4%B8%80ID.png" alt="节点唯一ID.png"><br>其中的myid文件（文件名固定，不可随意起名）存储代表各个节点的唯一ID，如下：<br><img src="/2022/06/27/Zookeeper%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/%E8%8A%82%E7%82%B9%E5%94%AF%E4%B8%80ID2.png" alt="节点唯一ID2.png"></p>
+<h1 id="集群架构"><a href="#集群架构" class="headerlink" title="集群架构"></a>集群架构</h1><p><img src="/2022/10/13/Zookeeper%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/Zookeeper%E9%9B%86%E7%BE%A4.png" alt="Zookeeper集群.png"></p>
+<h1 id="集群搭建"><a href="#集群搭建" class="headerlink" title="集群搭建"></a>集群搭建</h1><h2 id="创建节点唯一ID"><a href="#创建节点唯一ID" class="headerlink" title="创建节点唯一ID"></a>创建节点唯一ID</h2><p>在Zookeeper的安装目录下，创建如下data目录结构：<br><img src="/2022/10/13/Zookeeper%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/%E8%8A%82%E7%82%B9%E5%94%AF%E4%B8%80ID.png" alt="节点唯一ID.png"><br>其中的myid文件（文件名固定，不可随意起名）存储代表各个节点的唯一ID，如下：<br><img src="/2022/10/13/Zookeeper%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/%E8%8A%82%E7%82%B9%E5%94%AF%E4%B8%80ID2.png" alt="节点唯一ID2.png"></p>
 <h2 id="编辑配置文件"><a href="#编辑配置文件" class="headerlink" title="编辑配置文件"></a>编辑配置文件</h2><p>在conf目录下，复制zoo_sample.cfg四份，分别命名：zk1.cfg、zk2.cfg、zk3.cfg、zk4.cfg，并进行如下配置：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-- zk2、zk3、zk4</span><br><span class="line">dataDir=/usr/local/apache-zookeeper-3.5.8-bin/data/zk1</span><br><span class="line"></span><br><span class="line">-- 2182、2183、2184</span><br><span class="line">clientPort=2181</span><br><span class="line"></span><br><span class="line">server.1=192.168.175.175:2001:3001</span><br><span class="line">server.2=192.168.175.175:2002:3002</span><br><span class="line">server.3=192.168.175.175:2003:3003</span><br><span class="line">server.4=192.168.175.175:2004:3004:observer</span><br></pre></td></tr></table></figure>
 <p>其中server.A&#x3D;B:C:D:E，各自含义如下：</p>
@@ -292,7 +382,7 @@
 <blockquote>
 <p>过半机制有两个场景，第一是选举，第二是事务请求过半提交。</p>
 </blockquote>
-<h2 id="集群启动"><a href="#集群启动" class="headerlink" title="集群启动"></a>集群启动</h2><p>集群的启动没有什么特殊之处，就是依次启动各个节点。<br><img src="/2022/06/27/Zookeeper%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/%E9%9B%86%E7%BE%A4%E5%90%AF%E5%8A%A8.png" alt="集群启动.png"><br>然后查看一下集群状态：<br><img src="/2022/06/27/Zookeeper%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/%E9%9B%86%E7%BE%A4%E7%8A%B6%E6%80%81.png" alt="集群状态.png"><br>可以看到：主节点为zk2，从节点为zk1、zk3，观察者如配置为zk4。</p>
+<h2 id="集群启动"><a href="#集群启动" class="headerlink" title="集群启动"></a>集群启动</h2><p>集群的启动没有什么特殊之处，就是依次启动各个节点。<br><img src="/2022/10/13/Zookeeper%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/%E9%9B%86%E7%BE%A4%E5%90%AF%E5%8A%A8.png" alt="集群启动.png"><br>然后查看一下集群状态：<br><img src="/2022/10/13/Zookeeper%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/%E9%9B%86%E7%BE%A4%E7%8A%B6%E6%80%81.png" alt="集群状态.png"><br>可以看到：主节点为zk2，从节点为zk1、zk3，观察者如配置为zk4。</p>
 <h1 id="集群动态配置"><a href="#集群动态配置" class="headerlink" title="集群动态配置"></a>集群动态配置</h1><p>Zookeeper 3.5.0 以前，Zookeeper集群角色要发生改变的话，只能通过停掉所有的Zookeeper服务，修改集群配置，重启服务来完成，这样集群服务将有一段不可用的状态，为了应对高可用需求，Zookeeper 3.5.0 提供了支持动态扩容&#x2F;缩容的新特性。但是通过客户端API可以变更服务端集群状态是件很危险的事情，所以在zookeeper 3.5.3 版本要用动态配置，需要开启超级管理员身份验证模式 ACLs。如果是在一个安全的环境也可以通过配置系统参数<code>-Dzookeeper.skipACL=yes</code>来避免配置维护acl权限配置。下面我们就承接上文的集群架构，来看看如何进行集群的动态配置。</p>
 <h2 id="权限处理"><a href="#权限处理" class="headerlink" title="权限处理"></a>权限处理</h2><p>可以通过<strong>添加超级管理员</strong>或者<strong>跳过权限认证</strong></p>
 <h2 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h2><p>修改所有集群节点的配置文件（zk1.cfg, zk2.cfg, zk3.cfg, zk4.cfg），如下：</p>
@@ -302,14 +392,14 @@
 <li>添加reconfigEnabled配置，设置为true开启动态配置</li>
 <li>添加dynamicConfigFile配置，指定动态配置文件的位置</li>
 </ul>
-<h2 id="添加动态配置文件"><a href="#添加动态配置文件" class="headerlink" title="添加动态配置文件"></a>添加动态配置文件</h2><p>约定俗成，文件以.dynamic结尾，如下：<br><img src="/2022/06/27/Zookeeper%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/%E5%8A%A8%E6%80%81%E9%85%8D%E7%BD%AE.png" alt="动态配置.png"><br>文件内容如下：</p>
+<h2 id="添加动态配置文件"><a href="#添加动态配置文件" class="headerlink" title="添加动态配置文件"></a>添加动态配置文件</h2><p>约定俗成，文件以.dynamic结尾，如下：<br><img src="/2022/10/13/Zookeeper%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/%E5%8A%A8%E6%80%81%E9%85%8D%E7%BD%AE.png" alt="动态配置.png"><br>文件内容如下：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server.1=192.168.175.175:2001:3001:participant;192.168.175.175:2181</span><br><span class="line">server.2=192.168.175.175:2002:3002:participant;192.168.175.175:2182</span><br><span class="line">server.3=192.168.175.175:2003:3003:participant;192.168.175.175:2183</span><br><span class="line">server.4=192.168.175.175:2004:3004:observer;192.168.175.175:2184</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>在原来集群配置<code>server.A=B:C:D:E</code>的基础上加了一个F，变成了<code>server.A=B:C:D:E;F</code>，F代表服务ip:端口，<strong>注意E和F以分号隔开</strong></p>
 </blockquote>
 <h2 id="客户端操作"><a href="#客户端操作" class="headerlink" title="客户端操作"></a>客户端操作</h2><p>依次启动所有节点，连接任意一台服务进行操作：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 启动节点</span></span><br><span class="line">./bin/zkServer.sh start conf/zk1.cfg</span><br><span class="line">./bin/zkServer.sh start conf/zk2.cfg</span><br><span class="line">./bin/zkServer.sh start conf/zk3.cfg</span><br><span class="line">./bin/zkServer.sh start conf/zk4.cfg</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看节点状态</span></span><br><span class="line">./bin/zkServer.sh status conf/zk1.cfg</span><br><span class="line">./bin/zkServer.sh status conf/zk2.cfg</span><br><span class="line">./bin/zkServer.sh status conf/zk3.cfg</span><br><span class="line">./bin/zkServer.sh status conf/zk4.cfg</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果要修改集群状态，需要超级管理员登录（或者跳过授权）</span></span><br><span class="line">addauth digest super:123456</span><br><span class="line"></span><br><span class="line"><span class="comment"># 移除id为3的机器</span></span><br><span class="line">reconfig -remove 3</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加对应机器</span></span><br><span class="line">reconfig -add server.3=192.168.175.175:2003:3003:participant;192.168.175.175:2183</span><br></pre></td></tr></table></figure>
-<p>可以看到该过程集群配置变化如下：<br><img src="/2022/06/27/Zookeeper%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/%E9%9B%86%E7%BE%A4%E5%8A%A8%E6%80%81%E9%85%8D%E7%BD%AE.png" alt="集群动态配置.png"></p>
+<p>可以看到该过程集群配置变化如下：<br><img src="/2022/10/13/Zookeeper%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/%E9%9B%86%E7%BE%A4%E5%8A%A8%E6%80%81%E9%85%8D%E7%BD%AE.png" alt="集群动态配置.png"></p>
 <blockquote>
 <p>如果要变更或者添加新的服务，需要满足以下几点：</p>
 </blockquote>
