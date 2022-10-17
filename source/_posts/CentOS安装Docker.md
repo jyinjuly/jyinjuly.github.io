@@ -16,6 +16,7 @@ $ sudo yum remove docker \
                   docker-logrotate \
                   docker-engine
 ```
+<!-- more -->
 # 安装 Docker
 ## 安装前置依赖
 ```bash

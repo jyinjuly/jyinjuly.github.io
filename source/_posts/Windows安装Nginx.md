@@ -7,6 +7,7 @@ categories: ["Nginx"]
 # 下载安装包
 官网地址：`http://nginx.org/en/download.html`
 ![Nginx下载.png](Nginx下载.png)
+<!-- more -->
 # 解压Nginx
 ![解压Nginx.png](解压Nginx.png)
 # 启动Nginx
