@@ -5,6 +5,7 @@
     <url>/2022/10/16/CentOS%E5%AE%89%E8%A3%85Docker/</url>
     <content><![CDATA[<h1 id="卸载旧版本"><a href="#卸载旧版本" class="headerlink" title="卸载旧版本"></a>卸载旧版本</h1><p>较旧的 Docker 版本称为 docker 或 docker-engine 。如果已安装这些程序，请卸载它们以及相关的依赖项。</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo yum remove docker \</span><br><span class="line">                  docker-client \</span><br><span class="line">                  docker-client-latest \</span><br><span class="line">                  docker-common \</span><br><span class="line">                  docker-latest \</span><br><span class="line">                  docker-latest-logrotate \</span><br><span class="line">                  docker-logrotate \</span><br><span class="line">                  docker-engine</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
 <h1 id="安装-Docker"><a href="#安装-Docker" class="headerlink" title="安装 Docker"></a>安装 Docker</h1><h2 id="安装前置依赖"><a href="#安装前置依赖" class="headerlink" title="安装前置依赖"></a>安装前置依赖</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo yum install -y yum-utils \</span><br><span class="line">  device-mapper-persistent-data \</span><br><span class="line">  lvm2</span><br></pre></td></tr></table></figure>
 <h2 id="设置-Docker-仓库"><a href="#设置-Docker-仓库" class="headerlink" title="设置 Docker 仓库"></a>设置 Docker 仓库</h2><h3 id="官方源"><a href="#官方源" class="headerlink" title="官方源"></a>官方源</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo yum-config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    https://download.docker.com/linux/centos/docker-ce.repo</span><br></pre></td></tr></table></figure>
 <h3 id="阿里云源"><a href="#阿里云源" class="headerlink" title="阿里云源"></a>阿里云源</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo yum-config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</span><br></pre></td></tr></table></figure>
@@ -50,9 +51,37 @@
       </tags>
   </entry>
   <entry>
+    <title>Zookeeper单机版安装</title>
+    <url>/2022/10/13/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/</url>
+    <content><![CDATA[<h1 id="安装Zookeeper"><a href="#安装Zookeeper" class="headerlink" title="安装Zookeeper"></a>安装Zookeeper</h1><h2 id="安装java环境"><a href="#安装java环境" class="headerlink" title="安装java环境"></a>安装java环境</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># java version &quot;1.8.0_271&quot;</span></span><br><span class="line">java -version</span><br></pre></td></tr></table></figure>
+<h2 id="下载并解压Zookeeper"><a href="#下载并解压Zookeeper" class="headerlink" title="下载并解压Zookeeper"></a>下载并解压Zookeeper</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 下载安装包</span><br><span class="line">wget https://mirror.bit.edu.cn/apache/zookeeper/zookeeper‐3.5.8/apache‐zookeeper‐3.5.8‐bin.tar.gz</span><br><span class="line"># 解压安装包</span><br><span class="line">tar ‐zxvf apache‐zookeeper‐3.5.8‐bin.tar.gz</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<h2 id="备份配置文件（非必须）"><a href="#备份配置文件（非必须）" class="headerlink" title="备份配置文件（非必须）"></a>备份配置文件（非必须）</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入配置文件目录</span></span><br><span class="line"><span class="built_in">cd</span> apache-zookeeper-3.5.8-bin/conf/</span><br><span class="line"><span class="comment"># 备份配置文件</span></span><br><span class="line"><span class="built_in">cp</span> zoo_sample.cfg zoo.cfg</span><br></pre></td></tr></table></figure>
+<h2 id="启动Zookeeper"><a href="#启动Zookeeper" class="headerlink" title="启动Zookeeper"></a>启动Zookeeper</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入脚本文件目录</span></span><br><span class="line"><span class="built_in">cd</span> apache-zookeeper-3.5.8-bin/bin/</span><br><span class="line"><span class="comment"># 启动Zookeeper</span></span><br><span class="line">./zkServer.sh start ../conf/zoo.cfg</span><br><span class="line"><span class="comment"># 检测是否启动</span></span><br><span class="line">ps -ef | grep zookeeper</span><br></pre></td></tr></table></figure>
+<h1 id="客户端连接"><a href="#客户端连接" class="headerlink" title="客户端连接"></a>客户端连接</h1><h2 id="终端方式连接"><a href="#终端方式连接" class="headerlink" title="终端方式连接"></a>终端方式连接</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入脚本文件目录</span></span><br><span class="line"><span class="built_in">cd</span> apache-zookeeper-3.5.8-bin/bin/</span><br><span class="line"><span class="comment"># 连接zookeeper</span></span><br><span class="line">./zkCli.sh -server 192.168.175.175:2181</span><br><span class="line"><span class="comment"># 查看所有节点</span></span><br><span class="line"><span class="built_in">ls</span> -R /</span><br></pre></td></tr></table></figure>
+<h2 id="可视化工具（ZooInspector）连接"><a href="#可视化工具（ZooInspector）连接" class="headerlink" title="可视化工具（ZooInspector）连接"></a>可视化工具（ZooInspector）连接</h2><ul>
+<li>下载工具：<a href="https://issues.apache.org/jira/secure/attachment/12436620/ZooInspector.zip">https://issues.apache.org/jira/secure/attachment/12436620/ZooInspector.zip</a></li>
+<li>解压，进入目录ZooInspector\build</li>
+<li>创建zkClient.bat脚本文件，内容如下：<figure class="highlight bat"><table><tr><td class="code"><pre><span class="line">java -jar D:\ZooInspector\build\zookeeper-dev-ZooInspector.jar</span><br></pre></td></tr></table></figure></li>
+<li>右键zkClient.bat文件，创建桌面快捷方式，然后修改一个自己喜欢的图标</li>
+<li>双击快捷方式，打开可视化工具——ZooInspector，输入连接信息<br><img src="/2022/10/13/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/ZooInspector1.png" alt="ZooInspector1.png"></li>
+<li>点击OK，连接成功<br><img src="/2022/10/13/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/ZooInspector2.png" alt="ZooInspector2.png"></li>
+</ul>
+]]></content>
+      <categories>
+        <category>Zookeeper</category>
+      </categories>
+      <tags>
+        <tag>Zookeeper</tag>
+        <tag>CentOS7</tag>
+        <tag>客户端工具</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Windows安装Nginx</title>
     <url>/2022/10/16/Windows%E5%AE%89%E8%A3%85Nginx/</url>
     <content><![CDATA[<h1 id="下载安装包"><a href="#下载安装包" class="headerlink" title="下载安装包"></a>下载安装包</h1><p>官网地址：<code>http://nginx.org/en/download.html</code><br><img src="/2022/10/16/Windows%E5%AE%89%E8%A3%85Nginx/Nginx%E4%B8%8B%E8%BD%BD.png" alt="Nginx下载.png"></p>
+<span id="more"></span>
 <h1 id="解压Nginx"><a href="#解压Nginx" class="headerlink" title="解压Nginx"></a>解压Nginx</h1><p><img src="/2022/10/16/Windows%E5%AE%89%E8%A3%85Nginx/%E8%A7%A3%E5%8E%8BNginx.png" alt="解压Nginx.png"></p>
 <h1 id="启动Nginx"><a href="#启动Nginx" class="headerlink" title="启动Nginx"></a>启动Nginx</h1><h2 id="快捷启动"><a href="#快捷启动" class="headerlink" title="快捷启动"></a>快捷启动</h2><p>直接双击Nginx目录下的nginx.exe，双击后一个黑色的弹窗一闪而过，启动就完成了<br><img src="/2022/10/16/Windows%E5%AE%89%E8%A3%85Nginx/Nginx%E5%BF%AB%E6%8D%B7%E5%90%AF%E5%8A%A8.png" alt="Nginx快捷启动.png"></p>
 <h2 id="命令启动"><a href="#命令启动" class="headerlink" title="命令启动"></a>命令启动</h2><p>cmd窗口下，切换到Nginx安装目录，输入start nginx，回车启动<br><img src="/2022/10/16/Windows%E5%AE%89%E8%A3%85Nginx/Nginx%E5%91%BD%E4%BB%A4%E5%90%AF%E5%8A%A8.png" alt="Nginx命令启动.png"></p>
@@ -88,33 +117,6 @@
         <tag>Nginx</tag>
         <tag>负载均衡</tag>
         <tag>反向代理</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Zookeeper单机版安装</title>
-    <url>/2022/10/13/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/</url>
-    <content><![CDATA[<h1 id="安装Zookeeper"><a href="#安装Zookeeper" class="headerlink" title="安装Zookeeper"></a>安装Zookeeper</h1><h2 id="安装java环境"><a href="#安装java环境" class="headerlink" title="安装java环境"></a>安装java环境</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># java version &quot;1.8.0_271&quot;</span></span><br><span class="line">java -version</span><br></pre></td></tr></table></figure>
-<h2 id="下载并解压Zookeeper"><a href="#下载并解压Zookeeper" class="headerlink" title="下载并解压Zookeeper"></a>下载并解压Zookeeper</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 下载安装包</span><br><span class="line">wget https://mirror.bit.edu.cn/apache/zookeeper/zookeeper‐3.5.8/apache‐zookeeper‐3.5.8‐bin.tar.gz</span><br><span class="line"># 解压安装包</span><br><span class="line">tar ‐zxvf apache‐zookeeper‐3.5.8‐bin.tar.gz</span><br></pre></td></tr></table></figure>
-<span id="more"></span>
-<h2 id="备份配置文件（非必须）"><a href="#备份配置文件（非必须）" class="headerlink" title="备份配置文件（非必须）"></a>备份配置文件（非必须）</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入配置文件目录</span></span><br><span class="line"><span class="built_in">cd</span> apache-zookeeper-3.5.8-bin/conf/</span><br><span class="line"><span class="comment"># 备份配置文件</span></span><br><span class="line"><span class="built_in">cp</span> zoo_sample.cfg zoo.cfg</span><br></pre></td></tr></table></figure>
-<h2 id="启动Zookeeper"><a href="#启动Zookeeper" class="headerlink" title="启动Zookeeper"></a>启动Zookeeper</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入脚本文件目录</span></span><br><span class="line"><span class="built_in">cd</span> apache-zookeeper-3.5.8-bin/bin/</span><br><span class="line"><span class="comment"># 启动Zookeeper</span></span><br><span class="line">./zkServer.sh start ../conf/zoo.cfg</span><br><span class="line"><span class="comment"># 检测是否启动</span></span><br><span class="line">ps -ef | grep zookeeper</span><br></pre></td></tr></table></figure>
-<h1 id="客户端连接"><a href="#客户端连接" class="headerlink" title="客户端连接"></a>客户端连接</h1><h2 id="终端方式连接"><a href="#终端方式连接" class="headerlink" title="终端方式连接"></a>终端方式连接</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入脚本文件目录</span></span><br><span class="line"><span class="built_in">cd</span> apache-zookeeper-3.5.8-bin/bin/</span><br><span class="line"><span class="comment"># 连接zookeeper</span></span><br><span class="line">./zkCli.sh -server 192.168.175.175:2181</span><br><span class="line"><span class="comment"># 查看所有节点</span></span><br><span class="line"><span class="built_in">ls</span> -R /</span><br></pre></td></tr></table></figure>
-<h2 id="可视化工具（ZooInspector）连接"><a href="#可视化工具（ZooInspector）连接" class="headerlink" title="可视化工具（ZooInspector）连接"></a>可视化工具（ZooInspector）连接</h2><ul>
-<li>下载工具：<a href="https://issues.apache.org/jira/secure/attachment/12436620/ZooInspector.zip">https://issues.apache.org/jira/secure/attachment/12436620/ZooInspector.zip</a></li>
-<li>解压，进入目录ZooInspector\build</li>
-<li>创建zkClient.bat脚本文件，内容如下：<figure class="highlight bat"><table><tr><td class="code"><pre><span class="line">java -jar D:\ZooInspector\build\zookeeper-dev-ZooInspector.jar</span><br></pre></td></tr></table></figure></li>
-<li>右键zkClient.bat文件，创建桌面快捷方式，然后修改一个自己喜欢的图标</li>
-<li>双击快捷方式，打开可视化工具——ZooInspector，输入连接信息<br><img src="/2022/10/13/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/ZooInspector1.png" alt="ZooInspector1.png"></li>
-<li>点击OK，连接成功<br><img src="/2022/10/13/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/ZooInspector2.png" alt="ZooInspector2.png"></li>
-</ul>
-]]></content>
-      <categories>
-        <category>Zookeeper</category>
-      </categories>
-      <tags>
-        <tag>Zookeeper</tag>
-        <tag>CentOS7</tag>
-        <tag>客户端工具</tag>
       </tags>
   </entry>
   <entry>

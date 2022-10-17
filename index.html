@@ -256,41 +256,14 @@
       
           <h1 id="卸载旧版本"><a href="#卸载旧版本" class="headerlink" title="卸载旧版本"></a>卸载旧版本</h1><p>较旧的 Docker 版本称为 docker 或 docker-engine 。如果已安装这些程序，请卸载它们以及相关的依赖项。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ sudo yum remove docker \</span><br><span class="line">                  docker-client \</span><br><span class="line">                  docker-client-latest \</span><br><span class="line">                  docker-common \</span><br><span class="line">                  docker-latest \</span><br><span class="line">                  docker-latest-logrotate \</span><br><span class="line">                  docker-logrotate \</span><br><span class="line">                  docker-engine</span><br></pre></td></tr></table></figure>
-<h1 id="安装-Docker"><a href="#安装-Docker" class="headerlink" title="安装 Docker"></a>安装 Docker</h1><h2 id="安装前置依赖"><a href="#安装前置依赖" class="headerlink" title="安装前置依赖"></a>安装前置依赖</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo yum install -y yum-utils \</span><br><span class="line">  device-mapper-persistent-data \</span><br><span class="line">  lvm2</span><br></pre></td></tr></table></figure>
-<h2 id="设置-Docker-仓库"><a href="#设置-Docker-仓库" class="headerlink" title="设置 Docker 仓库"></a>设置 Docker 仓库</h2><h3 id="官方源"><a href="#官方源" class="headerlink" title="官方源"></a>官方源</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo yum-config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    https://download.docker.com/linux/centos/docker-ce.repo</span><br></pre></td></tr></table></figure>
-<h3 id="阿里云源"><a href="#阿里云源" class="headerlink" title="阿里云源"></a>阿里云源</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo yum-config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</span><br></pre></td></tr></table></figure>
-<h3 id="清华大学源"><a href="#清华大学源" class="headerlink" title="清华大学源"></a>清华大学源</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo yum-config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/docker-ce.repo</span><br></pre></td></tr></table></figure>
-<h2 id="执行-Docker-安装"><a href="#执行-Docker-安装" class="headerlink" title="执行 Docker 安装"></a>执行 Docker 安装</h2><h3 id="最新版本"><a href="#最新版本" class="headerlink" title="最新版本"></a>最新版本</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo yum install docker-ce docker-ce-cli containerd.io docker-compose-plugin</span><br></pre></td></tr></table></figure>
-<h3 id="指定版本"><a href="#指定版本" class="headerlink" title="指定版本"></a>指定版本</h3><p>要安装特定版本的 Docker，请在存储库中列出可用版本，然后选择并安装</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum list docker-ce --showduplicates | <span class="built_in">sort</span> -r</span><br></pre></td></tr></table></figure>
-<p><img src="/2022/10/16/CentOS%E5%AE%89%E8%A3%85Docker/Docker%E7%89%88%E6%9C%AC%E9%80%89%E6%8B%A9.png" alt="Docker版本选择.png"><br>通过其完整的软件包名称安装特定版本，该软件包名称是软件包名称（docker-ce）加上版本字符串（第二列），从第一个冒号（:）一直到第一个连字符，并用连字符（-）分隔。例如：docker-ce-18.09.1。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo yum install docker-ce-&lt;VERSION_STRING&gt; docker-ce-cli-&lt;VERSION_STRING&gt; containerd.io</span><br></pre></td></tr></table></figure>
-<h1 id="启动-Docker"><a href="#启动-Docker" class="headerlink" title="启动 Docker"></a>启动 Docker</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo systemctl start docker</span><br></pre></td></tr></table></figure>
-<h1 id="验证启动"><a href="#验证启动" class="headerlink" title="验证启动"></a>验证启动</h1><p>通过运行 hello-world 镜像来验证是否启动成功（首次运行可能需要先拉取镜像）</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo docker run hello-world</span><br></pre></td></tr></table></figure>
-<p><img src="/2022/10/16/CentOS%E5%AE%89%E8%A3%85Docker/Docker%E5%90%AF%E5%8A%A8%E9%AA%8C%E8%AF%81.png" alt="Docker启动验证.png"></p>
-<h1 id="关闭-Docker"><a href="#关闭-Docker" class="headerlink" title="关闭 Docker"></a>关闭 Docker</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo systemctl stop docker</span><br></pre></td></tr></table></figure>
-<p><img src="/2022/10/16/CentOS%E5%AE%89%E8%A3%85Docker/Docker%E8%87%AA%E5%8A%A8%E5%94%A4%E9%86%92%E6%9C%BA%E5%88%B6.png" alt="Docker自动唤醒机制.png"></p>
-<h1 id="卸载-Docker"><a href="#卸载-Docker" class="headerlink" title="卸载 Docker"></a>卸载 Docker</h1><p>删除安装包：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum remove docker-ce</span><br></pre></td></tr></table></figure>
-<p>删除镜像、容器、配置文件等内容：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">rm</span> -rf /var/lib/docker</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/10/16/CentOS%E5%AE%89%E8%A3%85Docker/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -373,34 +346,14 @@
 
       
           <h1 id="下载安装包"><a href="#下载安装包" class="headerlink" title="下载安装包"></a>下载安装包</h1><p>官网地址：<code>http://nginx.org/en/download.html</code><br><img src="/2022/10/16/Windows%E5%AE%89%E8%A3%85Nginx/Nginx%E4%B8%8B%E8%BD%BD.png" alt="Nginx下载.png"></p>
-<h1 id="解压Nginx"><a href="#解压Nginx" class="headerlink" title="解压Nginx"></a>解压Nginx</h1><p><img src="/2022/10/16/Windows%E5%AE%89%E8%A3%85Nginx/%E8%A7%A3%E5%8E%8BNginx.png" alt="解压Nginx.png"></p>
-<h1 id="启动Nginx"><a href="#启动Nginx" class="headerlink" title="启动Nginx"></a>启动Nginx</h1><h2 id="快捷启动"><a href="#快捷启动" class="headerlink" title="快捷启动"></a>快捷启动</h2><p>直接双击Nginx目录下的nginx.exe，双击后一个黑色的弹窗一闪而过，启动就完成了<br><img src="/2022/10/16/Windows%E5%AE%89%E8%A3%85Nginx/Nginx%E5%BF%AB%E6%8D%B7%E5%90%AF%E5%8A%A8.png" alt="Nginx快捷启动.png"></p>
-<h2 id="命令启动"><a href="#命令启动" class="headerlink" title="命令启动"></a>命令启动</h2><p>cmd窗口下，切换到Nginx安装目录，输入start nginx，回车启动<br><img src="/2022/10/16/Windows%E5%AE%89%E8%A3%85Nginx/Nginx%E5%91%BD%E4%BB%A4%E5%90%AF%E5%8A%A8.png" alt="Nginx命令启动.png"></p>
-<h2 id="启动验证"><a href="#启动验证" class="headerlink" title="启动验证"></a>启动验证</h2><p>打开浏览器，输入<code>localhost</code>，回车，进入Nginx首页<br><img src="/2022/10/16/Windows%E5%AE%89%E8%A3%85Nginx/Nginx%E9%A6%96%E9%A1%B5.png" alt="Nginx首页.png"></p>
-<h1 id="关闭Nginx"><a href="#关闭Nginx" class="headerlink" title="关闭Nginx"></a>关闭Nginx</h1><p>cmd窗口下，切换到Nginx安装目录，输入以下命令，关闭Nginx</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-- 快速停止nginx</span><br><span class="line">nginx -s stop</span><br><span class="line"></span><br><span class="line">-- 完整有序地停止nginx</span><br><span class="line">nginx -s quit</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/10/16/Windows%E5%AE%89%E8%A3%85Nginx/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
