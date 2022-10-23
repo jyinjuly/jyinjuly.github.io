@@ -79,6 +79,32 @@
       </tags>
   </entry>
   <entry>
+    <title>Docker安装Zookeeper</title>
+    <url>/2022/10/23/Docker%E5%AE%89%E8%A3%85Zookeeper/</url>
+    <content><![CDATA[<h1 id="查看可用版本"><a href="#查看可用版本" class="headerlink" title="查看可用版本"></a>查看可用版本</h1><p>访问 Zookeeper 镜像库地址：<a href="https://hub.docker.com/_/zookeeper/tags">https://hub.docker.com/_/zookeeper/tags</a></p>
+<span id="more"></span>
+
+<p><img src="/2022/10/23/Docker%E5%AE%89%E8%A3%85Zookeeper/%E6%9F%A5%E8%AF%A2%E5%8F%AF%E7%94%A8%E9%95%9C%E5%83%8F.png" alt="查询可用镜像.png"></p>
+<h1 id="拉取Zookeeper镜像"><a href="#拉取Zookeeper镜像" class="headerlink" title="拉取Zookeeper镜像"></a>拉取Zookeeper镜像</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ docker pull zookeeper:3.5.8</span><br></pre></td></tr></table></figure>
+
+<h1 id="查看本地镜像"><a href="#查看本地镜像" class="headerlink" title="查看本地镜像"></a>查看本地镜像</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ docker images</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/10/23/Docker%E5%AE%89%E8%A3%85Zookeeper/%E6%9F%A5%E7%9C%8B%E6%9C%AC%E5%9C%B0%E9%95%9C%E5%83%8F.png" alt="查看本地镜像.png"></p>
+<h1 id="运行Zookeeper容器"><a href="#运行Zookeeper容器" class="headerlink" title="运行Zookeeper容器"></a>运行Zookeeper容器</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ docker run -itd --name zookeeper -p 2181:2181 zookeeper:3.5.8</span><br></pre></td></tr></table></figure>
+<ul>
+<li>-p 2181:2181：映射容器服务的 2181 端口到宿主机的 2181 端口，外部主机可以直接通过 <code>宿主机ip:2181</code> 访问到 Zookeeper 的服务</li>
+</ul>
+<h1 id="验证启动成功"><a href="#验证启动成功" class="headerlink" title="验证启动成功"></a>验证启动成功</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ docker ps</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/10/23/Docker%E5%AE%89%E8%A3%85Zookeeper/%E9%AA%8C%E8%AF%81%E5%90%AF%E5%8A%A8.png" alt="验证启动.png"></p>
+]]></content>
+      <categories>
+        <category>Docker</category>
+      </categories>
+      <tags>
+        <tag>Docker</tag>
+        <tag>Zookeeper</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Docker容器使用</title>
     <url>/2022/10/23/Docker%E5%AE%B9%E5%99%A8%E4%BD%BF%E7%94%A8/</url>
     <content><![CDATA[<h1 id="获取镜像"><a href="#获取镜像" class="headerlink" title="获取镜像"></a>获取镜像</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ docker pull mysql:8.0.31</span><br></pre></td></tr></table></figure>
@@ -167,6 +193,34 @@
       </tags>
   </entry>
   <entry>
+    <title>MySQL之客户端连接那些事</title>
+    <url>/2022/10/23/MySQL%E4%B9%8B%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%BF%9E%E6%8E%A5%E9%82%A3%E4%BA%9B%E4%BA%8B/</url>
+    <content><![CDATA[<h1 id="Root用户忘记密码"><a href="#Root用户忘记密码" class="headerlink" title="Root用户忘记密码"></a>Root用户忘记密码</h1><ol>
+<li>配置文件——my.cnf中添加：skip-grant-tables，保存退出；</li>
+<li>重启mysql服务使配置文件生效：service mysqld restart；</li>
+<li>mysql -uroot -p回车登录；</li>
+<li>使用mysql数据库：use mysql；<span id="more"></span></li>
+<li>将root密码置为空：update user set authentication_string &#x3D; ‘’ where user &#x3D; ‘root’;</li>
+<li>my.cnf中删掉步骤1的语句——skip-grant-tables，重启mysql服务；</li>
+<li>登录mysql，修改root用户密码：ALTER USER ‘root‘@’localhost’ IDENTIFIED with mysql_native_password BY ‘${password}’;</li>
+</ol>
+<h1 id="MySQL-8-连接失败：caching-sha2…"><a href="#MySQL-8-连接失败：caching-sha2…" class="headerlink" title="MySQL 8 连接失败：caching sha2…"></a>MySQL 8 连接失败：caching sha2…</h1><p>MySQL 8 之前的版本使用的密码加密规则是mysql_native_password，但是在mysql 8 则是caching_sha2_password，解决办法如下：</p>
+<h2 id="修改加密规则"><a href="#修改加密规则" class="headerlink" title="修改加密规则"></a>修改加密规则</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">USER</span> <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;%&#x27;</span> IDENTIFIED <span class="keyword">BY</span> <span class="string">&#x27;password&#x27;</span> PASSWORD EXPIRE NEVER;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">USER</span> <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;%&#x27;</span> IDENTIFIED <span class="keyword">WITH</span> mysql_native_password <span class="keyword">BY</span> <span class="string">&#x27;password&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="刷新权限"><a href="#刷新权限" class="headerlink" title="刷新权限"></a>刷新权限</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">FLUSH PRIVILEGES;</span><br></pre></td></tr></table></figure>
+
+<h1 id="MySQL-8-客户端无法使用root用户登录"><a href="#MySQL-8-客户端无法使用root用户登录" class="headerlink" title="MySQL 8 客户端无法使用root用户登录"></a>MySQL 8 客户端无法使用root用户登录</h1><h2 id="root登录mysql"><a href="#root登录mysql" class="headerlink" title="root登录mysql"></a>root登录mysql</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ mysql -uroot -p</span><br></pre></td></tr></table></figure>
+
+<h2 id="添加普通用户"><a href="#添加普通用户" class="headerlink" title="添加普通用户"></a>添加普通用户</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> <span class="string">&#x27;liteng&#x27;</span>@<span class="string">&#x27;%&#x27;</span> IDENTIFIED <span class="keyword">WITH</span> mysql_native_password <span class="keyword">BY</span> <span class="string">&#x27;123456&#x27;</span>;</span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">ALL</span> PRIVILEGES <span class="keyword">ON</span> <span class="operator">*</span>.<span class="operator">*</span> <span class="keyword">TO</span> <span class="string">&#x27;liteng&#x27;</span>@<span class="string">&#x27;%&#x27;</span>;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>MySQL</category>
+      </categories>
+      <tags>
+        <tag>MySQL</tag>
+        <tag>客户端连接</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Windows安装Nginx</title>
     <url>/2022/10/16/Windows%E5%AE%89%E8%A3%85Nginx/</url>
     <content><![CDATA[<h1 id="下载安装包"><a href="#下载安装包" class="headerlink" title="下载安装包"></a>下载安装包</h1><p>官网地址：<code>http://nginx.org/en/download.html</code><br><img src="/2022/10/16/Windows%E5%AE%89%E8%A3%85Nginx/Nginx%E4%B8%8B%E8%BD%BD.png" alt="Nginx下载.png"></p>
@@ -209,34 +263,6 @@
       </tags>
   </entry>
   <entry>
-    <title>MySQL之客户端连接那些事</title>
-    <url>/2022/10/23/MySQL%E4%B9%8B%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%BF%9E%E6%8E%A5%E9%82%A3%E4%BA%9B%E4%BA%8B/</url>
-    <content><![CDATA[<h1 id="Root用户忘记密码"><a href="#Root用户忘记密码" class="headerlink" title="Root用户忘记密码"></a>Root用户忘记密码</h1><ol>
-<li>配置文件——my.cnf中添加：skip-grant-tables，保存退出；</li>
-<li>重启mysql服务使配置文件生效：service mysqld restart；</li>
-<li>mysql -uroot -p回车登录；</li>
-<li>使用mysql数据库：use mysql；<span id="more"></span></li>
-<li>将root密码置为空：update user set authentication_string &#x3D; ‘’ where user &#x3D; ‘root’;</li>
-<li>my.cnf中删掉步骤1的语句——skip-grant-tables，重启mysql服务；</li>
-<li>登录mysql，修改root用户密码：ALTER USER ‘root‘@’localhost’ IDENTIFIED with mysql_native_password BY ‘${password}’;</li>
-</ol>
-<h1 id="MySQL-8-连接失败：caching-sha2…"><a href="#MySQL-8-连接失败：caching-sha2…" class="headerlink" title="MySQL 8 连接失败：caching sha2…"></a>MySQL 8 连接失败：caching sha2…</h1><p>MySQL 8 之前的版本使用的密码加密规则是mysql_native_password，但是在mysql 8 则是caching_sha2_password，解决办法如下：</p>
-<h2 id="修改加密规则"><a href="#修改加密规则" class="headerlink" title="修改加密规则"></a>修改加密规则</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">USER</span> <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;%&#x27;</span> IDENTIFIED <span class="keyword">BY</span> <span class="string">&#x27;password&#x27;</span> PASSWORD EXPIRE NEVER;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">USER</span> <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;%&#x27;</span> IDENTIFIED <span class="keyword">WITH</span> mysql_native_password <span class="keyword">BY</span> <span class="string">&#x27;password&#x27;</span>;</span><br></pre></td></tr></table></figure>
-<h2 id="刷新权限"><a href="#刷新权限" class="headerlink" title="刷新权限"></a>刷新权限</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">FLUSH PRIVILEGES;</span><br></pre></td></tr></table></figure>
-
-<h1 id="MySQL-8-客户端无法使用root用户登录"><a href="#MySQL-8-客户端无法使用root用户登录" class="headerlink" title="MySQL 8 客户端无法使用root用户登录"></a>MySQL 8 客户端无法使用root用户登录</h1><h2 id="root登录mysql"><a href="#root登录mysql" class="headerlink" title="root登录mysql"></a>root登录mysql</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ mysql -uroot -p</span><br></pre></td></tr></table></figure>
-
-<h2 id="添加普通用户"><a href="#添加普通用户" class="headerlink" title="添加普通用户"></a>添加普通用户</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> <span class="string">&#x27;liteng&#x27;</span>@<span class="string">&#x27;%&#x27;</span> IDENTIFIED <span class="keyword">WITH</span> mysql_native_password <span class="keyword">BY</span> <span class="string">&#x27;123456&#x27;</span>;</span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">ALL</span> PRIVILEGES <span class="keyword">ON</span> <span class="operator">*</span>.<span class="operator">*</span> <span class="keyword">TO</span> <span class="string">&#x27;liteng&#x27;</span>@<span class="string">&#x27;%&#x27;</span>;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>MySQL</category>
-      </categories>
-      <tags>
-        <tag>MySQL</tag>
-        <tag>客户端连接</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Zookeeper单机版安装</title>
     <url>/2022/10/13/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/</url>
     <content><![CDATA[<h1 id="安装Zookeeper"><a href="#安装Zookeeper" class="headerlink" title="安装Zookeeper"></a>安装Zookeeper</h1><h2 id="安装java环境"><a href="#安装java环境" class="headerlink" title="安装java环境"></a>安装java环境</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># java version &quot;1.8.0_271&quot;</span></span><br><span class="line">java -version</span><br></pre></td></tr></table></figure>
@@ -261,6 +287,82 @@
         <tag>Zookeeper</tag>
         <tag>CentOS7</tag>
         <tag>客户端工具</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Zookeeper特性——事件监听机制</title>
+    <url>/2022/10/13/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/</url>
+    <content><![CDATA[<p>Zookeeper有两大特性——文件系统和事件监听机制，本篇介绍事件监听机制。</p>
+<h1 id="事件类型"><a href="#事件类型" class="headerlink" title="事件类型"></a>事件类型</h1><p>Zookeeper中的事件类型有五种，如下：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> <span class="title class_">EventType</span> &#123;</span><br><span class="line">    None (-<span class="number">1</span>),</span><br><span class="line">    NodeCreated (<span class="number">1</span>),            <span class="comment">// 节点被创建时触发</span></span><br><span class="line">    NodeDeleted (<span class="number">2</span>),            <span class="comment">// 节点被删除时触发</span></span><br><span class="line">    NodeDataChanged (<span class="number">3</span>),        <span class="comment">// 节点的节点数据发生变化时触发</span></span><br><span class="line">    NodeChildrenChanged (<span class="number">4</span>),    <span class="comment">// 节点的子节点列表发生变化时触发</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 3.5.x之后新加的事件类型</span></span><br><span class="line">    DataWatchRemoved (<span class="number">5</span>),       <span class="comment">// 节点的监听被移除时触发</span></span><br><span class="line">    ChildWatchRemoved (<span class="number">6</span>);      <span class="comment">// 节点的子节点的监听被移除时触发</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<h1 id="监听类型"><a href="#监听类型" class="headerlink" title="监听类型"></a>监听类型</h1><p>Zookeeper的监听类型总体分为两类，节点数据监听（NodeDataChanged）和节点目录监听（NodeCreated、NodeDeleted、NodeChildrenChanged）。</p>
+<h2 id="节点数据监听"><a href="#节点数据监听" class="headerlink" title="节点数据监听"></a>节点数据监听</h2><p>节点数据监听只能针对单个节点设置。当节点的节点数据发生变化时，Zookeeper服务端会向所有注册了该节点数据监听的客户端发送一个NodeDataChanged事件。</p>
+<blockquote>
+<p>注意：节点数据并不单指节点存储的数据，还包括节点的元数据（状态信息）。</p>
+</blockquote>
+<h2 id="节点目录监听"><a href="#节点目录监听" class="headerlink" title="节点目录监听"></a>节点目录监听</h2><p>节点目录监听对应三种事件，所以我们也可以将节点目录监听分为三类：</p>
+<ul>
+<li>节点创建监听（NodeCreated）<blockquote>
+<p>当一个节点被创建时，Zookeeper服务端会向所有注册了该节点创建监听的客户端发送一个NodeCreated事件。这里可能会有疑问，如何向一个不存在的节点注册监听？确实，Zookeeper原生客户端不支持这种操作，但是Zookeeper的Java客户端的一些API是支持的。</p>
+</blockquote>
+</li>
+<li>节点删除监听（NodeDeleted）<blockquote>
+<p>当一个节点被删除时，Zookeeper服务端会向所有注册了该节点删除监听的客户端发送一个NodeDeleted事件。</p>
+</blockquote>
+</li>
+<li>子节点列表监听（NodeChildrenChanged）<blockquote>
+<p>当一个节点发生子节点数量变化（新增、删除）时，Zookeeper服务端会向所有注册了该子节点列表监听的客户端发送一个NodeChildrenChanged事件。</p>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>注意，节点目录监听不仅可以针对单个节点设置，还可以递归对节点及其所有下级节点进行设置。</p>
+</blockquote>
+<h1 id="监听操作（原生API）"><a href="#监听操作（原生API）" class="headerlink" title="监听操作（原生API）"></a>监听操作（原生API）</h1><h2 id="增加监听"><a href="#增加监听" class="headerlink" title="增加监听"></a>增加监听</h2><ul>
+<li>增加节点数据监听<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">get -w path</span><br><span class="line"><span class="built_in">stat</span> -w path</span><br></pre></td></tr></table></figure>
+<img src="/2022/10/13/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/%E8%8A%82%E7%82%B9%E6%95%B0%E6%8D%AE%E7%9B%91%E5%90%AC.png" alt="节点数据监听.png"></li>
+<li>增加节点目录监听<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">ls</span> -w path</span><br></pre></td></tr></table></figure>
+<img src="/2022/10/13/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/%E8%8A%82%E7%82%B9%E7%9B%AE%E5%BD%95%E7%9B%91%E5%90%AC1.png" alt="节点目录监听1.png"></li>
+<li>递归增加节点目录监听<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">ls</span> -R -w path</span><br></pre></td></tr></table></figure>
+<img src="/2022/10/13/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/%E8%8A%82%E7%82%B9%E7%9B%AE%E5%BD%95%E7%9B%91%E5%90%AC2.png" alt="节点目录监听2.png"><br>这里执行了5条命令，每条命令都有其意义所在：<ul>
+<li>ls -R -w &#x2F;：列出所有节点，并给所有节点增加节点目录监听。也就是说有且仅有这7个节点被注册了节点目录监听。</li>
+<li>delete &#x2F;test&#x2F;a：触发了<code>/test/a</code>节点的NodeDeleted事件；触发了<code>/test</code>节点的NodeChildrenChanged事件。</li>
+<li>delete &#x2F;test&#x2F;b：触发了<code>/test/b</code>节点的NodeDeleted事件；但是没有触发<code>/test</code>节点的NodeChildrenChanged事件，因为上一步已经触发过了。<strong>说到这里不得不提到Zookeeper监听机制一个很重要的特点，那就是所有的监听都是一次性的，一旦监听的事件被触发，监听将会被自动移除。</strong></li>
+<li>create &#x2F;test&#x2F;c：新增一个节点，目的是为了测试新节点是否会被注册事件监听。</li>
+<li>create &#x2F;test&#x2F;c&#x2F;1：没有触发<code>/test/c</code>节点的NodeChildrenChanged事件，证明新节点不会被注册事件监听。</li>
+</ul>
+</li>
+</ul>
+<h2 id="移除监听"><a href="#移除监听" class="headerlink" title="移除监听"></a>移除监听</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">removewatches path</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>Zookeeper</category>
+      </categories>
+      <tags>
+        <tag>Zookeeper</tag>
+        <tag>事件监听机制</tag>
+        <tag>一次性监听</tag>
       </tags>
   </entry>
   <entry>
@@ -348,82 +450,6 @@
       <tags>
         <tag>Zookeeper</tag>
         <tag>文件系统</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Zookeeper特性——事件监听机制</title>
-    <url>/2022/10/13/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/</url>
-    <content><![CDATA[<p>Zookeeper有两大特性——文件系统和事件监听机制，本篇介绍事件监听机制。</p>
-<h1 id="事件类型"><a href="#事件类型" class="headerlink" title="事件类型"></a>事件类型</h1><p>Zookeeper中的事件类型有五种，如下：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> <span class="title class_">EventType</span> &#123;</span><br><span class="line">    None (-<span class="number">1</span>),</span><br><span class="line">    NodeCreated (<span class="number">1</span>),            <span class="comment">// 节点被创建时触发</span></span><br><span class="line">    NodeDeleted (<span class="number">2</span>),            <span class="comment">// 节点被删除时触发</span></span><br><span class="line">    NodeDataChanged (<span class="number">3</span>),        <span class="comment">// 节点的节点数据发生变化时触发</span></span><br><span class="line">    NodeChildrenChanged (<span class="number">4</span>),    <span class="comment">// 节点的子节点列表发生变化时触发</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 3.5.x之后新加的事件类型</span></span><br><span class="line">    DataWatchRemoved (<span class="number">5</span>),       <span class="comment">// 节点的监听被移除时触发</span></span><br><span class="line">    ChildWatchRemoved (<span class="number">6</span>);      <span class="comment">// 节点的子节点的监听被移除时触发</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<span id="more"></span>
-<h1 id="监听类型"><a href="#监听类型" class="headerlink" title="监听类型"></a>监听类型</h1><p>Zookeeper的监听类型总体分为两类，节点数据监听（NodeDataChanged）和节点目录监听（NodeCreated、NodeDeleted、NodeChildrenChanged）。</p>
-<h2 id="节点数据监听"><a href="#节点数据监听" class="headerlink" title="节点数据监听"></a>节点数据监听</h2><p>节点数据监听只能针对单个节点设置。当节点的节点数据发生变化时，Zookeeper服务端会向所有注册了该节点数据监听的客户端发送一个NodeDataChanged事件。</p>
-<blockquote>
-<p>注意：节点数据并不单指节点存储的数据，还包括节点的元数据（状态信息）。</p>
-</blockquote>
-<h2 id="节点目录监听"><a href="#节点目录监听" class="headerlink" title="节点目录监听"></a>节点目录监听</h2><p>节点目录监听对应三种事件，所以我们也可以将节点目录监听分为三类：</p>
-<ul>
-<li>节点创建监听（NodeCreated）<blockquote>
-<p>当一个节点被创建时，Zookeeper服务端会向所有注册了该节点创建监听的客户端发送一个NodeCreated事件。这里可能会有疑问，如何向一个不存在的节点注册监听？确实，Zookeeper原生客户端不支持这种操作，但是Zookeeper的Java客户端的一些API是支持的。</p>
-</blockquote>
-</li>
-<li>节点删除监听（NodeDeleted）<blockquote>
-<p>当一个节点被删除时，Zookeeper服务端会向所有注册了该节点删除监听的客户端发送一个NodeDeleted事件。</p>
-</blockquote>
-</li>
-<li>子节点列表监听（NodeChildrenChanged）<blockquote>
-<p>当一个节点发生子节点数量变化（新增、删除）时，Zookeeper服务端会向所有注册了该子节点列表监听的客户端发送一个NodeChildrenChanged事件。</p>
-</blockquote>
-</li>
-</ul>
-<blockquote>
-<p>注意，节点目录监听不仅可以针对单个节点设置，还可以递归对节点及其所有下级节点进行设置。</p>
-</blockquote>
-<h1 id="监听操作（原生API）"><a href="#监听操作（原生API）" class="headerlink" title="监听操作（原生API）"></a>监听操作（原生API）</h1><h2 id="增加监听"><a href="#增加监听" class="headerlink" title="增加监听"></a>增加监听</h2><ul>
-<li>增加节点数据监听<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">get -w path</span><br><span class="line"><span class="built_in">stat</span> -w path</span><br></pre></td></tr></table></figure>
-<img src="/2022/10/13/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/%E8%8A%82%E7%82%B9%E6%95%B0%E6%8D%AE%E7%9B%91%E5%90%AC.png" alt="节点数据监听.png"></li>
-<li>增加节点目录监听<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">ls</span> -w path</span><br></pre></td></tr></table></figure>
-<img src="/2022/10/13/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/%E8%8A%82%E7%82%B9%E7%9B%AE%E5%BD%95%E7%9B%91%E5%90%AC1.png" alt="节点目录监听1.png"></li>
-<li>递归增加节点目录监听<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">ls</span> -R -w path</span><br></pre></td></tr></table></figure>
-<img src="/2022/10/13/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/%E8%8A%82%E7%82%B9%E7%9B%AE%E5%BD%95%E7%9B%91%E5%90%AC2.png" alt="节点目录监听2.png"><br>这里执行了5条命令，每条命令都有其意义所在：<ul>
-<li>ls -R -w &#x2F;：列出所有节点，并给所有节点增加节点目录监听。也就是说有且仅有这7个节点被注册了节点目录监听。</li>
-<li>delete &#x2F;test&#x2F;a：触发了<code>/test/a</code>节点的NodeDeleted事件；触发了<code>/test</code>节点的NodeChildrenChanged事件。</li>
-<li>delete &#x2F;test&#x2F;b：触发了<code>/test/b</code>节点的NodeDeleted事件；但是没有触发<code>/test</code>节点的NodeChildrenChanged事件，因为上一步已经触发过了。<strong>说到这里不得不提到Zookeeper监听机制一个很重要的特点，那就是所有的监听都是一次性的，一旦监听的事件被触发，监听将会被自动移除。</strong></li>
-<li>create &#x2F;test&#x2F;c：新增一个节点，目的是为了测试新节点是否会被注册事件监听。</li>
-<li>create &#x2F;test&#x2F;c&#x2F;1：没有触发<code>/test/c</code>节点的NodeChildrenChanged事件，证明新节点不会被注册事件监听。</li>
-</ul>
-</li>
-</ul>
-<h2 id="移除监听"><a href="#移除监听" class="headerlink" title="移除监听"></a>移除监听</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">removewatches path</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-]]></content>
-      <categories>
-        <category>Zookeeper</category>
-      </categories>
-      <tags>
-        <tag>Zookeeper</tag>
-        <tag>事件监听机制</tag>
-        <tag>一次性监听</tag>
       </tags>
   </entry>
   <entry>
