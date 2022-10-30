@@ -79,32 +79,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Docker安装Zookeeper</title>
-    <url>/2022/10/23/Docker%E5%AE%89%E8%A3%85Zookeeper/</url>
-    <content><![CDATA[<h1 id="查看可用版本"><a href="#查看可用版本" class="headerlink" title="查看可用版本"></a>查看可用版本</h1><p>访问 Zookeeper 镜像库地址：<a href="https://hub.docker.com/_/zookeeper/tags">https://hub.docker.com/_/zookeeper/tags</a></p>
-<span id="more"></span>
-
-<p><img src="/2022/10/23/Docker%E5%AE%89%E8%A3%85Zookeeper/%E6%9F%A5%E8%AF%A2%E5%8F%AF%E7%94%A8%E9%95%9C%E5%83%8F.png" alt="查询可用镜像.png"></p>
-<h1 id="拉取Zookeeper镜像"><a href="#拉取Zookeeper镜像" class="headerlink" title="拉取Zookeeper镜像"></a>拉取Zookeeper镜像</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ docker pull zookeeper:3.5.8</span><br></pre></td></tr></table></figure>
-
-<h1 id="查看本地镜像"><a href="#查看本地镜像" class="headerlink" title="查看本地镜像"></a>查看本地镜像</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ docker images</span><br></pre></td></tr></table></figure>
-<p><img src="/2022/10/23/Docker%E5%AE%89%E8%A3%85Zookeeper/%E6%9F%A5%E7%9C%8B%E6%9C%AC%E5%9C%B0%E9%95%9C%E5%83%8F.png" alt="查看本地镜像.png"></p>
-<h1 id="运行Zookeeper容器"><a href="#运行Zookeeper容器" class="headerlink" title="运行Zookeeper容器"></a>运行Zookeeper容器</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ docker run -itd --name zookeeper -p 2181:2181 zookeeper:3.5.8</span><br></pre></td></tr></table></figure>
-<ul>
-<li>-p 2181:2181：映射容器服务的 2181 端口到宿主机的 2181 端口，外部主机可以直接通过 <code>宿主机ip:2181</code> 访问到 Zookeeper 的服务</li>
-</ul>
-<h1 id="验证启动成功"><a href="#验证启动成功" class="headerlink" title="验证启动成功"></a>验证启动成功</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ docker ps</span><br></pre></td></tr></table></figure>
-<p><img src="/2022/10/23/Docker%E5%AE%89%E8%A3%85Zookeeper/%E9%AA%8C%E8%AF%81%E5%90%AF%E5%8A%A8.png" alt="验证启动.png"></p>
-]]></content>
-      <categories>
-        <category>Docker</category>
-      </categories>
-      <tags>
-        <tag>Docker</tag>
-        <tag>Zookeeper</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Docker容器使用</title>
     <url>/2022/10/23/Docker%E5%AE%B9%E5%99%A8%E4%BD%BF%E7%94%A8/</url>
     <content><![CDATA[<h1 id="获取镜像"><a href="#获取镜像" class="headerlink" title="获取镜像"></a>获取镜像</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ docker pull mysql:8.0.31</span><br></pre></td></tr></table></figure>
@@ -138,6 +112,32 @@
       <tags>
         <tag>Docker</tag>
         <tag>容器</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Docker安装Zookeeper</title>
+    <url>/2022/10/23/Docker%E5%AE%89%E8%A3%85Zookeeper/</url>
+    <content><![CDATA[<h1 id="查看可用版本"><a href="#查看可用版本" class="headerlink" title="查看可用版本"></a>查看可用版本</h1><p>访问 Zookeeper 镜像库地址：<a href="https://hub.docker.com/_/zookeeper/tags">https://hub.docker.com/_/zookeeper/tags</a></p>
+<span id="more"></span>
+
+<p><img src="/2022/10/23/Docker%E5%AE%89%E8%A3%85Zookeeper/%E6%9F%A5%E8%AF%A2%E5%8F%AF%E7%94%A8%E9%95%9C%E5%83%8F.png" alt="查询可用镜像.png"></p>
+<h1 id="拉取Zookeeper镜像"><a href="#拉取Zookeeper镜像" class="headerlink" title="拉取Zookeeper镜像"></a>拉取Zookeeper镜像</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ docker pull zookeeper:3.5.8</span><br></pre></td></tr></table></figure>
+
+<h1 id="查看本地镜像"><a href="#查看本地镜像" class="headerlink" title="查看本地镜像"></a>查看本地镜像</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ docker images</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/10/23/Docker%E5%AE%89%E8%A3%85Zookeeper/%E6%9F%A5%E7%9C%8B%E6%9C%AC%E5%9C%B0%E9%95%9C%E5%83%8F.png" alt="查看本地镜像.png"></p>
+<h1 id="运行Zookeeper容器"><a href="#运行Zookeeper容器" class="headerlink" title="运行Zookeeper容器"></a>运行Zookeeper容器</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ docker run -itd --name zookeeper -p 2181:2181 zookeeper:3.5.8</span><br></pre></td></tr></table></figure>
+<ul>
+<li>-p 2181:2181：映射容器服务的 2181 端口到宿主机的 2181 端口，外部主机可以直接通过 <code>宿主机ip:2181</code> 访问到 Zookeeper 的服务</li>
+</ul>
+<h1 id="验证启动成功"><a href="#验证启动成功" class="headerlink" title="验证启动成功"></a>验证启动成功</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ docker ps</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/10/23/Docker%E5%AE%89%E8%A3%85Zookeeper/%E9%AA%8C%E8%AF%81%E5%90%AF%E5%8A%A8.png" alt="验证启动.png"></p>
+]]></content>
+      <categories>
+        <category>Docker</category>
+      </categories>
+      <tags>
+        <tag>Docker</tag>
+        <tag>Zookeeper</tag>
       </tags>
   </entry>
   <entry>
@@ -263,106 +263,34 @@
       </tags>
   </entry>
   <entry>
-    <title>Zookeeper单机版安装</title>
-    <url>/2022/10/13/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/</url>
-    <content><![CDATA[<h1 id="安装Zookeeper"><a href="#安装Zookeeper" class="headerlink" title="安装Zookeeper"></a>安装Zookeeper</h1><h2 id="安装java环境"><a href="#安装java环境" class="headerlink" title="安装java环境"></a>安装java环境</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># java version &quot;1.8.0_271&quot;</span></span><br><span class="line">java -version</span><br></pre></td></tr></table></figure>
-<h2 id="下载并解压Zookeeper"><a href="#下载并解压Zookeeper" class="headerlink" title="下载并解压Zookeeper"></a>下载并解压Zookeeper</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 下载安装包</span><br><span class="line">wget https://mirror.bit.edu.cn/apache/zookeeper/zookeeper‐3.5.8/apache‐zookeeper‐3.5.8‐bin.tar.gz</span><br><span class="line"># 解压安装包</span><br><span class="line">tar ‐zxvf apache‐zookeeper‐3.5.8‐bin.tar.gz</span><br></pre></td></tr></table></figure>
+    <title>Zookeeper分布式锁应用——秒杀活动</title>
+    <url>/2022/10/30/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%BA%94%E7%94%A8%E2%80%94%E2%80%94%E7%A7%92%E6%9D%80%E6%B4%BB%E5%8A%A8/</url>
+    <content><![CDATA[<h1 id="场景描述"><a href="#场景描述" class="headerlink" title="场景描述"></a>场景描述</h1><p>淘宝双十一我们都知道，数以亿计的买家在同一时间去争抢有限数量的商品，也就是所谓的商品秒杀活动。面对如此高的并发，如果我们不采取一些措施，将会引发一系列问题，比如：商品超卖、单机锁的失效等。</p>
+<h2 id="商品超卖"><a href="#商品超卖" class="headerlink" title="商品超卖"></a>商品超卖</h2><p>假设有100个用户同时去抢一个商品，并且全部下单成功，但是由于并发问题没有得到有效处理，导致实际库存只扣减了99个，也就是发生了1个商品的超卖。</p>
+<h2 id="单机锁的失效"><a href="#单机锁的失效" class="headerlink" title="单机锁的失效"></a>单机锁的失效</h2><p>如果我们的服务是单实例的话，可以通过加单机锁来实现对并发问题的处理。这里的单机锁指的是JVM进程级别的锁，比如关键字<code>synchronized</code>、juc并发包下的工具类等等。但如果是分布式系统的话，服务通常是以多实例的姿态出现的，这时候单机锁将会失效。</p>
 <span id="more"></span>
-<h2 id="备份配置文件（非必须）"><a href="#备份配置文件（非必须）" class="headerlink" title="备份配置文件（非必须）"></a>备份配置文件（非必须）</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入配置文件目录</span></span><br><span class="line"><span class="built_in">cd</span> apache-zookeeper-3.5.8-bin/conf/</span><br><span class="line"><span class="comment"># 备份配置文件</span></span><br><span class="line"><span class="built_in">cp</span> zoo_sample.cfg zoo.cfg</span><br></pre></td></tr></table></figure>
-<h2 id="启动Zookeeper"><a href="#启动Zookeeper" class="headerlink" title="启动Zookeeper"></a>启动Zookeeper</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入脚本文件目录</span></span><br><span class="line"><span class="built_in">cd</span> apache-zookeeper-3.5.8-bin/bin/</span><br><span class="line"><span class="comment"># 启动Zookeeper</span></span><br><span class="line">./zkServer.sh start ../conf/zoo.cfg</span><br><span class="line"><span class="comment"># 检测是否启动</span></span><br><span class="line">ps -ef | grep zookeeper</span><br></pre></td></tr></table></figure>
-<h1 id="客户端连接"><a href="#客户端连接" class="headerlink" title="客户端连接"></a>客户端连接</h1><h2 id="终端方式连接"><a href="#终端方式连接" class="headerlink" title="终端方式连接"></a>终端方式连接</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入脚本文件目录</span></span><br><span class="line"><span class="built_in">cd</span> apache-zookeeper-3.5.8-bin/bin/</span><br><span class="line"><span class="comment"># 连接zookeeper</span></span><br><span class="line">./zkCli.sh -server 192.168.175.175:2181</span><br><span class="line"><span class="comment"># 查看所有节点</span></span><br><span class="line"><span class="built_in">ls</span> -R /</span><br></pre></td></tr></table></figure>
-<h2 id="可视化工具（ZooInspector）连接"><a href="#可视化工具（ZooInspector）连接" class="headerlink" title="可视化工具（ZooInspector）连接"></a>可视化工具（ZooInspector）连接</h2><ul>
-<li>下载工具：<a href="https://issues.apache.org/jira/secure/attachment/12436620/ZooInspector.zip">https://issues.apache.org/jira/secure/attachment/12436620/ZooInspector.zip</a></li>
-<li>解压，进入目录ZooInspector\build</li>
-<li>创建zkClient.bat脚本文件，内容如下：<figure class="highlight bat"><table><tr><td class="code"><pre><span class="line">java -jar D:\ZooInspector\build\zookeeper-dev-ZooInspector.jar</span><br></pre></td></tr></table></figure></li>
-<li>右键zkClient.bat文件，创建桌面快捷方式，然后修改一个自己喜欢的图标</li>
-<li>双击快捷方式，打开可视化工具——ZooInspector，输入连接信息<br><img src="/2022/10/13/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/ZooInspector1.png" alt="ZooInspector1.png"></li>
-<li>点击OK，连接成功<br><img src="/2022/10/13/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/ZooInspector2.png" alt="ZooInspector2.png"></li>
-</ul>
+<h1 id="场景模拟"><a href="#场景模拟" class="headerlink" title="场景模拟"></a>场景模拟</h1><h2 id="单机环境搭建"><a href="#单机环境搭建" class="headerlink" title="单机环境搭建"></a>单机环境搭建</h2><p>这里我们就简单一点，直接用IDE启动一个SpringBoot项目，提供一个外部调用的REST接口代表商品下单即可，具体代码请参见<code>https://github.com/jyinjuly/zookeeper/tree/master/zookeeper-distributed-lock</code>。这里我们重点看一下Controller层接口，如下：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/product&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ProductController</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> ProductService productService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/deduct&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">deduct</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">Product</span> <span class="variable">product</span> <span class="operator">=</span> productService.selectProduct(<span class="number">1L</span>);</span><br><span class="line">        log.info(<span class="string">&quot;当前库存：&#123;&#125;&quot;</span>, product.getNumber());</span><br><span class="line">        <span class="keyword">if</span> (product.getNumber() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            product.setNumber(product.getNumber()-<span class="number">1</span>);</span><br><span class="line">            productService.updateProduct(product);</span><br><span class="line">            log.info(<span class="string">&quot;出库成功，剩余库存：&#123;&#125;&quot;</span>, product.getNumber());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接口逻辑很简单，首先查询商品，如果商品还有库存，则去做扣减库存操作。</p>
+<h2 id="复现商品超卖"><a href="#复现商品超卖" class="headerlink" title="复现商品超卖"></a>复现商品超卖</h2><h3 id="jmeter模拟并发请求"><a href="#jmeter模拟并发请求" class="headerlink" title="jmeter模拟并发请求"></a>jmeter模拟并发请求</h3><p>jmeter的安装这里就不做说明了，请各位读者小伙伴自行百度。我们只介绍本次模拟的相关参数，如下：<br><img src="/2022/10/30/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%BA%94%E7%94%A8%E2%80%94%E2%80%94%E7%A7%92%E6%9D%80%E6%B4%BB%E5%8A%A8/%E7%BA%BF%E7%A8%8B%E7%BB%841.png" alt="线程组1.png"><br><img src="/2022/10/30/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%BA%94%E7%94%A8%E2%80%94%E2%80%94%E7%A7%92%E6%9D%80%E6%B4%BB%E5%8A%A8/HTTP%E8%AF%B7%E6%B1%821.png" alt="HTTP请求1.png"></p>
+<h3 id="请求结果分析"><a href="#请求结果分析" class="headerlink" title="请求结果分析"></a>请求结果分析</h3><p>首先，初始库存如下：<br><img src="/2022/10/30/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%BA%94%E7%94%A8%E2%80%94%E2%80%94%E7%A7%92%E6%9D%80%E6%B4%BB%E5%8A%A8/%E5%88%9D%E5%A7%8B%E5%BA%93%E5%AD%98.png" alt="初始库存.png"><br>并发请求之后的库存如下：<br><img src="/2022/10/30/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%BA%94%E7%94%A8%E2%80%94%E2%80%94%E7%A7%92%E6%9D%80%E6%B4%BB%E5%8A%A8/%E8%B6%85%E5%8D%96%E5%90%8E%E5%BA%93%E5%AD%98.png" alt="超卖后库存.png"><br>什么意思？客户下单成功了100个商品，实际库存却只扣减了3个！什么原因导致的呢？分析如下：<br><img src="/2022/10/30/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%BA%94%E7%94%A8%E2%80%94%E2%80%94%E7%A7%92%E6%9D%80%E6%B4%BB%E5%8A%A8/%E8%B6%85%E5%8D%96%E5%8E%9F%E5%9B%A0%E5%88%86%E6%9E%90.png" alt="超卖原因分析.png"><br>究其原因是代码没有针对并发场景做处理导致的。</p>
+<h2 id="单机锁解决商品超卖"><a href="#单机锁解决商品超卖" class="headerlink" title="单机锁解决商品超卖"></a>单机锁解决商品超卖</h2><p>针对以上单机环境的并发问题，可以通过加JVM锁处理。如下：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@GetMapping(&quot;/deduct&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">deduct</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    <span class="comment">// 单机版加锁</span></span><br><span class="line">    <span class="keyword">synchronized</span> (ProductController.class) &#123;</span><br><span class="line">        <span class="type">Product</span> <span class="variable">product</span> <span class="operator">=</span> productService.selectProduct(<span class="number">1L</span>);</span><br><span class="line">        log.info(<span class="string">&quot;当前库存：&#123;&#125;&quot;</span>, product.getNumber());</span><br><span class="line">        <span class="keyword">if</span> (product.getNumber() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            product.setNumber(product.getNumber()-<span class="number">1</span>);</span><br><span class="line">            productService.updateProduct(product);</span><br><span class="line">            log.info(<span class="string">&quot;出库成功，剩余库存：&#123;&#125;&quot;</span>, product.getNumber());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先，初始库存如下：<br><img src="/2022/10/30/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%BA%94%E7%94%A8%E2%80%94%E2%80%94%E7%A7%92%E6%9D%80%E6%B4%BB%E5%8A%A8/%E5%88%9D%E5%A7%8B%E5%BA%93%E5%AD%98.png" alt="初始库存.png"><br>并发请求之后的库存如下：<br><img src="/2022/10/30/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%BA%94%E7%94%A8%E2%80%94%E2%80%94%E7%A7%92%E6%9D%80%E6%B4%BB%E5%8A%A8/%E5%89%A9%E4%BD%99%E5%BA%93%E5%AD%98.png" alt="剩余库存.png"></p>
+<h2 id="分布式环境搭建"><a href="#分布式环境搭建" class="headerlink" title="分布式环境搭建"></a>分布式环境搭建</h2><p>这里我们通过IDE并行启动两个服务实例，端口号分别为8080和8081。然后通过（本地）Nginx将请求反向代理到这两个实例，实现简单的分布式系统。</p>
+<h3 id="Nginx配置"><a href="#Nginx配置" class="headerlink" title="Nginx配置"></a>Nginx配置</h3><p><img src="/2022/10/30/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%BA%94%E7%94%A8%E2%80%94%E2%80%94%E7%A7%92%E6%9D%80%E6%B4%BB%E5%8A%A8/Nginx%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86.png" alt="Nginx反向代理.png"></p>
+<h3 id="服务并行启动"><a href="#服务并行启动" class="headerlink" title="服务并行启动"></a>服务并行启动</h3><p>首先配置服务允许并行启动，如下：<br><img src="/2022/10/30/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%BA%94%E7%94%A8%E2%80%94%E2%80%94%E7%A7%92%E6%9D%80%E6%B4%BB%E5%8A%A8/%E6%9C%8D%E5%8A%A1%E5%B9%B6%E8%A1%8C%E5%90%AF%E5%8A%A8.png" alt="服务并行启动.png"><br>然后手动修改端口号，分别启动8080服务实例和8081服务实例。</p>
+<h2 id="单机锁失效"><a href="#单机锁失效" class="headerlink" title="单机锁失效"></a>单机锁失效</h2><p>有了分布式环境，我们再去测试一下单机锁还能否解决商品超卖的问题，首先修改一下jmeter的HTTP请求，如下：<br><img src="/2022/10/30/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%BA%94%E7%94%A8%E2%80%94%E2%80%94%E7%A7%92%E6%9D%80%E6%B4%BB%E5%8A%A8/HTTP%E8%AF%B7%E6%B1%822.png" alt="HTTP请求2.png"><br>然后模拟并发请求，结果如下，首先，初始库存：<br><img src="/2022/10/30/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%BA%94%E7%94%A8%E2%80%94%E2%80%94%E7%A7%92%E6%9D%80%E6%B4%BB%E5%8A%A8/%E5%88%9D%E5%A7%8B%E5%BA%93%E5%AD%98.png" alt="初始库存.png"><br>并发请求之后的库存：<br><img src="/2022/10/30/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%BA%94%E7%94%A8%E2%80%94%E2%80%94%E7%A7%92%E6%9D%80%E6%B4%BB%E5%8A%A8/%E5%88%86%E5%B8%83%E5%BC%8F%E8%B6%85%E5%8D%96%E5%90%8E%E5%BA%93%E5%AD%98.png" alt="分布式超卖后库存.png"><br>结果显而易见，单机锁在分布式环境下失效了。</p>
+<h1 id="Zookeeper分布式锁"><a href="#Zookeeper分布式锁" class="headerlink" title="Zookeeper分布式锁"></a>Zookeeper分布式锁</h1><p>分布式锁有很多种实现，比如Redis分布式锁、Zookeeper分布式锁等等，这里我们使用的是Zookeeper版本，而且还是Curator框架封装好的工具类。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@GetMapping(&quot;/deduct&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">deduct</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    <span class="comment">// zookeeper分布式锁</span></span><br><span class="line">    <span class="type">InterProcessMutex</span> <span class="variable">processMutex</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">InterProcessMutex</span>(curatorFramework, <span class="string">&quot;/product_1&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        processMutex.acquire();</span><br><span class="line">        <span class="type">Product</span> <span class="variable">product</span> <span class="operator">=</span> productService.selectProduct(<span class="number">1L</span>);</span><br><span class="line">        log.info(<span class="string">&quot;当前库存：&#123;&#125;&quot;</span>, product.getNumber());</span><br><span class="line">        <span class="keyword">if</span> (product.getNumber() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            product.setNumber(product.getNumber()-<span class="number">1</span>);</span><br><span class="line">            productService.updateProduct(product);</span><br><span class="line">            log.info(<span class="string">&quot;出库成功，剩余库存：&#123;&#125;&quot;</span>, product.getNumber());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        processMutex.release();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后模拟并发请求，结果如下，首先，初始库存：<br><img src="/2022/10/30/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%BA%94%E7%94%A8%E2%80%94%E2%80%94%E7%A7%92%E6%9D%80%E6%B4%BB%E5%8A%A8/%E5%88%9D%E5%A7%8B%E5%BA%93%E5%AD%98.png" alt="初始库存.png"><br>并发请求之后的库存：<br><img src="/2022/10/30/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%BA%94%E7%94%A8%E2%80%94%E2%80%94%E7%A7%92%E6%9D%80%E6%B4%BB%E5%8A%A8/%E5%89%A9%E4%BD%99%E5%BA%93%E5%AD%98.png" alt="剩余库存.png"><br>由此可见，使用分布式锁，分布式环境下的并发问题得以解决。</p>
 ]]></content>
       <categories>
         <category>Zookeeper</category>
       </categories>
       <tags>
         <tag>Zookeeper</tag>
-        <tag>CentOS7</tag>
-        <tag>客户端工具</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Zookeeper特性——事件监听机制</title>
-    <url>/2022/10/13/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/</url>
-    <content><![CDATA[<p>Zookeeper有两大特性——文件系统和事件监听机制，本篇介绍事件监听机制。</p>
-<h1 id="事件类型"><a href="#事件类型" class="headerlink" title="事件类型"></a>事件类型</h1><p>Zookeeper中的事件类型有五种，如下：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> <span class="title class_">EventType</span> &#123;</span><br><span class="line">    None (-<span class="number">1</span>),</span><br><span class="line">    NodeCreated (<span class="number">1</span>),            <span class="comment">// 节点被创建时触发</span></span><br><span class="line">    NodeDeleted (<span class="number">2</span>),            <span class="comment">// 节点被删除时触发</span></span><br><span class="line">    NodeDataChanged (<span class="number">3</span>),        <span class="comment">// 节点的节点数据发生变化时触发</span></span><br><span class="line">    NodeChildrenChanged (<span class="number">4</span>),    <span class="comment">// 节点的子节点列表发生变化时触发</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 3.5.x之后新加的事件类型</span></span><br><span class="line">    DataWatchRemoved (<span class="number">5</span>),       <span class="comment">// 节点的监听被移除时触发</span></span><br><span class="line">    ChildWatchRemoved (<span class="number">6</span>);      <span class="comment">// 节点的子节点的监听被移除时触发</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<span id="more"></span>
-<h1 id="监听类型"><a href="#监听类型" class="headerlink" title="监听类型"></a>监听类型</h1><p>Zookeeper的监听类型总体分为两类，节点数据监听（NodeDataChanged）和节点目录监听（NodeCreated、NodeDeleted、NodeChildrenChanged）。</p>
-<h2 id="节点数据监听"><a href="#节点数据监听" class="headerlink" title="节点数据监听"></a>节点数据监听</h2><p>节点数据监听只能针对单个节点设置。当节点的节点数据发生变化时，Zookeeper服务端会向所有注册了该节点数据监听的客户端发送一个NodeDataChanged事件。</p>
-<blockquote>
-<p>注意：节点数据并不单指节点存储的数据，还包括节点的元数据（状态信息）。</p>
-</blockquote>
-<h2 id="节点目录监听"><a href="#节点目录监听" class="headerlink" title="节点目录监听"></a>节点目录监听</h2><p>节点目录监听对应三种事件，所以我们也可以将节点目录监听分为三类：</p>
-<ul>
-<li>节点创建监听（NodeCreated）<blockquote>
-<p>当一个节点被创建时，Zookeeper服务端会向所有注册了该节点创建监听的客户端发送一个NodeCreated事件。这里可能会有疑问，如何向一个不存在的节点注册监听？确实，Zookeeper原生客户端不支持这种操作，但是Zookeeper的Java客户端的一些API是支持的。</p>
-</blockquote>
-</li>
-<li>节点删除监听（NodeDeleted）<blockquote>
-<p>当一个节点被删除时，Zookeeper服务端会向所有注册了该节点删除监听的客户端发送一个NodeDeleted事件。</p>
-</blockquote>
-</li>
-<li>子节点列表监听（NodeChildrenChanged）<blockquote>
-<p>当一个节点发生子节点数量变化（新增、删除）时，Zookeeper服务端会向所有注册了该子节点列表监听的客户端发送一个NodeChildrenChanged事件。</p>
-</blockquote>
-</li>
-</ul>
-<blockquote>
-<p>注意，节点目录监听不仅可以针对单个节点设置，还可以递归对节点及其所有下级节点进行设置。</p>
-</blockquote>
-<h1 id="监听操作（原生API）"><a href="#监听操作（原生API）" class="headerlink" title="监听操作（原生API）"></a>监听操作（原生API）</h1><h2 id="增加监听"><a href="#增加监听" class="headerlink" title="增加监听"></a>增加监听</h2><ul>
-<li>增加节点数据监听<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">get -w path</span><br><span class="line"><span class="built_in">stat</span> -w path</span><br></pre></td></tr></table></figure>
-<img src="/2022/10/13/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/%E8%8A%82%E7%82%B9%E6%95%B0%E6%8D%AE%E7%9B%91%E5%90%AC.png" alt="节点数据监听.png"></li>
-<li>增加节点目录监听<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">ls</span> -w path</span><br></pre></td></tr></table></figure>
-<img src="/2022/10/13/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/%E8%8A%82%E7%82%B9%E7%9B%AE%E5%BD%95%E7%9B%91%E5%90%AC1.png" alt="节点目录监听1.png"></li>
-<li>递归增加节点目录监听<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">ls</span> -R -w path</span><br></pre></td></tr></table></figure>
-<img src="/2022/10/13/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/%E8%8A%82%E7%82%B9%E7%9B%AE%E5%BD%95%E7%9B%91%E5%90%AC2.png" alt="节点目录监听2.png"><br>这里执行了5条命令，每条命令都有其意义所在：<ul>
-<li>ls -R -w &#x2F;：列出所有节点，并给所有节点增加节点目录监听。也就是说有且仅有这7个节点被注册了节点目录监听。</li>
-<li>delete &#x2F;test&#x2F;a：触发了<code>/test/a</code>节点的NodeDeleted事件；触发了<code>/test</code>节点的NodeChildrenChanged事件。</li>
-<li>delete &#x2F;test&#x2F;b：触发了<code>/test/b</code>节点的NodeDeleted事件；但是没有触发<code>/test</code>节点的NodeChildrenChanged事件，因为上一步已经触发过了。<strong>说到这里不得不提到Zookeeper监听机制一个很重要的特点，那就是所有的监听都是一次性的，一旦监听的事件被触发，监听将会被自动移除。</strong></li>
-<li>create &#x2F;test&#x2F;c：新增一个节点，目的是为了测试新节点是否会被注册事件监听。</li>
-<li>create &#x2F;test&#x2F;c&#x2F;1：没有触发<code>/test/c</code>节点的NodeChildrenChanged事件，证明新节点不会被注册事件监听。</li>
-</ul>
-</li>
-</ul>
-<h2 id="移除监听"><a href="#移除监听" class="headerlink" title="移除监听"></a>移除监听</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">removewatches path</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-]]></content>
-      <categories>
-        <category>Zookeeper</category>
-      </categories>
-      <tags>
-        <tag>Zookeeper</tag>
-        <tag>事件监听机制</tag>
-        <tag>一次性监听</tag>
+        <tag>分布式锁</tag>
       </tags>
   </entry>
   <entry>
@@ -453,6 +381,82 @@
       </tags>
   </entry>
   <entry>
+    <title>Zookeeper特性——事件监听机制</title>
+    <url>/2022/10/13/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/</url>
+    <content><![CDATA[<p>Zookeeper有两大特性——文件系统和事件监听机制，本篇介绍事件监听机制。</p>
+<h1 id="事件类型"><a href="#事件类型" class="headerlink" title="事件类型"></a>事件类型</h1><p>Zookeeper中的事件类型有五种，如下：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> <span class="title class_">EventType</span> &#123;</span><br><span class="line">    None (-<span class="number">1</span>),</span><br><span class="line">    NodeCreated (<span class="number">1</span>),            <span class="comment">// 节点被创建时触发</span></span><br><span class="line">    NodeDeleted (<span class="number">2</span>),            <span class="comment">// 节点被删除时触发</span></span><br><span class="line">    NodeDataChanged (<span class="number">3</span>),        <span class="comment">// 节点的节点数据发生变化时触发</span></span><br><span class="line">    NodeChildrenChanged (<span class="number">4</span>),    <span class="comment">// 节点的子节点列表发生变化时触发</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 3.5.x之后新加的事件类型</span></span><br><span class="line">    DataWatchRemoved (<span class="number">5</span>),       <span class="comment">// 节点的监听被移除时触发</span></span><br><span class="line">    ChildWatchRemoved (<span class="number">6</span>);      <span class="comment">// 节点的子节点的监听被移除时触发</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<h1 id="监听类型"><a href="#监听类型" class="headerlink" title="监听类型"></a>监听类型</h1><p>Zookeeper的监听类型总体分为两类，节点数据监听（NodeDataChanged）和节点目录监听（NodeCreated、NodeDeleted、NodeChildrenChanged）。</p>
+<h2 id="节点数据监听"><a href="#节点数据监听" class="headerlink" title="节点数据监听"></a>节点数据监听</h2><p>节点数据监听只能针对单个节点设置。当节点的节点数据发生变化时，Zookeeper服务端会向所有注册了该节点数据监听的客户端发送一个NodeDataChanged事件。</p>
+<blockquote>
+<p>注意：节点数据并不单指节点存储的数据，还包括节点的元数据（状态信息）。</p>
+</blockquote>
+<h2 id="节点目录监听"><a href="#节点目录监听" class="headerlink" title="节点目录监听"></a>节点目录监听</h2><p>节点目录监听对应三种事件，所以我们也可以将节点目录监听分为三类：</p>
+<ul>
+<li>节点创建监听（NodeCreated）<blockquote>
+<p>当一个节点被创建时，Zookeeper服务端会向所有注册了该节点创建监听的客户端发送一个NodeCreated事件。这里可能会有疑问，如何向一个不存在的节点注册监听？确实，Zookeeper原生客户端不支持这种操作，但是Zookeeper的Java客户端的一些API是支持的。</p>
+</blockquote>
+</li>
+<li>节点删除监听（NodeDeleted）<blockquote>
+<p>当一个节点被删除时，Zookeeper服务端会向所有注册了该节点删除监听的客户端发送一个NodeDeleted事件。</p>
+</blockquote>
+</li>
+<li>子节点列表监听（NodeChildrenChanged）<blockquote>
+<p>当一个节点发生子节点数量变化（新增、删除）时，Zookeeper服务端会向所有注册了该子节点列表监听的客户端发送一个NodeChildrenChanged事件。</p>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>注意，节点目录监听不仅可以针对单个节点设置，还可以递归对节点及其所有下级节点进行设置。</p>
+</blockquote>
+<h1 id="监听操作（原生API）"><a href="#监听操作（原生API）" class="headerlink" title="监听操作（原生API）"></a>监听操作（原生API）</h1><h2 id="增加监听"><a href="#增加监听" class="headerlink" title="增加监听"></a>增加监听</h2><ul>
+<li>增加节点数据监听<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">get -w path</span><br><span class="line"><span class="built_in">stat</span> -w path</span><br></pre></td></tr></table></figure>
+<img src="/2022/10/13/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/%E8%8A%82%E7%82%B9%E6%95%B0%E6%8D%AE%E7%9B%91%E5%90%AC.png" alt="节点数据监听.png"></li>
+<li>增加节点目录监听<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">ls</span> -w path</span><br></pre></td></tr></table></figure>
+<img src="/2022/10/13/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/%E8%8A%82%E7%82%B9%E7%9B%AE%E5%BD%95%E7%9B%91%E5%90%AC1.png" alt="节点目录监听1.png"></li>
+<li>递归增加节点目录监听<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">ls</span> -R -w path</span><br></pre></td></tr></table></figure>
+<img src="/2022/10/13/Zookeeper%E7%89%B9%E6%80%A7%E2%80%94%E2%80%94%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E6%9C%BA%E5%88%B6/%E8%8A%82%E7%82%B9%E7%9B%AE%E5%BD%95%E7%9B%91%E5%90%AC2.png" alt="节点目录监听2.png"><br>这里执行了5条命令，每条命令都有其意义所在：<ul>
+<li>ls -R -w &#x2F;：列出所有节点，并给所有节点增加节点目录监听。也就是说有且仅有这7个节点被注册了节点目录监听。</li>
+<li>delete &#x2F;test&#x2F;a：触发了<code>/test/a</code>节点的NodeDeleted事件；触发了<code>/test</code>节点的NodeChildrenChanged事件。</li>
+<li>delete &#x2F;test&#x2F;b：触发了<code>/test/b</code>节点的NodeDeleted事件；但是没有触发<code>/test</code>节点的NodeChildrenChanged事件，因为上一步已经触发过了。<strong>说到这里不得不提到Zookeeper监听机制一个很重要的特点，那就是所有的监听都是一次性的，一旦监听的事件被触发，监听将会被自动移除。</strong></li>
+<li>create &#x2F;test&#x2F;c：新增一个节点，目的是为了测试新节点是否会被注册事件监听。</li>
+<li>create &#x2F;test&#x2F;c&#x2F;1：没有触发<code>/test/c</code>节点的NodeChildrenChanged事件，证明新节点不会被注册事件监听。</li>
+</ul>
+</li>
+</ul>
+<h2 id="移除监听"><a href="#移除监听" class="headerlink" title="移除监听"></a>移除监听</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">removewatches path</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>Zookeeper</category>
+      </categories>
+      <tags>
+        <tag>Zookeeper</tag>
+        <tag>事件监听机制</tag>
+        <tag>一次性监听</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Zookeeper的ACL权限控制</title>
     <url>/2022/10/13/Zookeeper%E7%9A%84ACL%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/</url>
     <content><![CDATA[<p>Zookeeper的ACL权限控制，可以控制节点的读写操作，保证数据的安全性，Zookeeper的ACL权限设置分为3部分组成，分别是：权限模式（Scheme）、授权对象（ID）、权限信息（Permission）。最终组成一条例如“scheme:id:permission”格式的ACL请求信息。</p>
@@ -528,6 +532,33 @@
       <tags>
         <tag>Zookeeper</tag>
         <tag>ACL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Zookeeper单机版安装</title>
+    <url>/2022/10/13/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/</url>
+    <content><![CDATA[<h1 id="安装Zookeeper"><a href="#安装Zookeeper" class="headerlink" title="安装Zookeeper"></a>安装Zookeeper</h1><h2 id="安装java环境"><a href="#安装java环境" class="headerlink" title="安装java环境"></a>安装java环境</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># java version &quot;1.8.0_271&quot;</span></span><br><span class="line">java -version</span><br></pre></td></tr></table></figure>
+<h2 id="下载并解压Zookeeper"><a href="#下载并解压Zookeeper" class="headerlink" title="下载并解压Zookeeper"></a>下载并解压Zookeeper</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 下载安装包</span><br><span class="line">wget https://mirror.bit.edu.cn/apache/zookeeper/zookeeper‐3.5.8/apache‐zookeeper‐3.5.8‐bin.tar.gz</span><br><span class="line"># 解压安装包</span><br><span class="line">tar ‐zxvf apache‐zookeeper‐3.5.8‐bin.tar.gz</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<h2 id="备份配置文件（非必须）"><a href="#备份配置文件（非必须）" class="headerlink" title="备份配置文件（非必须）"></a>备份配置文件（非必须）</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入配置文件目录</span></span><br><span class="line"><span class="built_in">cd</span> apache-zookeeper-3.5.8-bin/conf/</span><br><span class="line"><span class="comment"># 备份配置文件</span></span><br><span class="line"><span class="built_in">cp</span> zoo_sample.cfg zoo.cfg</span><br></pre></td></tr></table></figure>
+<h2 id="启动Zookeeper"><a href="#启动Zookeeper" class="headerlink" title="启动Zookeeper"></a>启动Zookeeper</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入脚本文件目录</span></span><br><span class="line"><span class="built_in">cd</span> apache-zookeeper-3.5.8-bin/bin/</span><br><span class="line"><span class="comment"># 启动Zookeeper</span></span><br><span class="line">./zkServer.sh start ../conf/zoo.cfg</span><br><span class="line"><span class="comment"># 检测是否启动</span></span><br><span class="line">ps -ef | grep zookeeper</span><br></pre></td></tr></table></figure>
+<h1 id="客户端连接"><a href="#客户端连接" class="headerlink" title="客户端连接"></a>客户端连接</h1><h2 id="终端方式连接"><a href="#终端方式连接" class="headerlink" title="终端方式连接"></a>终端方式连接</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入脚本文件目录</span></span><br><span class="line"><span class="built_in">cd</span> apache-zookeeper-3.5.8-bin/bin/</span><br><span class="line"><span class="comment"># 连接zookeeper</span></span><br><span class="line">./zkCli.sh -server 192.168.175.175:2181</span><br><span class="line"><span class="comment"># 查看所有节点</span></span><br><span class="line"><span class="built_in">ls</span> -R /</span><br></pre></td></tr></table></figure>
+<h2 id="可视化工具（ZooInspector）连接"><a href="#可视化工具（ZooInspector）连接" class="headerlink" title="可视化工具（ZooInspector）连接"></a>可视化工具（ZooInspector）连接</h2><ul>
+<li>下载工具：<a href="https://issues.apache.org/jira/secure/attachment/12436620/ZooInspector.zip">https://issues.apache.org/jira/secure/attachment/12436620/ZooInspector.zip</a></li>
+<li>解压，进入目录ZooInspector\build</li>
+<li>创建zkClient.bat脚本文件，内容如下：<figure class="highlight bat"><table><tr><td class="code"><pre><span class="line">java -jar D:\ZooInspector\build\zookeeper-dev-ZooInspector.jar</span><br></pre></td></tr></table></figure></li>
+<li>右键zkClient.bat文件，创建桌面快捷方式，然后修改一个自己喜欢的图标</li>
+<li>双击快捷方式，打开可视化工具——ZooInspector，输入连接信息<br><img src="/2022/10/13/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/ZooInspector1.png" alt="ZooInspector1.png"></li>
+<li>点击OK，连接成功<br><img src="/2022/10/13/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/ZooInspector2.png" alt="ZooInspector2.png"></li>
+</ul>
+]]></content>
+      <categories>
+        <category>Zookeeper</category>
+      </categories>
+      <tags>
+        <tag>Zookeeper</tag>
+        <tag>CentOS7</tag>
+        <tag>客户端工具</tag>
       </tags>
   </entry>
   <entry>
