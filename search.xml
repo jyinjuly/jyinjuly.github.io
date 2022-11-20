@@ -1,6 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Docker安装MySQL</title>
+    <url>/2022/10/23/Docker%E5%AE%89%E8%A3%85MySQL/</url>
+    <content><![CDATA[<h1 id="查看可用版本"><a href="#查看可用版本" class="headerlink" title="查看可用版本"></a>查看可用版本</h1><p>访问 MySQL 镜像库地址：<a href="https://hub.docker.com/_/mysql?tab=tags">https://hub.docker.com/_/mysql?tab=tags</a></p>
+<span id="more"></span>
+
+<p><img src="/2022/10/23/Docker%E5%AE%89%E8%A3%85MySQL/%E6%9F%A5%E8%AF%A2%E5%8F%AF%E7%94%A8%E9%95%9C%E5%83%8F.png" alt="查询可用镜像.png"></p>
+<h1 id="拉取MySQL镜像"><a href="#拉取MySQL镜像" class="headerlink" title="拉取MySQL镜像"></a>拉取MySQL镜像</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ docker pull mysql:8.0.31</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/10/23/Docker%E5%AE%89%E8%A3%85MySQL/%E6%8B%89%E5%8F%96MySQL%E9%95%9C%E5%83%8F.png" alt="拉取MySQL镜像.png"></p>
+<h1 id="查看本地镜像"><a href="#查看本地镜像" class="headerlink" title="查看本地镜像"></a>查看本地镜像</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ docker images</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/10/23/Docker%E5%AE%89%E8%A3%85MySQL/%E6%9F%A5%E7%9C%8B%E6%9C%AC%E5%9C%B0%E9%95%9C%E5%83%8F.png" alt="查看本地镜像.png"></p>
+<h1 id="运行MySQL容器"><a href="#运行MySQL容器" class="headerlink" title="运行MySQL容器"></a>运行MySQL容器</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ docker run -itd --name mysql8 -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql:8.0.31</span><br></pre></td></tr></table></figure>
+<ul>
+<li>-p 3306:3306：映射容器服务的 3306 端口到宿主机的 3306 端口，外部主机可以直接通过 <code>宿主机ip:3306</code> 访问到 MySQL 的服务</li>
+<li>MYSQL_ROOT_PASSWORD&#x3D;123456：设置MySQL服务root用户的密码</li>
+</ul>
+<h1 id="验证启动成功"><a href="#验证启动成功" class="headerlink" title="验证启动成功"></a>验证启动成功</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ docker ps</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/10/23/Docker%E5%AE%89%E8%A3%85MySQL/%E9%AA%8C%E8%AF%81%E5%90%AF%E5%8A%A8.png" alt="验证启动.png"></p>
+]]></content>
+      <categories>
+        <category>Docker</category>
+      </categories>
+      <tags>
+        <tag>MySQL</tag>
+        <tag>Docker</tag>
+        <tag>容器</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>CentOS安装Docker</title>
     <url>/2022/10/16/CentOS%E5%AE%89%E8%A3%85Docker/</url>
     <content><![CDATA[<h1 id="卸载旧版本"><a href="#卸载旧版本" class="headerlink" title="卸载旧版本"></a>卸载旧版本</h1><p>较旧的 Docker 版本称为 docker 或 docker-engine 。如果已安装这些程序，请卸载它们以及相关的依赖项。</p>
@@ -45,37 +73,9 @@
         <category>Docker</category>
       </categories>
       <tags>
+        <tag>Docker</tag>
+        <tag>容器</tag>
         <tag>CentOS</tag>
-        <tag>Docker</tag>
-        <tag>容器</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Docker安装MySQL</title>
-    <url>/2022/10/23/Docker%E5%AE%89%E8%A3%85MySQL/</url>
-    <content><![CDATA[<h1 id="查看可用版本"><a href="#查看可用版本" class="headerlink" title="查看可用版本"></a>查看可用版本</h1><p>访问 MySQL 镜像库地址：<a href="https://hub.docker.com/_/mysql?tab=tags">https://hub.docker.com/_/mysql?tab=tags</a></p>
-<span id="more"></span>
-
-<p><img src="/2022/10/23/Docker%E5%AE%89%E8%A3%85MySQL/%E6%9F%A5%E8%AF%A2%E5%8F%AF%E7%94%A8%E9%95%9C%E5%83%8F.png" alt="查询可用镜像.png"></p>
-<h1 id="拉取MySQL镜像"><a href="#拉取MySQL镜像" class="headerlink" title="拉取MySQL镜像"></a>拉取MySQL镜像</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ docker pull mysql:8.0.31</span><br></pre></td></tr></table></figure>
-<p><img src="/2022/10/23/Docker%E5%AE%89%E8%A3%85MySQL/%E6%8B%89%E5%8F%96MySQL%E9%95%9C%E5%83%8F.png" alt="拉取MySQL镜像.png"></p>
-<h1 id="查看本地镜像"><a href="#查看本地镜像" class="headerlink" title="查看本地镜像"></a>查看本地镜像</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ docker images</span><br></pre></td></tr></table></figure>
-<p><img src="/2022/10/23/Docker%E5%AE%89%E8%A3%85MySQL/%E6%9F%A5%E7%9C%8B%E6%9C%AC%E5%9C%B0%E9%95%9C%E5%83%8F.png" alt="查看本地镜像.png"></p>
-<h1 id="运行MySQL容器"><a href="#运行MySQL容器" class="headerlink" title="运行MySQL容器"></a>运行MySQL容器</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ docker run -itd --name mysql8 -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql:8.0.31</span><br></pre></td></tr></table></figure>
-<ul>
-<li>-p 3306:3306：映射容器服务的 3306 端口到宿主机的 3306 端口，外部主机可以直接通过 <code>宿主机ip:3306</code> 访问到 MySQL 的服务</li>
-<li>MYSQL_ROOT_PASSWORD&#x3D;123456：设置MySQL服务root用户的密码</li>
-</ul>
-<h1 id="验证启动成功"><a href="#验证启动成功" class="headerlink" title="验证启动成功"></a>验证启动成功</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ docker ps</span><br></pre></td></tr></table></figure>
-<p><img src="/2022/10/23/Docker%E5%AE%89%E8%A3%85MySQL/%E9%AA%8C%E8%AF%81%E5%90%AF%E5%8A%A8.png" alt="验证启动.png"></p>
-]]></content>
-      <categories>
-        <category>Docker</category>
-      </categories>
-      <tags>
-        <tag>Docker</tag>
-        <tag>容器</tag>
-        <tag>MySQL</tag>
       </tags>
   </entry>
   <entry>
@@ -221,6 +221,126 @@
       </tags>
   </entry>
   <entry>
+    <title>Java线程状态</title>
+    <url>/2022/11/20/Java%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81/</url>
+    <content><![CDATA[<h1 id="Java线程状态"><a href="#Java线程状态" class="headerlink" title="Java线程状态"></a>Java线程状态</h1><p>java线程有六种状态，在Thread类中有所体现，如下：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> <span class="title class_">State</span> &#123;</span><br><span class="line">    NEW,</span><br><span class="line">    RUNNABLE,</span><br><span class="line">    BLOCKED,</span><br><span class="line">    WAITING,</span><br><span class="line">    TIMED_WAITING,</span><br><span class="line">    TERMINATED;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<h2 id="NEW"><a href="#NEW" class="headerlink" title="NEW"></a>NEW</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Thread state for a thread which has not yet started.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">NEW</span><br></pre></td></tr></table></figure>
+<p>新创建并且还未启动的线程，状态为NEW。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">NewThread</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Thread</span> <span class="variable">thread</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>();</span><br><span class="line">        System.out.println(<span class="string">&quot;线程状态：&quot;</span> + thread.getState());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>线程状态：NEW</p>
+</blockquote>
+<h2 id="RUNNABLE"><a href="#RUNNABLE" class="headerlink" title="RUNNABLE"></a>RUNNABLE</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Thread state for a runnable thread.  A thread in the runnable</span></span><br><span class="line"><span class="comment"> * state is executing in the Java virtual machine but it may</span></span><br><span class="line"><span class="comment"> * be waiting for other resources from the operating system</span></span><br><span class="line"><span class="comment"> * such as processor.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">RUNNABLE</span><br></pre></td></tr></table></figure>
+<p>线程调用<code>start()</code>方法，进入可运行状态——RUNNABLE。RUNNABLE状态的线程在java虚拟机中已经开始执行，但是它可能还在等待来自操作系统的资源，比如处理器。为了便于理解，我们“擅自”将RUNNABLE状态拆分成两个阶段：</p>
+<ol>
+<li>READY——就绪状态，已经在java虚拟机中执行，但是并未实际执行任务，相当于空转<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ReadyThread</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Thread</span> <span class="variable">thread</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; System.out.println(<span class="string">&quot;线程开始执行&quot;</span>));</span><br><span class="line">        thread.start();</span><br><span class="line">        System.out.println(<span class="string">&quot;线程状态：&quot;</span> + thread.getState());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>线程状态：RUNNABLE<br>线程开始执行</p>
+</blockquote>
+</li>
+<li>RUNNING——执行中状态，获取了CPU时间片，真正在执行任务了<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RunningThread</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; System.out.println(<span class="string">&quot;线程状态：&quot;</span> + Thread.currentThread().getState())).start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>线程状态：RUNNABLE</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="BLOCKED"><a href="#BLOCKED" class="headerlink" title="BLOCKED"></a>BLOCKED</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Thread state for a thread blocked waiting for a monitor lock.</span></span><br><span class="line"><span class="comment"> * A thread in the blocked state is waiting for a monitor lock</span></span><br><span class="line"><span class="comment"> * to enter a synchronized block/method or</span></span><br><span class="line"><span class="comment"> * reenter a synchronized block/method after calling</span></span><br><span class="line"><span class="comment"> * &#123;<span class="doctag">@link</span> Object#wait() Object.wait&#125;.</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+<p>阻塞线程的状态为BLOCKED。此状态下的线程正在等待一个监视器锁，目的是为了：</p>
+<ol>
+<li>能进入一个同步块或者同步方法<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BlockedThread</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">Object</span> <span class="variable">obj</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Object</span>(); <span class="comment">// 监视器锁</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (obj) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Thread.sleep(<span class="number">10000</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        <span class="type">BlockedThread</span> <span class="variable">blockedThread</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BlockedThread</span>();</span><br><span class="line">        <span class="type">Thread</span> <span class="variable">t1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(blockedThread::test);</span><br><span class="line">        <span class="type">Thread</span> <span class="variable">t2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(blockedThread::test);</span><br><span class="line">        t1.start();</span><br><span class="line">        Thread.sleep(<span class="number">1000</span>); <span class="comment">// 保证线程t1先拿到监视器锁，进入同步块</span></span><br><span class="line">        t2.start();</span><br><span class="line">        Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;线程t2状态：&quot;</span> + t2.getState()); <span class="comment">// 线程t2正在等待获取监视器锁，以进入同步块</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>线程t2状态：BLOCKED</p>
+</blockquote>
+</li>
+<li>能（在监视器锁调用<code>Object#wait()</code>方法之后）重新进入一个同步块或者同步方法<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Waiting2BlockedThread</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">Object</span> <span class="variable">obj</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Object</span>(); <span class="comment">// 监视器锁</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">boolean</span> <span class="variable">flag</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (obj) &#123;</span><br><span class="line">            <span class="keyword">if</span> (flag) &#123;</span><br><span class="line">                flag = <span class="literal">false</span>;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    obj.wait();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                obj.notify();</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    Thread.sleep(<span class="number">10000</span>);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        <span class="type">Waiting2BlockedThread</span> <span class="variable">waiting2BlockedThread</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Waiting2BlockedThread</span>();</span><br><span class="line">        <span class="type">Thread</span> <span class="variable">t1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(waiting2BlockedThread::test);</span><br><span class="line">        <span class="type">Thread</span> <span class="variable">t2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(waiting2BlockedThread::test);</span><br><span class="line">        t1.start();</span><br><span class="line">        Thread.sleep(<span class="number">1000</span>); <span class="comment">// 保证线程t1先拿到监视器锁，进入同步块</span></span><br><span class="line">        System.out.println(<span class="string">&quot;线程t1状态：&quot;</span> + t1.getState()); <span class="comment">// 监视器锁调用Object#wait()方法，当前锁持有线程t1释放锁并置为等待状态</span></span><br><span class="line">        t2.start();</span><br><span class="line">        Thread.sleep(<span class="number">2000</span>); <span class="comment">// 保证线程t2进入同步块，监视器锁调用Object#notify()方法，将线程t1唤醒</span></span><br><span class="line">        System.out.println(<span class="string">&quot;线程t1状态：&quot;</span> + t1.getState()); <span class="comment">// 唤醒之后的线程t1首先进入RUNNABLE状态去尝试获取监视器锁，发现锁被线程t2持有，于是又变为阻塞状态</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>线程t1状态：WAITING<br>线程t1状态：BLOCKED</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="WAITING"><a href="#WAITING" class="headerlink" title="WAITING"></a>WAITING</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Thread state for a waiting thread.</span></span><br><span class="line"><span class="comment"> * A thread is in the waiting state due to calling one of the</span></span><br><span class="line"><span class="comment"> * following methods:</span></span><br><span class="line"><span class="comment"> * &lt;ul&gt;</span></span><br><span class="line"><span class="comment"> *   &lt;li&gt;&#123;<span class="doctag">@link</span> Object#wait() Object.wait&#125; with no timeout&lt;/li&gt;</span></span><br><span class="line"><span class="comment"> *   &lt;li&gt;&#123;<span class="doctag">@link</span> #join() Thread.join&#125; with no timeout&lt;/li&gt;</span></span><br><span class="line"><span class="comment"> *   &lt;li&gt;&#123;<span class="doctag">@link</span> LockSupport#park() LockSupport.park&#125;&lt;/li&gt;</span></span><br><span class="line"><span class="comment"> * &lt;/ul&gt;</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * &lt;p&gt;A thread in the waiting state is waiting for another thread to</span></span><br><span class="line"><span class="comment"> * perform a particular action.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * For example, a thread that has called &lt;tt&gt;Object.wait()&lt;/tt&gt;</span></span><br><span class="line"><span class="comment"> * on an object is waiting for another thread to call</span></span><br><span class="line"><span class="comment"> * &lt;tt&gt;Object.notify()&lt;/tt&gt; or &lt;tt&gt;Object.notifyAll()&lt;/tt&gt; on</span></span><br><span class="line"><span class="comment"> * that object. A thread that has called &lt;tt&gt;Thread.join()&lt;/tt&gt;</span></span><br><span class="line"><span class="comment"> * is waiting for a specified thread to terminate.</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+<p>等待线程的状态为WAITING。等待线程等待另一个线程去执行某一个特定的操作，以此将自己唤醒。当以下方法被执行时，线程将进入等待状态：</p>
+<ol>
+<li>Object#wait()：在线程t1中调用了监视器锁对象的wait()方法，线程t1将进入等待状态。等待另一个线程t2去调用相同的监视器锁对象的notify()&#x2F;nofityAll()方法。<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Wait2Waiting</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">Object</span> <span class="variable">obj</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Object</span>(); <span class="comment">// 监视器锁</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">boolean</span> <span class="variable">flag</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (obj) &#123;</span><br><span class="line">            <span class="keyword">if</span> (flag) &#123;</span><br><span class="line">                flag = <span class="literal">false</span>;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    obj.wait(); <span class="comment">// 线程进入等待状态</span></span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                obj.notify(); <span class="comment">// 等待线程被唤醒</span></span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    Thread.sleep(<span class="number">10000</span>);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        <span class="type">Wait2Waiting</span> <span class="variable">wait2Waiting</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Wait2Waiting</span>();</span><br><span class="line">        <span class="type">Thread</span> <span class="variable">t1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(wait2Waiting::test);</span><br><span class="line">        <span class="type">Thread</span> <span class="variable">t2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(wait2Waiting::test);</span><br><span class="line">        t1.start();</span><br><span class="line">        Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;线程t1状态：&quot;</span> + t1.getState());</span><br><span class="line">        t2.start();</span><br><span class="line">        Thread.sleep(<span class="number">2000</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;线程t1状态：&quot;</span> + t1.getState());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>线程t1状态：WAITING<br>线程t1状态：BLOCKED</p>
+</blockquote>
+</li>
+<li>Thread#join()：在线程t2中调用了线程t1的join()方法，那么线程t2将进入等待状态，直到线程t1死亡。<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Join2Waiting</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        <span class="type">Thread</span> <span class="variable">t1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Thread.sleep(<span class="number">5000</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="type">Thread</span> <span class="variable">t2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                t1.join(); <span class="comment">// 线程t2进入等待状态，直到线程t1死亡</span></span><br><span class="line">                <span class="keyword">while</span> (<span class="literal">true</span>) &#123; &#125;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        t1.start();</span><br><span class="line">        Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">        t2.start();</span><br><span class="line">        Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;线程t2状态：&quot;</span> + t2.getState());</span><br><span class="line">        Thread.sleep(<span class="number">4000</span>); <span class="comment">// 保证线程t1已经死亡，线程t2被唤醒</span></span><br><span class="line">        System.out.println(<span class="string">&quot;线程t2状态：&quot;</span> + t2.getState());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>线程t2状态：WAITING<br>线程t2状态：RUNNABLE</p>
+</blockquote>
+</li>
+<li>LockSupport#park()</li>
+</ol>
+<h2 id="TIMED-WAITING"><a href="#TIMED-WAITING" class="headerlink" title="TIMED_WAITING"></a>TIMED_WAITING</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Thread state for a waiting thread with a specified waiting time.</span></span><br><span class="line"><span class="comment"> * A thread is in the timed waiting state due to calling one of</span></span><br><span class="line"><span class="comment"> * the following methods with a specified positive waiting time:</span></span><br><span class="line"><span class="comment"> * &lt;ul&gt;</span></span><br><span class="line"><span class="comment"> *   &lt;li&gt;&#123;<span class="doctag">@link</span> #sleep Thread.sleep&#125;&lt;/li&gt;</span></span><br><span class="line"><span class="comment"> *   &lt;li&gt;&#123;<span class="doctag">@link</span> Object#wait(long) Object.wait&#125; with timeout&lt;/li&gt;</span></span><br><span class="line"><span class="comment"> *   &lt;li&gt;&#123;<span class="doctag">@link</span> #join(long) Thread.join&#125; with timeout&lt;/li&gt;</span></span><br><span class="line"><span class="comment"> *   &lt;li&gt;&#123;<span class="doctag">@link</span> LockSupport#parkNanos LockSupport.parkNanos&#125;&lt;/li&gt;</span></span><br><span class="line"><span class="comment"> *   &lt;li&gt;&#123;<span class="doctag">@link</span> LockSupport#parkUntil LockSupport.parkUntil&#125;&lt;/li&gt;</span></span><br><span class="line"><span class="comment"> * &lt;/ul&gt;</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+<p>限时等待线程的状态为TIMED_WAITING。限时等待状态的线程当超过等待时间时会自动唤醒，也可以像等待线程一样，通过等待另一个线程执行某一个操作将自己唤醒。当以下方法被执行时，线程将进入限时等待状态：</p>
+<ol>
+<li>Thread.sleep：当前线程睡眠指定时间。<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Sleep2TimedWaiting</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        <span class="type">Thread</span> <span class="variable">thread</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Thread.sleep(<span class="number">5000</span>);</span><br><span class="line">                <span class="keyword">while</span> (<span class="literal">true</span>) &#123;&#125;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        thread.start();</span><br><span class="line">        Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;线程状态：&quot;</span> + thread.getState());</span><br><span class="line">        Thread.sleep(<span class="number">5000</span>); <span class="comment">// 保证已经超过等待时间</span></span><br><span class="line">        System.out.println(<span class="string">&quot;线程状态：&quot;</span> + thread.getState());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>线程状态：TIMED_WAITING<br>线程状态：RUNNABLE</p>
+</blockquote>
+</li>
+<li>Object#wait(long)：与Object#wait()类似，等待其他线程调用nofity()&#x2F;notifyAll()方法，或者等待超时自动唤醒。</li>
+<li>Thread#join(long)：与Thread#join()类似，等待其他线程死亡，或者等待超时自动唤醒。</li>
+<li>LockSupport.parkNanos</li>
+<li>LockSupport.parkUntil</li>
+</ol>
+<h2 id="TERMINATED"><a href="#TERMINATED" class="headerlink" title="TERMINATED"></a>TERMINATED</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Thread state for a terminated thread.</span></span><br><span class="line"><span class="comment"> * The thread has completed execution.</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+<p>当线程执行完任务之后，就会变为终止状态——TERMINATED。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TerminatedThread</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        <span class="type">Thread</span> <span class="variable">thread</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; System.out.println(<span class="string">&quot;线程执行完毕！&quot;</span>));</span><br><span class="line">        thread.start();</span><br><span class="line">        Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;线程状态：&quot;</span> + thread.getState());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>线程执行完毕！<br>线程状态：TERMINATED</p>
+</blockquote>
+<h1 id="Java线程状态切换图"><a href="#Java线程状态切换图" class="headerlink" title="Java线程状态切换图"></a>Java线程状态切换图</h1>]]></content>
+      <categories>
+        <category>多线程</category>
+      </categories>
+      <tags>
+        <tag>Java线程</tag>
+        <tag>多线程</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Zookeeper分布式锁原理</title>
+    <url>/2022/11/06/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%8E%9F%E7%90%86/</url>
+    <content><![CDATA[<h1 id="Zookeeper分布式锁简单实现"><a href="#Zookeeper分布式锁简单实现" class="headerlink" title="Zookeeper分布式锁简单实现"></a>Zookeeper分布式锁简单实现</h1><p>Zookeeper分布式锁的原理很简单，核心就是依托Zookeeper节点唯一性来展开实现的。<br><img src="/2022/11/06/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%8E%9F%E7%90%86/%E8%8A%82%E7%82%B9%E5%94%AF%E4%B8%80%E6%80%A7.png" alt="节点唯一性.png"></p>
+<span id="more"></span>
+<p>具体来说：假如有10个线程同时创建节点<code>/lock</code>（前提是该节点不存在），肯定只有1个线程（T1）能创建成功，其余的9个线程(T2 ~ T10)创建失败（失败并不灰心，它们要监听<code>/lock</code>节点的删除事件，以便于后续的尝试）。我们就说线程T1获得了锁，获得了执行后续操作的权利。当线程T1执行完后续操作之后，它就会将<code>/lock</code>节点删除，于此同时线程T2 ~ T10得到通知，便一股脑的都去请求Zookeeper服务端，尝试获取锁（也就是创建节点<code>/lock</code>）。一样的，这次还是只有一个线程能成功获取到锁，执行完后续操作之后再将锁释放，如此周而复始，实现并发请求的串行化。该原理流程图如下：<br><img src="/2022/11/06/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%8E%9F%E7%90%86/%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0.png" alt="简单实现.png"></p>
+<blockquote>
+<p>基于以上原理的Zookeeper分布式锁简单实现其实存在一些弊端，比如：非公平锁和羊群效应</p>
+</blockquote>
+<h2 id="非公平锁"><a href="#非公平锁" class="headerlink" title="非公平锁"></a>非公平锁</h2><p>经过以上分析我们可以发现一个问题：那就是每次在争抢锁的时候，大家获得锁的概率是随机的，并没有一个先来后到的机制，也就是所谓的不公平。比如：线程T1首先获得了锁，然后线程T2、T3……T9、T10依次来请求获取锁。但是当线程T1释放锁之后，并不是由线程T2直接接棒，而是大家同时争抢，谁抢到了算谁的。假如此刻线程T10抢到了，是不是对其余线程来说就很不公平。</p>
+<h2 id="羊群效应"><a href="#羊群效应" class="headerlink" title="羊群效应"></a>羊群效应</h2><p>我们想一个问题：每次当一个线程将锁释放之后发生了什么事情呢？答案：其余线程得到通知，然后一股脑的都向Zookeeper服务端发送创建节点请求，但是最终只有一个线程创建成功。我们思考一下，这会带来一个什么问题呢？这样，我们假设有10000并发，第一次争抢锁时会有10000个请求打到Zookeeper服务端，第二次会有9999，第三次会有9998……当最终这10000的并发全部执行完，Zookeeper服务端处理了多少请求呢？等差数列：（10000 + 1） * 10000 &#x2F; 2 &#x3D; 50005000，而且其中只有10000个请求是有效的，这无形之中给Zookeeper服务端带来了巨大的压力，也浪费了服务器的资源。</p>
+<blockquote>
+<p>羊群效应：一群羊在羊圈外边吃草，突然来了一只狼。羊们害怕极了，都抢着往羊圈里跑。但是羊圈的入口只有一个，大家都挤到了一起，谁都不让谁。就这样，羊入圈的效率极其低下，白白牺牲了好多羊。</p>
+</blockquote>
+<h1 id="Zookeeper分布式锁进阶实现"><a href="#Zookeeper分布式锁进阶实现" class="headerlink" title="Zookeeper分布式锁进阶实现"></a>Zookeeper分布式锁进阶实现</h1><p>Zookeeper的进阶实现巧妙地规避了简单实现的两个问题：非公平和羊群效应。其实现原理大致分为如下几步：</p>
+<ol>
+<li>首先判断父节点<code>/lock</code>是否存在，如果不存在，则创建（容器）父节点</li>
+<li>然后在父节点下创建（临时序号）子节点<code>/x-000000n</code></li>
+<li>判断自己是不是父节点下的最小子结点<br> 3.1 如果是，则获取锁<br> 3.2 如果不是，则监听前一个节点</li>
+<li>获得锁的节点完成业务处理，释放锁，即删除节点</li>
+<li>前一个节点得到通知，重复第3步的判断</li>
+<li>某客户端由于异常原因导致断开连接，其所对应的子结点自动删除，其后一个节点得到通知，重复第3步的判断</li>
+<li>所有子结点均删除，（容器）父节点自动删除</li>
+</ol>
+<p>该原理的流程图如下：<br><img src="/2022/11/06/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%8E%9F%E7%90%86/%E8%BF%9B%E9%98%B6%E5%AE%9E%E7%8E%B0.png" alt="进阶实现.png"><br>该过程对应的Zookeeper节点结构如下：<br><img src="/2022/11/06/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%8E%9F%E7%90%86/%E8%8A%82%E7%82%B9%E7%BB%93%E6%9E%84.png" alt="节点结构.png"></p>
+<h1 id="Curator实现分布式锁源码分析"><a href="#Curator实现分布式锁源码分析" class="headerlink" title="Curator实现分布式锁源码分析"></a>Curator实现分布式锁源码分析</h1><h2 id="锁的实例化"><a href="#锁的实例化" class="headerlink" title="锁的实例化"></a>锁的实例化</h2><p><img src="/2022/11/06/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%8E%9F%E7%90%86/%E9%94%81%E7%9A%84%E5%AE%9E%E4%BE%8B%E5%8C%96.png" alt="锁的实例化.png"><br>实例化完成之后的锁如下：<br><img src="/2022/11/06/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%8E%9F%E7%90%86/%E9%94%81%E5%AE%9E%E4%BE%8B.png" alt="锁实例.png"></p>
+<h2 id="获取锁"><a href="#获取锁" class="headerlink" title="获取锁"></a>获取锁</h2><p><img src="/2022/11/06/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%8E%9F%E7%90%86/%E8%8E%B7%E5%8F%96%E9%94%81.png" alt="获取锁.png"></p>
+<h2 id="释放锁"><a href="#释放锁" class="headerlink" title="释放锁"></a>释放锁</h2><p><img src="/2022/11/06/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%8E%9F%E7%90%86/%E9%87%8A%E6%94%BE%E9%94%81.png" alt="释放锁.png"></p>
+]]></content>
+      <categories>
+        <category>Zookeeper</category>
+      </categories>
+      <tags>
+        <tag>Zookeeper</tag>
+        <tag>分布式锁</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Windows安装Nginx</title>
     <url>/2022/10/16/Windows%E5%AE%89%E8%A3%85Nginx/</url>
     <content><![CDATA[<h1 id="下载安装包"><a href="#下载安装包" class="headerlink" title="下载安装包"></a>下载安装包</h1><p>官网地址：<code>http://nginx.org/en/download.html</code><br><img src="/2022/10/16/Windows%E5%AE%89%E8%A3%85Nginx/Nginx%E4%B8%8B%E8%BD%BD.png" alt="Nginx下载.png"></p>
@@ -263,43 +383,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Zookeeper分布式锁原理</title>
-    <url>/2022/11/06/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%8E%9F%E7%90%86/</url>
-    <content><![CDATA[<h1 id="Zookeeper分布式锁简单实现"><a href="#Zookeeper分布式锁简单实现" class="headerlink" title="Zookeeper分布式锁简单实现"></a>Zookeeper分布式锁简单实现</h1><p>Zookeeper分布式锁的原理很简单，核心就是依托Zookeeper节点唯一性来展开实现的。<br><img src="/2022/11/06/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%8E%9F%E7%90%86/%E8%8A%82%E7%82%B9%E5%94%AF%E4%B8%80%E6%80%A7.png" alt="节点唯一性.png"></p>
-<span id="more"></span>
-<p>具体来说：假如有10个线程同时创建节点<code>/lock</code>（前提是该节点不存在），肯定只有1个线程（T1）能创建成功，其余的9个线程(T2 ~ T10)创建失败（失败并不灰心，它们要监听<code>/lock</code>节点的删除事件，以便于后续的尝试）。我们就说线程T1获得了锁，获得了执行后续操作的权利。当线程T1执行完后续操作之后，它就会将<code>/lock</code>节点删除，于此同时线程T2 ~ T10得到通知，便一股脑的都去请求Zookeeper服务端，尝试获取锁（也就是创建节点<code>/lock</code>）。一样的，这次还是只有一个线程能成功获取到锁，执行完后续操作之后再将锁释放，如此周而复始，实现并发请求的串行化。该原理流程图如下：<br><img src="/2022/11/06/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%8E%9F%E7%90%86/%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0.png" alt="简单实现.png"></p>
-<blockquote>
-<p>基于以上原理的Zookeeper分布式锁简单实现其实存在一些弊端，比如：非公平锁和羊群效应</p>
-</blockquote>
-<h2 id="非公平锁"><a href="#非公平锁" class="headerlink" title="非公平锁"></a>非公平锁</h2><p>经过以上分析我们可以发现一个问题：那就是每次在争抢锁的时候，大家获得锁的概率是随机的，并没有一个先来后到的机制，也就是所谓的不公平。比如：线程T1首先获得了锁，然后线程T2、T3……T9、T10依次来请求获取锁。但是当线程T1释放锁之后，并不是由线程T2直接接棒，而是大家同时争抢，谁抢到了算谁的。假如此刻线程T10抢到了，是不是对其余线程来说就很不公平。</p>
-<h2 id="羊群效应"><a href="#羊群效应" class="headerlink" title="羊群效应"></a>羊群效应</h2><p>我们想一个问题：每次当一个线程将锁释放之后发生了什么事情呢？答案：其余线程得到通知，然后一股脑的都向Zookeeper服务端发送创建节点请求，但是最终只有一个线程创建成功。我们思考一下，这会带来一个什么问题呢？这样，我们假设有10000并发，第一次争抢锁时会有10000个请求打到Zookeeper服务端，第二次会有9999，第三次会有9998……当最终这10000的并发全部执行完，Zookeeper服务端处理了多少请求呢？等差数列：（10000 + 1） * 10000 &#x2F; 2 &#x3D; 50005000，而且其中只有10000个请求是有效的，这无形之中给Zookeeper服务端带来了巨大的压力，也浪费了服务器的资源。</p>
-<blockquote>
-<p>羊群效应：一群羊在羊圈外边吃草，突然来了一只狼。羊们害怕极了，都抢着往羊圈里跑。但是羊圈的入口只有一个，大家都挤到了一起，谁都不让谁。就这样，羊入圈的效率极其低下，白白牺牲了好多羊。</p>
-</blockquote>
-<h1 id="Zookeeper分布式锁进阶实现"><a href="#Zookeeper分布式锁进阶实现" class="headerlink" title="Zookeeper分布式锁进阶实现"></a>Zookeeper分布式锁进阶实现</h1><p>Zookeeper的进阶实现巧妙地规避了简单实现的两个问题：非公平和羊群效应。其实现原理大致分为如下几步：</p>
-<ol>
-<li>首先判断父节点<code>/lock</code>是否存在，如果不存在，则创建（容器）父节点</li>
-<li>然后在父节点下创建（临时序号）子节点<code>/x-000000n</code></li>
-<li>判断自己是不是父节点下的最小子结点<br> 3.1 如果是，则获取锁<br> 3.2 如果不是，则监听前一个节点</li>
-<li>获得锁的节点完成业务处理，释放锁，即删除节点</li>
-<li>前一个节点得到通知，重复第3步的判断</li>
-<li>某客户端由于异常原因导致断开连接，其所对应的子结点自动删除，其后一个节点得到通知，重复第3步的判断</li>
-<li>所有子结点均删除，（容器）父节点自动删除</li>
-</ol>
-<p>该原理的流程图如下：<br><img src="/2022/11/06/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%8E%9F%E7%90%86/%E8%BF%9B%E9%98%B6%E5%AE%9E%E7%8E%B0.png" alt="进阶实现.png"><br>该过程对应的Zookeeper节点结构如下：<br><img src="/2022/11/06/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%8E%9F%E7%90%86/%E8%8A%82%E7%82%B9%E7%BB%93%E6%9E%84.png" alt="节点结构.png"></p>
-<h1 id="Curator实现分布式锁源码分析"><a href="#Curator实现分布式锁源码分析" class="headerlink" title="Curator实现分布式锁源码分析"></a>Curator实现分布式锁源码分析</h1><h2 id="锁的实例化"><a href="#锁的实例化" class="headerlink" title="锁的实例化"></a>锁的实例化</h2><p><img src="/2022/11/06/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%8E%9F%E7%90%86/%E9%94%81%E7%9A%84%E5%AE%9E%E4%BE%8B%E5%8C%96.png" alt="锁的实例化.png"><br>实例化完成之后的锁如下：<br><img src="/2022/11/06/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%8E%9F%E7%90%86/%E9%94%81%E5%AE%9E%E4%BE%8B.png" alt="锁实例.png"></p>
-<h2 id="获取锁"><a href="#获取锁" class="headerlink" title="获取锁"></a>获取锁</h2><p><img src="/2022/11/06/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%8E%9F%E7%90%86/%E8%8E%B7%E5%8F%96%E9%94%81.png" alt="获取锁.png"></p>
-<h2 id="释放锁"><a href="#释放锁" class="headerlink" title="释放锁"></a>释放锁</h2><p><img src="/2022/11/06/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%8E%9F%E7%90%86/%E9%87%8A%E6%94%BE%E9%94%81.png" alt="释放锁.png"></p>
-]]></content>
-      <categories>
-        <category>Zookeeper</category>
-      </categories>
-      <tags>
-        <tag>Zookeeper</tag>
-        <tag>分布式锁</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Zookeeper分布式锁应用——秒杀活动</title>
     <url>/2022/10/30/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%BA%94%E7%94%A8%E2%80%94%E2%80%94%E7%A7%92%E6%9D%80%E6%B4%BB%E5%8A%A8/</url>
     <content><![CDATA[<h1 id="场景描述"><a href="#场景描述" class="headerlink" title="场景描述"></a>场景描述</h1><p>淘宝双十一我们都知道，数以亿计的买家在同一时间去争抢有限数量的商品，也就是所谓的商品秒杀活动。面对如此高的并发，如果我们不采取一些措施，将会引发一系列问题，比如：商品超卖、单机锁的失效等。</p>
@@ -328,6 +411,33 @@
       <tags>
         <tag>Zookeeper</tag>
         <tag>分布式锁</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Zookeeper单机版安装</title>
+    <url>/2022/10/13/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/</url>
+    <content><![CDATA[<h1 id="安装Zookeeper"><a href="#安装Zookeeper" class="headerlink" title="安装Zookeeper"></a>安装Zookeeper</h1><h2 id="安装java环境"><a href="#安装java环境" class="headerlink" title="安装java环境"></a>安装java环境</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># java version &quot;1.8.0_271&quot;</span></span><br><span class="line">java -version</span><br></pre></td></tr></table></figure>
+<h2 id="下载并解压Zookeeper"><a href="#下载并解压Zookeeper" class="headerlink" title="下载并解压Zookeeper"></a>下载并解压Zookeeper</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 下载安装包</span><br><span class="line">wget https://mirror.bit.edu.cn/apache/zookeeper/zookeeper‐3.5.8/apache‐zookeeper‐3.5.8‐bin.tar.gz</span><br><span class="line"># 解压安装包</span><br><span class="line">tar ‐zxvf apache‐zookeeper‐3.5.8‐bin.tar.gz</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<h2 id="备份配置文件（非必须）"><a href="#备份配置文件（非必须）" class="headerlink" title="备份配置文件（非必须）"></a>备份配置文件（非必须）</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入配置文件目录</span></span><br><span class="line"><span class="built_in">cd</span> apache-zookeeper-3.5.8-bin/conf/</span><br><span class="line"><span class="comment"># 备份配置文件</span></span><br><span class="line"><span class="built_in">cp</span> zoo_sample.cfg zoo.cfg</span><br></pre></td></tr></table></figure>
+<h2 id="启动Zookeeper"><a href="#启动Zookeeper" class="headerlink" title="启动Zookeeper"></a>启动Zookeeper</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入脚本文件目录</span></span><br><span class="line"><span class="built_in">cd</span> apache-zookeeper-3.5.8-bin/bin/</span><br><span class="line"><span class="comment"># 启动Zookeeper</span></span><br><span class="line">./zkServer.sh start ../conf/zoo.cfg</span><br><span class="line"><span class="comment"># 检测是否启动</span></span><br><span class="line">ps -ef | grep zookeeper</span><br></pre></td></tr></table></figure>
+<h1 id="客户端连接"><a href="#客户端连接" class="headerlink" title="客户端连接"></a>客户端连接</h1><h2 id="终端方式连接"><a href="#终端方式连接" class="headerlink" title="终端方式连接"></a>终端方式连接</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入脚本文件目录</span></span><br><span class="line"><span class="built_in">cd</span> apache-zookeeper-3.5.8-bin/bin/</span><br><span class="line"><span class="comment"># 连接zookeeper</span></span><br><span class="line">./zkCli.sh -server 192.168.175.175:2181</span><br><span class="line"><span class="comment"># 查看所有节点</span></span><br><span class="line"><span class="built_in">ls</span> -R /</span><br></pre></td></tr></table></figure>
+<h2 id="可视化工具（ZooInspector）连接"><a href="#可视化工具（ZooInspector）连接" class="headerlink" title="可视化工具（ZooInspector）连接"></a>可视化工具（ZooInspector）连接</h2><ul>
+<li>下载工具：<a href="https://issues.apache.org/jira/secure/attachment/12436620/ZooInspector.zip">https://issues.apache.org/jira/secure/attachment/12436620/ZooInspector.zip</a></li>
+<li>解压，进入目录ZooInspector\build</li>
+<li>创建zkClient.bat脚本文件，内容如下：<figure class="highlight bat"><table><tr><td class="code"><pre><span class="line">java -jar D:\ZooInspector\build\zookeeper-dev-ZooInspector.jar</span><br></pre></td></tr></table></figure></li>
+<li>右键zkClient.bat文件，创建桌面快捷方式，然后修改一个自己喜欢的图标</li>
+<li>双击快捷方式，打开可视化工具——ZooInspector，输入连接信息<br><img src="/2022/10/13/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/ZooInspector1.png" alt="ZooInspector1.png"></li>
+<li>点击OK，连接成功<br><img src="/2022/10/13/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/ZooInspector2.png" alt="ZooInspector2.png"></li>
+</ul>
+]]></content>
+      <categories>
+        <category>Zookeeper</category>
+      </categories>
+      <tags>
+        <tag>Zookeeper</tag>
+        <tag>CentOS7</tag>
+        <tag>客户端工具</tag>
       </tags>
   </entry>
   <entry>
@@ -404,33 +514,6 @@
         <tag>Zookeeper</tag>
         <tag>事件监听机制</tag>
         <tag>一次性监听</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Zookeeper单机版安装</title>
-    <url>/2022/10/13/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/</url>
-    <content><![CDATA[<h1 id="安装Zookeeper"><a href="#安装Zookeeper" class="headerlink" title="安装Zookeeper"></a>安装Zookeeper</h1><h2 id="安装java环境"><a href="#安装java环境" class="headerlink" title="安装java环境"></a>安装java环境</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># java version &quot;1.8.0_271&quot;</span></span><br><span class="line">java -version</span><br></pre></td></tr></table></figure>
-<h2 id="下载并解压Zookeeper"><a href="#下载并解压Zookeeper" class="headerlink" title="下载并解压Zookeeper"></a>下载并解压Zookeeper</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 下载安装包</span><br><span class="line">wget https://mirror.bit.edu.cn/apache/zookeeper/zookeeper‐3.5.8/apache‐zookeeper‐3.5.8‐bin.tar.gz</span><br><span class="line"># 解压安装包</span><br><span class="line">tar ‐zxvf apache‐zookeeper‐3.5.8‐bin.tar.gz</span><br></pre></td></tr></table></figure>
-<span id="more"></span>
-<h2 id="备份配置文件（非必须）"><a href="#备份配置文件（非必须）" class="headerlink" title="备份配置文件（非必须）"></a>备份配置文件（非必须）</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入配置文件目录</span></span><br><span class="line"><span class="built_in">cd</span> apache-zookeeper-3.5.8-bin/conf/</span><br><span class="line"><span class="comment"># 备份配置文件</span></span><br><span class="line"><span class="built_in">cp</span> zoo_sample.cfg zoo.cfg</span><br></pre></td></tr></table></figure>
-<h2 id="启动Zookeeper"><a href="#启动Zookeeper" class="headerlink" title="启动Zookeeper"></a>启动Zookeeper</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入脚本文件目录</span></span><br><span class="line"><span class="built_in">cd</span> apache-zookeeper-3.5.8-bin/bin/</span><br><span class="line"><span class="comment"># 启动Zookeeper</span></span><br><span class="line">./zkServer.sh start ../conf/zoo.cfg</span><br><span class="line"><span class="comment"># 检测是否启动</span></span><br><span class="line">ps -ef | grep zookeeper</span><br></pre></td></tr></table></figure>
-<h1 id="客户端连接"><a href="#客户端连接" class="headerlink" title="客户端连接"></a>客户端连接</h1><h2 id="终端方式连接"><a href="#终端方式连接" class="headerlink" title="终端方式连接"></a>终端方式连接</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入脚本文件目录</span></span><br><span class="line"><span class="built_in">cd</span> apache-zookeeper-3.5.8-bin/bin/</span><br><span class="line"><span class="comment"># 连接zookeeper</span></span><br><span class="line">./zkCli.sh -server 192.168.175.175:2181</span><br><span class="line"><span class="comment"># 查看所有节点</span></span><br><span class="line"><span class="built_in">ls</span> -R /</span><br></pre></td></tr></table></figure>
-<h2 id="可视化工具（ZooInspector）连接"><a href="#可视化工具（ZooInspector）连接" class="headerlink" title="可视化工具（ZooInspector）连接"></a>可视化工具（ZooInspector）连接</h2><ul>
-<li>下载工具：<a href="https://issues.apache.org/jira/secure/attachment/12436620/ZooInspector.zip">https://issues.apache.org/jira/secure/attachment/12436620/ZooInspector.zip</a></li>
-<li>解压，进入目录ZooInspector\build</li>
-<li>创建zkClient.bat脚本文件，内容如下：<figure class="highlight bat"><table><tr><td class="code"><pre><span class="line">java -jar D:\ZooInspector\build\zookeeper-dev-ZooInspector.jar</span><br></pre></td></tr></table></figure></li>
-<li>右键zkClient.bat文件，创建桌面快捷方式，然后修改一个自己喜欢的图标</li>
-<li>双击快捷方式，打开可视化工具——ZooInspector，输入连接信息<br><img src="/2022/10/13/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/ZooInspector1.png" alt="ZooInspector1.png"></li>
-<li>点击OK，连接成功<br><img src="/2022/10/13/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/ZooInspector2.png" alt="ZooInspector2.png"></li>
-</ul>
-]]></content>
-      <categories>
-        <category>Zookeeper</category>
-      </categories>
-      <tags>
-        <tag>Zookeeper</tag>
-        <tag>CentOS7</tag>
-        <tag>客户端工具</tag>
       </tags>
   </entry>
   <entry>
