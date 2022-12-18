@@ -20,19 +20,22 @@
     var CONFIG = {"hostname":"jyinjuly.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"right","width":300,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="天下风云出我辈，一入代码岁月催">
+  <meta name="description" content="LockSupport是java.util.concurrent包中一个工具类，它为构建锁和同步器提供了基本的线程阻塞&#x2F;唤醒原语。JDK中我们熟悉的AQS同步器就使用了它来控制线程的阻塞和唤醒，当然还有其他的锁或同步器也会使用它。因此，LockSupport可以说是juc并发包的基石。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JUC并发包基石——LockSupport">
 <meta property="og:url" content="https://jyinjuly.github.io/2022/12/17/JUC%E5%B9%B6%E5%8F%91%E5%8C%85%E5%9F%BA%E7%9F%B3%E2%80%94%E2%80%94LockSupport/index.html">
 <meta property="og:site_name" content="Jyinjulyの博客">
-<meta property="og:description" content="天下风云出我辈，一入代码岁月催">
+<meta property="og:description" content="LockSupport是java.util.concurrent包中一个工具类，它为构建锁和同步器提供了基本的线程阻塞&#x2F;唤醒原语。JDK中我们熟悉的AQS同步器就使用了它来控制线程的阻塞和唤醒，当然还有其他的锁或同步器也会使用它。因此，LockSupport可以说是juc并发包的基石。">
 <meta property="og:locale">
+<meta property="og:image" content="https://jyinjuly.github.io/2022/12/17/JUC%E5%B9%B6%E5%8F%91%E5%8C%85%E5%9F%BA%E7%9F%B3%E2%80%94%E2%80%94LockSupport/LockSupport.png">
+<meta property="og:image" content="https://jyinjuly.github.io/2022/12/17/JUC%E5%B9%B6%E5%8F%91%E5%8C%85%E5%9F%BA%E7%9F%B3%E2%80%94%E2%80%94LockSupport/park.png">
 <meta property="article:published_time" content="2022-12-17T15:31:48.640Z">
-<meta property="article:modified_time" content="2022-12-17T15:33:25.118Z">
+<meta property="article:modified_time" content="2022-12-18T11:44:00.790Z">
 <meta property="article:author" content="Jyinjuly">
 <meta property="article:tag" content="juc并发包">
 <meta property="article:tag" content="多线程">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://jyinjuly.github.io/2022/12/17/JUC%E5%B9%B6%E5%8F%91%E5%8C%85%E5%9F%BA%E7%9F%B3%E2%80%94%E2%80%94LockSupport/LockSupport.png">
 
 <link rel="canonical" href="https://jyinjuly.github.io/2022/12/17/JUC%E5%B9%B6%E5%8F%91%E5%8C%85%E5%9F%BA%E7%9F%B3%E2%80%94%E2%80%94LockSupport/">
 
@@ -251,14 +254,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>0</span>
+              <span>2.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -270,7 +273,48 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        
+        <p>LockSupport是java.util.concurrent包中一个工具类，它为构建锁和同步器提供了基本的线程阻塞&#x2F;唤醒原语。JDK中我们熟悉的AQS同步器就使用了它来控制线程的阻塞和唤醒，当然还有其他的锁或同步器也会使用它。因此，LockSupport可以说是juc并发包的基石。</p>
+<span id="more"></span>
+<h1 id="LockSupport核心方法"><a href="#LockSupport核心方法" class="headerlink" title="LockSupport核心方法"></a>LockSupport核心方法</h1><p>我们知道，LockSupport最核心的功能就是阻塞&#x2F;唤醒线程，对应方法如下：</p>
+<ul>
+<li>park()：阻塞当前线程，直到获取到可用许可。</li>
+<li>parkNanos(long)：阻塞当前线程，直到获取到可用许可。参数为最大等待时间，一旦超过最大等待时间也会解除阻塞。</li>
+<li>parkUntil(long)：阻塞当前线程，直到获取到可用许可。参数为最后期限时间，一旦超过最后期限时间也会解除阻塞。</li>
+<li>park(Object)：与park()方法同义，但指定了阻塞对象。</li>
+<li>parkNanos(Object,long)：与parkNanos(long)同义，但指定了阻塞对象。</li>
+<li>parkUntil(Object,long)：与parkUntil(long)同义，但指定了阻塞对象。</li>
+<li>unpark(Thread)：将指定线程的许可置为可用，也就相当于唤醒了该线程。</li>
+</ul>
+<p><img src="/2022/12/17/JUC%E5%B9%B6%E5%8F%91%E5%8C%85%E5%9F%BA%E7%9F%B3%E2%80%94%E2%80%94LockSupport/LockSupport.png" alt="LockSupport.png"></p>
+<h1 id="LockSupport许可机制"><a href="#LockSupport许可机制" class="headerlink" title="LockSupport许可机制"></a>LockSupport许可机制</h1><p>在介绍核心方法时出现了一个高频的词——许可，那么什么是许可呢？其实很容易理解，线程成功拿到许可则能够往下执行，否则将进入阻塞状态。对于LockSupport使用的许可可看成是一种二元信号，该信号分有许可和无许可两种状态。每个线程都对应一个信号变量，当线程调用park时其实就是去获取许可，如果能成功获取到许可则能够往下执行，否则则阻塞直到成功获取许可为止。而当线程调用unpark时则是释放许可，供线程去获取。如下图所示，首先在线程t1和线程t2中调用park()，二者都进入阻塞状态。然后调用unpark(t1)，为线程t1颁发许可。那么线程t1将解除阻塞，恢复执行，同时将许可置为不可用（或者说消费许可）。<br><img src="/2022/12/17/JUC%E5%B9%B6%E5%8F%91%E5%8C%85%E5%9F%BA%E7%9F%B3%E2%80%94%E2%80%94LockSupport/park.png" alt="park.png"></p>
+<blockquote>
+<p>park()：尝试消费许可，如果消费失败，则阻塞<br>unpark(thread)：为指定线程颁发许可</p>
+</blockquote>
+<h2 id="park与unpark无顺序"><a href="#park与unpark无顺序" class="headerlink" title="park与unpark无顺序"></a>park与unpark无顺序</h2><p>按照我们通常的理解，线程应该是先阻塞(park)，然后再去唤醒(unpark)，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">NewThread</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        <span class="type">Thread</span> <span class="variable">thread</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;</span><br><span class="line">            LockSupport.park();</span><br><span class="line">            System.out.println(<span class="string">&quot;park before unpark&quot;</span>);</span><br><span class="line">        &#125;);</span><br><span class="line">        thread.start();</span><br><span class="line">        Thread.sleep(<span class="number">2000L</span>);</span><br><span class="line">        LockSupport.unpark(thread);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>park before unpark</p>
+</blockquote>
+<p>但是LockSupport同样支持先颁发许可(unpark)，然后再去消费(park)，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">NewThread</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Thread</span> <span class="variable">thread</span> <span class="operator">=</span> Thread.currentThread();</span><br><span class="line">        LockSupport.unpark(thread);</span><br><span class="line">        LockSupport.park();</span><br><span class="line">        System.out.println(<span class="string">&quot;unpark before park&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>unpark before park</p>
+</blockquote>
+<h2 id="多次unpark相当于一次"><a href="#多次unpark相当于一次" class="headerlink" title="多次unpark相当于一次"></a>多次unpark相当于一次</h2><p>我们不能为同一个线程颁发多个许可，多次颁发的结果也只是让线程拥有一个许可。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">NewThread</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Thread</span> <span class="variable">thread</span> <span class="operator">=</span> Thread.currentThread();</span><br><span class="line">        LockSupport.unpark(thread); <span class="comment">// 颁发许可</span></span><br><span class="line">        LockSupport.park(); <span class="comment">// 消费许可</span></span><br><span class="line"></span><br><span class="line">        LockSupport.park(); <span class="comment">// 此时无可用许可，则阻塞</span></span><br><span class="line">        System.out.println(<span class="string">&quot;no avail permit&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="与wait和notify-x2F-notifyAll异同"><a href="#与wait和notify-x2F-notifyAll异同" class="headerlink" title="与wait和notify&#x2F;notifyAll异同"></a>与wait和notify&#x2F;notifyAll异同</h1><p>在没有LockSupport之前，线程的阻塞和唤醒都是通过wait和notify&#x2F;notifyAll实现的，那么两种实现有什么区别呢？如下：</p>
+<ol>
+<li>wait和notify&#x2F;notifyAll只能在同步方法&#x2F;同步块中使用，而LockSupport可以在任何位置使用。<blockquote>
+<p>LockSupport线程间不再需要维护同一个锁对象，实现了线程间的解耦</p>
+</blockquote>
+</li>
+<li>wait和notify&#x2F;notifyAll必须得先wait阻塞，然后才能notify唤醒，而LockSupport则是无顺序的。<blockquote>
+<p>unpark函数可以先于park调用，所以不需要担心线程间的执行的先后顺序</p>
+</blockquote>
+</li>
+</ol>
+
     </div>
 
     
@@ -353,6 +397,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#LockSupport%E6%A0%B8%E5%BF%83%E6%96%B9%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">LockSupport核心方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LockSupport%E8%AE%B8%E5%8F%AF%E6%9C%BA%E5%88%B6"><span class="nav-number">2.</span> <span class="nav-text">LockSupport许可机制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#park%E4%B8%8Eunpark%E6%97%A0%E9%A1%BA%E5%BA%8F"><span class="nav-number">2.1.</span> <span class="nav-text">park与unpark无顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E6%AC%A1unpark%E7%9B%B8%E5%BD%93%E4%BA%8E%E4%B8%80%E6%AC%A1"><span class="nav-number">2.2.</span> <span class="nav-text">多次unpark相当于一次</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%8Ewait%E5%92%8Cnotify-x2F-notifyAll%E5%BC%82%E5%90%8C"><span class="nav-number">3.</span> <span class="nav-text">与wait和notify&#x2F;notifyAll异同</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -425,12 +470,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">33k</span>
+    <span title="站点总字数">35k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">30 分钟</span>
+    <span title="站点阅读时长">32 分钟</span>
 </div>
 
         
