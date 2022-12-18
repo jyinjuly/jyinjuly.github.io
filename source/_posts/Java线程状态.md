@@ -258,7 +258,19 @@ public class Join2Waiting {
 ```
 > 线程t2状态：WAITING
 > 线程t2状态：RUNNABLE
-3. LockSupport#park()
+3. LockSupport#park()：如果当前线程未被颁发过“许可证”，那么将会进入等待状态。
+```java
+public class park2Waiting {
+
+    public static void main(String[] args) throws InterruptedException {
+        Thread thread = new Thread(LockSupport::park);
+        thread.start();
+        Thread.sleep(1000);
+        System.out.println("线程状态：" + thread.getState());
+    }
+
+}
+```
 
 ## TIMED_WAITING
 ```java
@@ -302,8 +314,8 @@ public class Sleep2TimedWaiting {
 > 线程状态：RUNNABLE
 2. Object#wait(long)：与Object#wait()类似，等待其他线程调用nofity()/notifyAll()方法，或者等待超时自动唤醒。
 3. Thread#join(long)：与Thread#join()类似，等待其他线程死亡，或者等待超时自动唤醒。
-4. LockSupport.parkNanos
-5. LockSupport.parkUntil
+4. LockSupport.parkNanos(long)：与LockSupport.park()类似，传参为纳秒，代表最多等待的时长。
+5. LockSupport.parkUntil(long)：与LockSupport.park()类似，传参为时间戳，代表最多等待到某时刻为止。
 
 ## TERMINATED
 ```java
@@ -329,3 +341,340 @@ public class TerminatedThread {
 > 线程状态：TERMINATED
 
 # Java线程状态切换图
+![线程状态切换图.png](线程状态切换图.png)
+# 阻塞和等待的区别
+我们在讨论“阻塞”和“等待”的区别之前，有必要先说明一下：这里的“阻塞”是狭义上的阻塞，特指Java中的`java.lang.Thread.State#BLOCKED`，即由于争抢锁失败而的进入的线程状态。**那什么是广义上的“阻塞”呢？一般来讲，线程阻塞泛指由于某些原因而导致线程暂停执行的现象，此时的线程不会被分配CPU时间片。如此说来，广义上的“阻塞”实际上就包括了Java线程的“阻塞”状态和“等待”状态了。并且，通常大家在讨论并发时所说的线程阻塞，也指的是广义上的“阻塞”。**我们这里讨论的“阻塞”和“等待”的区别，指的是Java中的`java.lang.Thread.State#BLOCKED`和`java.lang.Thread.State#WAITING`，两者区别如下：
+* 线程进入阻塞状态是被动的，而线程进入等待状态是主动的
+> 主动等待：当前线程中一定是主动调用了某个方法才会进入等待状态
+> 被动阻塞：线程争抢锁失败之后被动进入阻塞状态
+
+两者相同点如下：
+* 都会暂停线程的执行，线程本身不会占用CPU时间片
+
+# 线程状态相关API
+## Object类
+* Object.wait()
+* Object.wait(long)
+* Object.notify()
+* Object.nofityAll()
+
+## Thread类
+* Thread.start()
+* Thread.yield()
+* Thread.join()
+* Thread.join(long)
+* Thread.sleep(long)
+
+## LockSupport类
+* LockSupport.park()
+* LockSupport.parkNanos(long)
+* LockSupport.parkUntil(long)
+* LockSupport.unpark(Thread)
+
+# Java线程中断
+线程中断并不是线程的一种状态，而是线程的一个标志。
+## 中断相关API
+* public boolean isInterrupted() —— 查看线程的中断标志
+* public void thread.interrupt() —— 设置线程中断标志
+* public static boolean interrupted() —— 查看并重置线程的中断标志
+
+```java
+public class InterruptedTest {
+
+    public static void main(String[] args) {
+        System.out.println("当前线程是否中断：" + Thread.currentThread().isInterrupted());
+        System.out.println("重置线程中断标志：" + Thread.interrupted());
+        System.out.println("重置后......线程是否中断：" + Thread.currentThread().isInterrupted());
+
+        System.out.println("******************************************");
+
+        Thread.currentThread().interrupt();
+        System.out.println("当前线程是否中断：" + Thread.currentThread().isInterrupted());
+        System.out.println("重置线程中断标志：" + Thread.interrupted());
+        System.out.println("重置后......线程是否中断：" + Thread.currentThread().isInterrupted());
+    }
+}
+```
+> 当前线程是否中断：false
+> 重置线程中断标志：false
+> 重置后......线程是否中断：false
+> ******************************************
+> 当前线程是否中断：true
+> 重置线程中断标志：true
+> 重置后......线程是否中断：false
+
+
+## 不同状态对中断的反应
+当线程处于不同的状态时，对调用interrupt()方法的反应是不同的。
+### NEW——无反应
+```java
+public class New2Interrupted {
+
+    public static void main(String[] args) {
+        Thread thread = new Thread();
+        System.out.println("线程状态：" + thread.getState());
+        System.out.println("是否中断：" + thread.isInterrupted());
+        thread.interrupt();
+        System.out.println("线程状态：" + thread.getState());
+        System.out.println("是否中断：" + thread.isInterrupted());
+    }
+
+}
+```
+> 线程状态：NEW
+> 是否中断：false
+> 线程状态：NEW
+> 是否中断：false
+
+### TERMINATED——无反应
+```java
+public class Terminated2Interrupted {
+
+    public static void main(String[] args) throws InterruptedException {
+        Thread thread = new Thread();
+        thread.start();
+        Thread.sleep(1000);
+        System.out.println("线程状态：" + thread.getState());
+        System.out.println("是否中断：" + thread.isInterrupted());
+        thread.interrupt();
+        System.out.println("线程状态：" + thread.getState());
+        System.out.println("是否中断：" + thread.isInterrupted());
+    }
+
+}
+```
+> 线程状态：TERMINATED
+> 是否中断：false
+> 线程状态：TERMINATED
+> 是否中断：false
+
+### RUNNABLE——标志置位true
+```java
+public class Runnable2Interrupted {
+
+    public static void main(String[] args) throws InterruptedException {
+        Thread thread = new Thread(() -> {
+            while (true) {
+                if (Thread.currentThread().isInterrupted()) { // 我们可以根据中断标志做一些事情
+                    System.out.println("线程已中断......");
+                    break;
+                }
+            }
+        });
+        thread.start();
+        Thread.sleep(1000);
+        System.out.println("线程状态：" + thread.getState());
+        System.out.println("是否中断；" + thread.isInterrupted());
+        thread.interrupt();
+        System.out.println("线程状态：" + thread.getState());
+        System.out.println("是否中断；" + thread.isInterrupted());
+    }
+
+}
+```
+> 线程状态：RUNNABLE
+> 是否中断；false
+> 线程状态：RUNNABLE
+> 是否中断；true
+> 线程已中断......
+
+### BLOCKED——标志置位true
+```java
+public class Blocked2Interrupted {
+
+    private void test() {
+        synchronized (this) {
+            while (true) {
+
+            }
+        }
+    }
+
+
+    public static void main(String[] args) throws InterruptedException {
+        Blocked2Interrupted blocked2Interrupted = new Blocked2Interrupted();
+        Thread t1 = new Thread(blocked2Interrupted::test);
+        Thread t2 = new Thread(blocked2Interrupted::test);
+        t1.start();
+        Thread.sleep(1000);
+        t2.start();
+        Thread.sleep(1000);
+        System.out.println("线程状态：" + t2.getState());
+        System.out.println("是否中断：" + t2.isInterrupted());
+        t2.interrupt();
+        System.out.println("线程状态：" + t2.getState());
+        System.out.println("是否中断：" + t2.isInterrupted());
+    }
+
+
+}
+```
+> 线程状态：BLOCKED
+> 是否中断：false
+> 线程状态：BLOCKED
+> 是否中断：true
+
+### WAITING——抛异常（LockSupport除外）
+```java
+public class Waiting2Interrupted {
+
+    public static void main(String[] args) throws InterruptedException {
+
+        /**
+         * {@link LockSupport#park()}方法导致的waiting状态时，执行中断
+         * 中断标志位变为true，但是线程的运行状态不受影响。
+         */
+        Thread thread = new Thread(LockSupport::park);
+        thread.start();
+        Thread.sleep(1000);
+        System.out.println("线程状态：" + thread.getState());
+        System.out.println("是否中断：" + thread.isInterrupted());
+        thread.interrupt();
+        System.out.println("线程状态：" + thread.getState());
+        System.out.println("是否中断：" + thread.isInterrupted());
+
+    }
+}
+```
+> 线程状态：WAITING
+> 是否中断：false
+> 线程状态：WAITING
+> 是否中断：true
+
+```java
+public class Waiting2Interrupted {
+
+    private void test() {
+        synchronized (this) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+
+        /**
+         * {@link Object#wait()}方法导致的waiting状态时，执行中断会抛出异常。
+         */
+        Waiting2Interrupted waiting2Interrupted = new Waiting2Interrupted();
+        Thread thread = new Thread(waiting2Interrupted::test);
+        thread.start();
+        Thread.sleep(1000);
+        System.out.println("线程状态：" + thread.getState());
+        System.out.println("是否中断：" + thread.isInterrupted());
+        thread.interrupt();
+
+    }
+}
+```
+> 线程状态：WAITING
+> 是否中断：false
+> java.lang.InterruptedException
+>   at java.lang.Object.wait(Native Method)
+>   at java.lang.Object.wait(Object.java:502)
+>   at thread.interrupt.Waiting2Interrupted.test(Waiting2Interrupted.java:17)
+>   at java.lang.Thread.run(Thread.java:748)
+
+```java
+public class Waiting2Interrupted {
+
+    public static void main(String[] args) throws InterruptedException {
+
+        /**
+         * {@link Thread#join()}方法导致的waiting状态时，执行中断会抛出异常。
+         */
+        Thread t1 = new Thread(() -> {
+           while (true) {
+
+           }
+        });
+        Thread t2 = new Thread(() -> {
+            try {
+                t1.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        t1.start();
+        Thread.sleep(1000);
+        t2.start();
+        Thread.sleep(1000);
+        System.out.println("线程状态：" + t2.getState());
+        System.out.println("是否中断：" + t2.isInterrupted());
+        t2.interrupt();
+
+    }
+}
+```
+> 线程状态：WAITING
+是否中断：false
+java.lang.InterruptedException
+	at java.lang.Object.wait(Native Method)
+	at java.lang.Thread.join(Thread.java:1252)
+	at java.lang.Thread.join(Thread.java:1326)
+	at thread.interrupt.Waiting2Interrupted.lambda$main$1(Waiting2Interrupted.java:60)
+	at java.lang.Thread.run(Thread.java:748)
+
+### TIMED_WAITING——抛异常（LockSupport除外）
+`LockSupport.parkNanos(long)`和`LockSupport.parkUntil(long)`导致的TIMED_WAITING状态类似于`LockSupport.park()`导致的WAITING状态，调用`interrupt()`方法会将线程的标志置为true。而`Thread.sleep(long)`、`Object.wait(long)`及`Thread.join(long)`导致的TIMED_WAITING状态类似于`Object.wait()`及`Thread.join()`导致的WAITING状态，调用`interrupt()`方法会抛异常：
+```java
+public class Timed_Waiting2Interrupted {
+
+
+    public static void main(String[] args) throws InterruptedException {
+
+        /**
+         * {@link Thread#sleep(long)}方法导致的timed_waiting状态时，执行中断会抛出异常。
+         * 同理{@link Object#wait(long)}与{@link Thread#join(long)}结果一样。
+         */
+        Thread thread = new Thread(() -> {
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        thread.start();
+        Thread.sleep(1000);
+        System.out.println("线程状态：" + thread.getState());
+        System.out.println("是否中断：" + thread.isInterrupted());
+        thread.interrupt();
+
+        /**
+         * {@link LockSupport#parkUntil(long)}方法导致的waiting状态时，执行中断
+         * 中断标志位变为true，但是线程的运行状态不受影响。
+         */
+//        Thread thread = new Thread(() -> LockSupport.parkUntil(System.currentTimeMillis() + 10000));
+//        thread.start();
+//        Thread.sleep(1000);
+//        System.out.println("线程状态：" + thread.getState());
+//        System.out.println("是否中断：" + thread.isInterrupted());
+//        thread.interrupt();
+//        System.out.println("线程状态：" + thread.getState());
+//        System.out.println("是否中断：" + thread.isInterrupted());
+
+        /**
+         * {@link LockSupport#parkNanos(long)}方法导致的waiting状态时，执行中断
+         * 中断标志位变为true，但是线程的运行状态不受影响。
+         */
+//        Thread thread = new Thread(() -> LockSupport.parkNanos(10000000000L));
+//        thread.start();
+//        Thread.sleep(1000);
+//        System.out.println("线程状态：" + thread.getState());
+//        System.out.println("是否中断：" + thread.isInterrupted());
+//        thread.interrupt();
+//        System.out.println("线程状态：" + thread.getState());
+//        System.out.println("是否中断：" + thread.isInterrupted());
+
+    }
+}
+```
+> 线程状态：TIMED_WAITING
+是否中断：false
+java.lang.InterruptedException: sleep interrupted
+	at java.lang.Thread.sleep(Native Method)
+	at thread.interrupt.Timed_Waiting2Interrupted.lambda$main$0(Timed_Waiting2Interrupted.java:22)
+	at java.lang.Thread.run(Thread.java:748)
