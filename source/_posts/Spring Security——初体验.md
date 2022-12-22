@@ -219,7 +219,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        // 指定UserDetailsService
         auth.userDetailsService(myUserDetailsService);
+        // 使用内存方式预置一个用户
+//        auth.inMemoryAuthentication()
+//                .withUser("lisi")
+//                .password("{noop}123456")
+//                .authorities(AuthorityUtils.NO_AUTHORITIES);
     }
 
 }
