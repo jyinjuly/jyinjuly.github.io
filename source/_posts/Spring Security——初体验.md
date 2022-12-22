@@ -209,3 +209,78 @@ public class MyUserDetailsManager implements UserDetailsManager, InitializingBea
 ![tryLogin4.png](tryLogin4.png)
 登录成功：
 ![hello1.png](hello1.png)
+# Spring Security密码加密器
+通常使用Spring Security时是需要对密码进行加密处理的，密码加密器的种类有很多：
+```java
+public final class PasswordEncoderFactories {
+
+	private PasswordEncoderFactories() {
+	}
+
+	@SuppressWarnings("deprecation")
+	public static PasswordEncoder createDelegatingPasswordEncoder() {
+		String encodingId = "bcrypt";
+		Map<String, PasswordEncoder> encoders = new HashMap<>();
+		encoders.put(encodingId, new BCryptPasswordEncoder());
+		encoders.put("ldap", new org.springframework.security.crypto.password.LdapShaPasswordEncoder());
+		encoders.put("MD4", new org.springframework.security.crypto.password.Md4PasswordEncoder());
+		encoders.put("MD5", new org.springframework.security.crypto.password.MessageDigestPasswordEncoder("MD5"));
+		encoders.put("noop", org.springframework.security.crypto.password.NoOpPasswordEncoder.getInstance());
+		encoders.put("pbkdf2", new Pbkdf2PasswordEncoder());
+		encoders.put("scrypt", new SCryptPasswordEncoder());
+		encoders.put("SHA-1", new org.springframework.security.crypto.password.MessageDigestPasswordEncoder("SHA-1"));
+		encoders.put("SHA-256",
+				new org.springframework.security.crypto.password.MessageDigestPasswordEncoder("SHA-256"));
+		encoders.put("sha256", new org.springframework.security.crypto.password.StandardPasswordEncoder());
+		encoders.put("argon2", new Argon2PasswordEncoder());
+		return new DelegatingPasswordEncoder(encodingId, encoders);
+	}
+
+}
+```
+其中`noop`代表不加密，推荐使用`bcrypt`，指定密码加密器的方式有两种。
+## 通过前缀指定
+```java
+@Component
+public class MyUserDetailsService implements UserDetailsService {
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        String encodePwd = bCryptPasswordEncoder.encode("123456");
+        return User.withUsername("lisi").password("{bcrypt}" + encodePwd).authorities(AuthorityUtils.NO_AUTHORITIES).build();
+    }
+
+}
+```
+## 通过注入Bean指定
+往Spring容器中注册`BCryptPasswordEncoder`密码加密器：
+```java
+@SpringBootApplication
+public class SpringSecurityStudyApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(SpringSecurityStudyApplication.class, args);
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(); // bcrypt加密
+    }
+}
+```
+Spring容器中但凡有`PasswordEncoder`类型的Bean，就会被作为默认的密码加密器：
+```java
+@Component
+public class MyUserDetailsService implements UserDetailsService {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return User.withUsername("lisi").password(passwordEncoder.encode("123456")).authorities(AuthorityUtils.NO_AUTHORITIES).build();
+    }
+
+}
+```
