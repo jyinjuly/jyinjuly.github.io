@@ -104,7 +104,7 @@ public class SecurityProperties {
 }
 ```
 可以看到，默认用户名为user，默认密码是一个随机生成的UUID。
-## 配置文件方式
+## 基于配置文件方式
 知道了默认用户名和密码的本质，我们就理所应当地知道了可以通过配置文件的方式自定义用户名和密码：
 ```yml
 spring:
@@ -207,6 +207,25 @@ public class MyUserDetailsManager implements UserDetailsManager, InitializingBea
 ```
 我们尝试登录：
 ![tryLogin4.png](tryLogin4.png)
+登录成功：
+![hello1.png](hello1.png)
+## 基于配置类WebSecurityConfigurerAdapter
+```java
+@Configuration
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private MyUserDetailsService myUserDetailsService;
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(myUserDetailsService);
+    }
+
+}
+```
+我们尝试登录：
+![tryLogin3.png](tryLogin3.png)
 登录成功：
 ![hello1.png](hello1.png)
 # Spring Security密码加密器
