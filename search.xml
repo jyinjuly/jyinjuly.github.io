@@ -1,6 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>CentOS安装Docker</title>
+    <url>/2022/10/16/CentOS%E5%AE%89%E8%A3%85Docker/</url>
+    <content><![CDATA[<h1 id="卸载旧版本"><a href="#卸载旧版本" class="headerlink" title="卸载旧版本"></a>卸载旧版本</h1><p>较旧的 Docker 版本称为 docker 或 docker-engine 。如果已安装这些程序，请卸载它们以及相关的依赖项。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo yum remove docker \</span><br><span class="line">                  docker-client \</span><br><span class="line">                  docker-client-latest \</span><br><span class="line">                  docker-common \</span><br><span class="line">                  docker-latest \</span><br><span class="line">                  docker-latest-logrotate \</span><br><span class="line">                  docker-logrotate \</span><br><span class="line">                  docker-engine</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<h1 id="安装-Docker"><a href="#安装-Docker" class="headerlink" title="安装 Docker"></a>安装 Docker</h1><h2 id="安装前置依赖"><a href="#安装前置依赖" class="headerlink" title="安装前置依赖"></a>安装前置依赖</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo yum install -y yum-utils \</span><br><span class="line">  device-mapper-persistent-data \</span><br><span class="line">  lvm2</span><br></pre></td></tr></table></figure>
+<h2 id="设置-Docker-仓库"><a href="#设置-Docker-仓库" class="headerlink" title="设置 Docker 仓库"></a>设置 Docker 仓库</h2><h3 id="官方源"><a href="#官方源" class="headerlink" title="官方源"></a>官方源</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo yum-config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    https://download.docker.com/linux/centos/docker-ce.repo</span><br></pre></td></tr></table></figure>
+<h3 id="阿里云源"><a href="#阿里云源" class="headerlink" title="阿里云源"></a>阿里云源</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo yum-config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</span><br></pre></td></tr></table></figure>
+<h3 id="清华大学源"><a href="#清华大学源" class="headerlink" title="清华大学源"></a>清华大学源</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo yum-config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/docker-ce.repo</span><br></pre></td></tr></table></figure>
+<h2 id="执行-Docker-安装"><a href="#执行-Docker-安装" class="headerlink" title="执行 Docker 安装"></a>执行 Docker 安装</h2><h3 id="最新版本"><a href="#最新版本" class="headerlink" title="最新版本"></a>最新版本</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo yum install docker-ce docker-ce-cli containerd.io docker-compose-plugin</span><br></pre></td></tr></table></figure>
+<h3 id="指定版本"><a href="#指定版本" class="headerlink" title="指定版本"></a>指定版本</h3><p>要安装特定版本的 Docker，请在存储库中列出可用版本，然后选择并安装</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum list docker-ce --showduplicates | <span class="built_in">sort</span> -r</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/10/16/CentOS%E5%AE%89%E8%A3%85Docker/Docker%E7%89%88%E6%9C%AC%E9%80%89%E6%8B%A9.png" alt="Docker版本选择.png"><br>通过其完整的软件包名称安装特定版本，该软件包名称是软件包名称（docker-ce）加上版本字符串（第二列），从第一个冒号（:）一直到第一个连字符，并用连字符（-）分隔。例如：docker-ce-18.09.1。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo yum install docker-ce-&lt;VERSION_STRING&gt; docker-ce-cli-&lt;VERSION_STRING&gt; containerd.io</span><br></pre></td></tr></table></figure>
+<h1 id="启动-Docker"><a href="#启动-Docker" class="headerlink" title="启动 Docker"></a>启动 Docker</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo systemctl start docker</span><br></pre></td></tr></table></figure>
+<h1 id="验证启动"><a href="#验证启动" class="headerlink" title="验证启动"></a>验证启动</h1><p>通过运行 hello-world 镜像来验证是否启动成功（首次运行可能需要先拉取镜像）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo docker run hello-world</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/10/16/CentOS%E5%AE%89%E8%A3%85Docker/Docker%E5%90%AF%E5%8A%A8%E9%AA%8C%E8%AF%81.png" alt="Docker启动验证.png"></p>
+<h1 id="关闭-Docker"><a href="#关闭-Docker" class="headerlink" title="关闭 Docker"></a>关闭 Docker</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo systemctl stop docker</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/10/16/CentOS%E5%AE%89%E8%A3%85Docker/Docker%E8%87%AA%E5%8A%A8%E5%94%A4%E9%86%92%E6%9C%BA%E5%88%B6.png" alt="Docker自动唤醒机制.png"></p>
+<h1 id="卸载-Docker"><a href="#卸载-Docker" class="headerlink" title="卸载 Docker"></a>卸载 Docker</h1><p>删除安装包：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum remove docker-ce</span><br></pre></td></tr></table></figure>
+<p>删除镜像、容器、配置文件等内容：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">rm</span> -rf /var/lib/docker</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>Docker</category>
+      </categories>
+      <tags>
+        <tag>CentOS</tag>
+        <tag>Docker</tag>
+        <tag>容器</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Docker安装MySQL</title>
     <url>/2022/10/23/Docker%E5%AE%89%E8%A3%85MySQL/</url>
     <content><![CDATA[<h1 id="查看可用版本"><a href="#查看可用版本" class="headerlink" title="查看可用版本"></a>查看可用版本</h1><p>访问 MySQL 镜像库地址：<a href="https://hub.docker.com/_/mysql?tab=tags">https://hub.docker.com/_/mysql?tab=tags</a></p>
@@ -23,9 +73,9 @@
         <category>Docker</category>
       </categories>
       <tags>
-        <tag>MySQL</tag>
         <tag>Docker</tag>
         <tag>容器</tag>
+        <tag>MySQL</tag>
       </tags>
   </entry>
   <entry>
@@ -224,6 +274,81 @@
       </tags>
   </entry>
   <entry>
+    <title>Spring Security——会话（Session）管理</title>
+    <url>/2022/12/27/Spring%20Security%E2%80%94%E2%80%94%E4%BC%9A%E8%AF%9D%EF%BC%88Session%EF%BC%89%E7%AE%A1%E7%90%86/</url>
+    <content><![CDATA[<p>用户认证通过后，为了避免之后的每次操作都进行重复认证，可将用户的信息保存在会话中。spring security提供会话管理，认证通过后可将身份信息放入SecurityContextHolder上下文，SecurityContext与当前线程进行绑定，方便获取用户身份。</p>
+<h1 id="获取用户信息"><a href="#获取用户信息" class="headerlink" title="获取用户信息"></a>获取用户信息</h1><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/test&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TestController</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/hello&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">hello</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;hello world.&quot;</span> + getUsername();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String <span class="title function_">getUsername</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">Authentication</span> <span class="variable">authentication</span> <span class="operator">=</span> SecurityContextHolder.getContext().getAuthentication();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!authentication.isAuthenticated()) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="type">Object</span> <span class="variable">principal</span> <span class="operator">=</span> authentication.getPrincipal();</span><br><span class="line">        String username;</span><br><span class="line">        <span class="keyword">if</span> (principal <span class="keyword">instanceof</span> UserDetails) &#123;</span><br><span class="line">            username = ((UserDetails) principal).getUsername();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            username = principal.toString();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> username;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<h1 id="会话控制"><a href="#会话控制" class="headerlink" title="会话控制"></a>会话控制</h1><p>我们可以通过以下选项准确控制会话何时创建以及Spring Security如何与之交互：</p>
+<table>
+<thead>
+<tr>
+<th>机制</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>always</td>
+<td>总是创建一个HttpSession</td>
+</tr>
+<tr>
+<td>ifRequired</td>
+<td>Spring Security 仅仅将会在必要的时候创建一个HttpSession（默认）</td>
+</tr>
+<tr>
+<td>never</td>
+<td>Spring Security将永远不会创建一个HttpSession。但是如果已经存在一个HttpSession的话，Spring Security将会使用它</td>
+</tr>
+<tr>
+<td>stateless</td>
+<td>Spring Security将永远不会创建一个HttpSession，也不使用它。并且它会暗示不使用cookie，所以每个请求都需要重新进行身份认证。这种无状态架构适用于REST API及其无状态认证机制</td>
+</tr>
+</tbody></table>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="会话超时"><a href="#会话超时" class="headerlink" title="会话超时"></a>会话超时</h1><p>可以在servlet容器中设置Session的超时时间，如下设置Session有效期为600s：</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">servlet:</span></span><br><span class="line">    <span class="attr">session:</span></span><br><span class="line">      <span class="attr">timeout:</span> <span class="string">600s</span></span><br></pre></td></tr></table></figure>
+<p>session超时时间最低为60s，参考Tomcat源码<code>TomcatServletWebServerFactory#configureSession</code>：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="type">long</span> <span class="title function_">getSessionTimeoutInMinutes</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">Duration</span> <span class="variable">sessionTimeout</span> <span class="operator">=</span> getSession().getTimeout();</span><br><span class="line">    <span class="keyword">if</span> (isZeroOrLess(sessionTimeout)) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> Math.max(sessionTimeout.toMinutes(), <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>session超时之后，可以通过Spring Security设置跳转的路径：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    http.sessionManagement().invalidSessionUrl(<span class="string">&quot;/session/invalid&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 还需要将&quot;/session/invalid&quot;放行</span></span><br><span class="line">    http.authorizeRequests()</span><br><span class="line">            .antMatchers(<span class="string">&quot;/login.html&quot;</span>, <span class="string">&quot;/user/login&quot;</span>, <span class="string">&quot;/error.html&quot;</span>, <span class="string">&quot;/login/toError&quot;</span>, <span class="string">&quot;/session/invalid&quot;</span>).permitAll()</span><br><span class="line">            .anyRequest().authenticated()</span><br><span class="line">            .and().csrf().disable();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/session&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SessionController</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/invalid&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">hello</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;session invalid.&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：重启完服务，首次访问<code>/login.html</code>时，由于此时服务器还没有session，因此会跳转到<code>/session/invalid</code>。同时首次请求，服务器将会创建一个空session（无用户信息），所以第二次访问时将会跳转到登录页。</p>
+</blockquote>
+<h1 id="会话并发控制"><a href="#会话并发控制" class="headerlink" title="会话并发控制"></a>会话并发控制</h1><p>当用户在一个浏览器登录后，又尝试在另一个浏览器登录相同的账户。为了不让用户无限制的登录，可以有以下两种处理方法：</p>
+<ol>
+<li>后登录的将先登录的挤兑下线</li>
+<li>当登录到达上限后，禁止再登录</li>
+</ol>
+<h2 id="挤兑下线"><a href="#挤兑下线" class="headerlink" title="挤兑下线"></a>挤兑下线</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    http.formLogin(); <span class="comment">// 使用原始的登录页面</span></span><br><span class="line"></span><br><span class="line">    http.sessionManagement()</span><br><span class="line">            .maximumSessions(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>测试方法：</p>
+<ol>
+<li>首先用Chrom浏览器登录账户liteng</li>
+<li>然后用FireFox浏览器登录账户liteng</li>
+<li>然后再用Chrom浏览器访问主页<code>/main.html</code></li>
+</ol>
+<p>测试结果：<br><code>This session has been expired (possibly due to multiple concurrent logins being attempted as the same user).</code>这是<code>ResponseBodySessionInformationExpiredStrategy</code>的默认实现。<br><img src="/2022/12/27/Spring%20Security%E2%80%94%E2%80%94%E4%BC%9A%E8%AF%9D%EF%BC%88Session%EF%BC%89%E7%AE%A1%E7%90%86/SessionInformationExpiredStrategy.png" alt="SessionInformationExpiredStrategy.png"><br>我们还可以自定义实现：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MySessionInformationExpiredStrategy</span> <span class="keyword">implements</span> <span class="title class_">SessionInformationExpiredStrategy</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onExpiredSessionDetected</span><span class="params">(SessionInformationExpiredEvent event)</span> <span class="keyword">throws</span> IOException, ServletException &#123;</span><br><span class="line">        <span class="type">HttpServletResponse</span> <span class="variable">response</span> <span class="operator">=</span> event.getResponse();</span><br><span class="line">        response.setContentType(<span class="string">&quot;application/json;charset=UTF-8&quot;</span>);</span><br><span class="line">        response.getWriter().write(<span class="string">&quot;您已被挤兑下线！&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    http.sessionManagement()</span><br><span class="line">            .maximumSessions(<span class="number">1</span>)</span><br><span class="line">            .expiredSessionStrategy(<span class="keyword">new</span> <span class="title class_">MySessionInformationExpiredStrategy</span>());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>测试结果：<br><img src="/2022/12/27/Spring%20Security%E2%80%94%E2%80%94%E4%BC%9A%E8%AF%9D%EF%BC%88Session%EF%BC%89%E7%AE%A1%E7%90%86/%E6%8C%A4%E5%85%91%E4%B8%8B%E7%BA%BF.png" alt="挤兑下线.png"></p>
+<h2 id="禁止登录"><a href="#禁止登录" class="headerlink" title="禁止登录"></a>禁止登录</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    http.formLogin(); <span class="comment">// 使用原始的登录页面</span></span><br><span class="line"></span><br><span class="line">    http.sessionManagement()</span><br><span class="line">            .maximumSessions(<span class="number">1</span>)</span><br><span class="line">            .maxSessionsPreventsLogin(<span class="literal">true</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>测试方法：</p>
+<ol>
+<li>首先用Chrom浏览器访问主页<code>/main.html</code>，跳转登录页，登录账户liteng</li>
+<li>然后用FireFox浏览器访问主页<code>/main.html</code>，跳转登录页，登录账户liteng</li>
+</ol>
+<p>测试结果：<br><img src="/2022/12/27/Spring%20Security%E2%80%94%E2%80%94%E4%BC%9A%E8%AF%9D%EF%BC%88Session%EF%BC%89%E7%AE%A1%E7%90%86/%E7%A6%81%E6%AD%A2%E7%99%BB%E5%BD%95.png" alt="禁止登录.png"></p>
+]]></content>
+      <categories>
+        <category>Spring Security</category>
+      </categories>
+      <tags>
+        <tag>Session</tag>
+        <tag>Spring Security</tag>
+        <tag>会话管理</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Spring Security——初体验</title>
     <url>/2022/12/22/Spring%20Security%E2%80%94%E2%80%94%E5%88%9D%E4%BD%93%E9%AA%8C/</url>
     <content><![CDATA[<p>关于Spring Security的介绍我们不做过多赘述，下面是Spring官网对其描述：</p>
@@ -276,8 +401,8 @@
         <category>Spring Security</category>
       </categories>
       <tags>
-        <tag>Spring</tag>
         <tag>Spring Security</tag>
+        <tag>Spring</tag>
         <tag>认证授权</tag>
       </tags>
   </entry>
@@ -302,8 +427,8 @@
         <category>Spring Security</category>
       </categories>
       <tags>
-        <tag>Spring</tag>
         <tag>Spring Security</tag>
+        <tag>Spring</tag>
         <tag>认证授权</tag>
       </tags>
   </entry>
@@ -335,8 +460,8 @@
         <category>Spring Security</category>
       </categories>
       <tags>
-        <tag>Spring</tag>
         <tag>Spring Security</tag>
+        <tag>Spring</tag>
         <tag>认证授权</tag>
       </tags>
   </entry>
@@ -383,56 +508,6 @@
       </tags>
   </entry>
   <entry>
-    <title>CentOS安装Docker</title>
-    <url>/2022/10/16/CentOS%E5%AE%89%E8%A3%85Docker/</url>
-    <content><![CDATA[<h1 id="卸载旧版本"><a href="#卸载旧版本" class="headerlink" title="卸载旧版本"></a>卸载旧版本</h1><p>较旧的 Docker 版本称为 docker 或 docker-engine 。如果已安装这些程序，请卸载它们以及相关的依赖项。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo yum remove docker \</span><br><span class="line">                  docker-client \</span><br><span class="line">                  docker-client-latest \</span><br><span class="line">                  docker-common \</span><br><span class="line">                  docker-latest \</span><br><span class="line">                  docker-latest-logrotate \</span><br><span class="line">                  docker-logrotate \</span><br><span class="line">                  docker-engine</span><br></pre></td></tr></table></figure>
-<span id="more"></span>
-<h1 id="安装-Docker"><a href="#安装-Docker" class="headerlink" title="安装 Docker"></a>安装 Docker</h1><h2 id="安装前置依赖"><a href="#安装前置依赖" class="headerlink" title="安装前置依赖"></a>安装前置依赖</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo yum install -y yum-utils \</span><br><span class="line">  device-mapper-persistent-data \</span><br><span class="line">  lvm2</span><br></pre></td></tr></table></figure>
-<h2 id="设置-Docker-仓库"><a href="#设置-Docker-仓库" class="headerlink" title="设置 Docker 仓库"></a>设置 Docker 仓库</h2><h3 id="官方源"><a href="#官方源" class="headerlink" title="官方源"></a>官方源</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo yum-config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    https://download.docker.com/linux/centos/docker-ce.repo</span><br></pre></td></tr></table></figure>
-<h3 id="阿里云源"><a href="#阿里云源" class="headerlink" title="阿里云源"></a>阿里云源</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo yum-config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</span><br></pre></td></tr></table></figure>
-<h3 id="清华大学源"><a href="#清华大学源" class="headerlink" title="清华大学源"></a>清华大学源</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo yum-config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/docker-ce.repo</span><br></pre></td></tr></table></figure>
-<h2 id="执行-Docker-安装"><a href="#执行-Docker-安装" class="headerlink" title="执行 Docker 安装"></a>执行 Docker 安装</h2><h3 id="最新版本"><a href="#最新版本" class="headerlink" title="最新版本"></a>最新版本</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo yum install docker-ce docker-ce-cli containerd.io docker-compose-plugin</span><br></pre></td></tr></table></figure>
-<h3 id="指定版本"><a href="#指定版本" class="headerlink" title="指定版本"></a>指定版本</h3><p>要安装特定版本的 Docker，请在存储库中列出可用版本，然后选择并安装</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum list docker-ce --showduplicates | <span class="built_in">sort</span> -r</span><br></pre></td></tr></table></figure>
-<p><img src="/2022/10/16/CentOS%E5%AE%89%E8%A3%85Docker/Docker%E7%89%88%E6%9C%AC%E9%80%89%E6%8B%A9.png" alt="Docker版本选择.png"><br>通过其完整的软件包名称安装特定版本，该软件包名称是软件包名称（docker-ce）加上版本字符串（第二列），从第一个冒号（:）一直到第一个连字符，并用连字符（-）分隔。例如：docker-ce-18.09.1。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo yum install docker-ce-&lt;VERSION_STRING&gt; docker-ce-cli-&lt;VERSION_STRING&gt; containerd.io</span><br></pre></td></tr></table></figure>
-<h1 id="启动-Docker"><a href="#启动-Docker" class="headerlink" title="启动 Docker"></a>启动 Docker</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo systemctl start docker</span><br></pre></td></tr></table></figure>
-<h1 id="验证启动"><a href="#验证启动" class="headerlink" title="验证启动"></a>验证启动</h1><p>通过运行 hello-world 镜像来验证是否启动成功（首次运行可能需要先拉取镜像）</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo docker run hello-world</span><br></pre></td></tr></table></figure>
-<p><img src="/2022/10/16/CentOS%E5%AE%89%E8%A3%85Docker/Docker%E5%90%AF%E5%8A%A8%E9%AA%8C%E8%AF%81.png" alt="Docker启动验证.png"></p>
-<h1 id="关闭-Docker"><a href="#关闭-Docker" class="headerlink" title="关闭 Docker"></a>关闭 Docker</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo systemctl stop docker</span><br></pre></td></tr></table></figure>
-<p><img src="/2022/10/16/CentOS%E5%AE%89%E8%A3%85Docker/Docker%E8%87%AA%E5%8A%A8%E5%94%A4%E9%86%92%E6%9C%BA%E5%88%B6.png" alt="Docker自动唤醒机制.png"></p>
-<h1 id="卸载-Docker"><a href="#卸载-Docker" class="headerlink" title="卸载 Docker"></a>卸载 Docker</h1><p>删除安装包：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum remove docker-ce</span><br></pre></td></tr></table></figure>
-<p>删除镜像、容器、配置文件等内容：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">rm</span> -rf /var/lib/docker</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-]]></content>
-      <categories>
-        <category>Docker</category>
-      </categories>
-      <tags>
-        <tag>Docker</tag>
-        <tag>容器</tag>
-        <tag>CentOS</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Zookeeper分布式锁原理</title>
     <url>/2022/11/06/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%8E%9F%E7%90%86/</url>
     <content><![CDATA[<h1 id="Zookeeper分布式锁简单实现"><a href="#Zookeeper分布式锁简单实现" class="headerlink" title="Zookeeper分布式锁简单实现"></a>Zookeeper分布式锁简单实现</h1><p>Zookeeper分布式锁的原理很简单，核心就是依托Zookeeper节点唯一性来展开实现的。<br><img src="/2022/11/06/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%8E%9F%E7%90%86/%E8%8A%82%E7%82%B9%E5%94%AF%E4%B8%80%E6%80%A7.png" alt="节点唯一性.png"></p>
@@ -467,6 +542,33 @@
       <tags>
         <tag>Zookeeper</tag>
         <tag>分布式锁</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Zookeeper单机版安装</title>
+    <url>/2022/10/13/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/</url>
+    <content><![CDATA[<h1 id="安装Zookeeper"><a href="#安装Zookeeper" class="headerlink" title="安装Zookeeper"></a>安装Zookeeper</h1><h2 id="安装java环境"><a href="#安装java环境" class="headerlink" title="安装java环境"></a>安装java环境</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># java version &quot;1.8.0_271&quot;</span></span><br><span class="line">java -version</span><br></pre></td></tr></table></figure>
+<h2 id="下载并解压Zookeeper"><a href="#下载并解压Zookeeper" class="headerlink" title="下载并解压Zookeeper"></a>下载并解压Zookeeper</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 下载安装包</span><br><span class="line">wget https://mirror.bit.edu.cn/apache/zookeeper/zookeeper‐3.5.8/apache‐zookeeper‐3.5.8‐bin.tar.gz</span><br><span class="line"># 解压安装包</span><br><span class="line">tar ‐zxvf apache‐zookeeper‐3.5.8‐bin.tar.gz</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<h2 id="备份配置文件（非必须）"><a href="#备份配置文件（非必须）" class="headerlink" title="备份配置文件（非必须）"></a>备份配置文件（非必须）</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入配置文件目录</span></span><br><span class="line"><span class="built_in">cd</span> apache-zookeeper-3.5.8-bin/conf/</span><br><span class="line"><span class="comment"># 备份配置文件</span></span><br><span class="line"><span class="built_in">cp</span> zoo_sample.cfg zoo.cfg</span><br></pre></td></tr></table></figure>
+<h2 id="启动Zookeeper"><a href="#启动Zookeeper" class="headerlink" title="启动Zookeeper"></a>启动Zookeeper</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入脚本文件目录</span></span><br><span class="line"><span class="built_in">cd</span> apache-zookeeper-3.5.8-bin/bin/</span><br><span class="line"><span class="comment"># 启动Zookeeper</span></span><br><span class="line">./zkServer.sh start ../conf/zoo.cfg</span><br><span class="line"><span class="comment"># 检测是否启动</span></span><br><span class="line">ps -ef | grep zookeeper</span><br></pre></td></tr></table></figure>
+<h1 id="客户端连接"><a href="#客户端连接" class="headerlink" title="客户端连接"></a>客户端连接</h1><h2 id="终端方式连接"><a href="#终端方式连接" class="headerlink" title="终端方式连接"></a>终端方式连接</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入脚本文件目录</span></span><br><span class="line"><span class="built_in">cd</span> apache-zookeeper-3.5.8-bin/bin/</span><br><span class="line"><span class="comment"># 连接zookeeper</span></span><br><span class="line">./zkCli.sh -server 192.168.175.175:2181</span><br><span class="line"><span class="comment"># 查看所有节点</span></span><br><span class="line"><span class="built_in">ls</span> -R /</span><br></pre></td></tr></table></figure>
+<h2 id="可视化工具（ZooInspector）连接"><a href="#可视化工具（ZooInspector）连接" class="headerlink" title="可视化工具（ZooInspector）连接"></a>可视化工具（ZooInspector）连接</h2><ul>
+<li>下载工具：<a href="https://issues.apache.org/jira/secure/attachment/12436620/ZooInspector.zip">https://issues.apache.org/jira/secure/attachment/12436620/ZooInspector.zip</a></li>
+<li>解压，进入目录ZooInspector\build</li>
+<li>创建zkClient.bat脚本文件，内容如下：<figure class="highlight bat"><table><tr><td class="code"><pre><span class="line">java -jar D:\ZooInspector\build\zookeeper-dev-ZooInspector.jar</span><br></pre></td></tr></table></figure></li>
+<li>右键zkClient.bat文件，创建桌面快捷方式，然后修改一个自己喜欢的图标</li>
+<li>双击快捷方式，打开可视化工具——ZooInspector，输入连接信息<br><img src="/2022/10/13/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/ZooInspector1.png" alt="ZooInspector1.png"></li>
+<li>点击OK，连接成功<br><img src="/2022/10/13/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/ZooInspector2.png" alt="ZooInspector2.png"></li>
+</ul>
+]]></content>
+      <categories>
+        <category>Zookeeper</category>
+      </categories>
+      <tags>
+        <tag>Zookeeper</tag>
+        <tag>CentOS7</tag>
+        <tag>客户端工具</tag>
       </tags>
   </entry>
   <entry>
@@ -574,33 +676,6 @@
         <tag>Zookeeper</tag>
         <tag>事件监听机制</tag>
         <tag>一次性监听</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Zookeeper单机版安装</title>
-    <url>/2022/10/13/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/</url>
-    <content><![CDATA[<h1 id="安装Zookeeper"><a href="#安装Zookeeper" class="headerlink" title="安装Zookeeper"></a>安装Zookeeper</h1><h2 id="安装java环境"><a href="#安装java环境" class="headerlink" title="安装java环境"></a>安装java环境</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># java version &quot;1.8.0_271&quot;</span></span><br><span class="line">java -version</span><br></pre></td></tr></table></figure>
-<h2 id="下载并解压Zookeeper"><a href="#下载并解压Zookeeper" class="headerlink" title="下载并解压Zookeeper"></a>下载并解压Zookeeper</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 下载安装包</span><br><span class="line">wget https://mirror.bit.edu.cn/apache/zookeeper/zookeeper‐3.5.8/apache‐zookeeper‐3.5.8‐bin.tar.gz</span><br><span class="line"># 解压安装包</span><br><span class="line">tar ‐zxvf apache‐zookeeper‐3.5.8‐bin.tar.gz</span><br></pre></td></tr></table></figure>
-<span id="more"></span>
-<h2 id="备份配置文件（非必须）"><a href="#备份配置文件（非必须）" class="headerlink" title="备份配置文件（非必须）"></a>备份配置文件（非必须）</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入配置文件目录</span></span><br><span class="line"><span class="built_in">cd</span> apache-zookeeper-3.5.8-bin/conf/</span><br><span class="line"><span class="comment"># 备份配置文件</span></span><br><span class="line"><span class="built_in">cp</span> zoo_sample.cfg zoo.cfg</span><br></pre></td></tr></table></figure>
-<h2 id="启动Zookeeper"><a href="#启动Zookeeper" class="headerlink" title="启动Zookeeper"></a>启动Zookeeper</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入脚本文件目录</span></span><br><span class="line"><span class="built_in">cd</span> apache-zookeeper-3.5.8-bin/bin/</span><br><span class="line"><span class="comment"># 启动Zookeeper</span></span><br><span class="line">./zkServer.sh start ../conf/zoo.cfg</span><br><span class="line"><span class="comment"># 检测是否启动</span></span><br><span class="line">ps -ef | grep zookeeper</span><br></pre></td></tr></table></figure>
-<h1 id="客户端连接"><a href="#客户端连接" class="headerlink" title="客户端连接"></a>客户端连接</h1><h2 id="终端方式连接"><a href="#终端方式连接" class="headerlink" title="终端方式连接"></a>终端方式连接</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入脚本文件目录</span></span><br><span class="line"><span class="built_in">cd</span> apache-zookeeper-3.5.8-bin/bin/</span><br><span class="line"><span class="comment"># 连接zookeeper</span></span><br><span class="line">./zkCli.sh -server 192.168.175.175:2181</span><br><span class="line"><span class="comment"># 查看所有节点</span></span><br><span class="line"><span class="built_in">ls</span> -R /</span><br></pre></td></tr></table></figure>
-<h2 id="可视化工具（ZooInspector）连接"><a href="#可视化工具（ZooInspector）连接" class="headerlink" title="可视化工具（ZooInspector）连接"></a>可视化工具（ZooInspector）连接</h2><ul>
-<li>下载工具：<a href="https://issues.apache.org/jira/secure/attachment/12436620/ZooInspector.zip">https://issues.apache.org/jira/secure/attachment/12436620/ZooInspector.zip</a></li>
-<li>解压，进入目录ZooInspector\build</li>
-<li>创建zkClient.bat脚本文件，内容如下：<figure class="highlight bat"><table><tr><td class="code"><pre><span class="line">java -jar D:\ZooInspector\build\zookeeper-dev-ZooInspector.jar</span><br></pre></td></tr></table></figure></li>
-<li>右键zkClient.bat文件，创建桌面快捷方式，然后修改一个自己喜欢的图标</li>
-<li>双击快捷方式，打开可视化工具——ZooInspector，输入连接信息<br><img src="/2022/10/13/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/ZooInspector1.png" alt="ZooInspector1.png"></li>
-<li>点击OK，连接成功<br><img src="/2022/10/13/Zookeeper%E5%8D%95%E6%9C%BA%E7%89%88%E5%AE%89%E8%A3%85/ZooInspector2.png" alt="ZooInspector2.png"></li>
-</ul>
-]]></content>
-      <categories>
-        <category>Zookeeper</category>
-      </categories>
-      <tags>
-        <tag>Zookeeper</tag>
-        <tag>CentOS7</tag>
-        <tag>客户端工具</tag>
       </tags>
   </entry>
   <entry>
