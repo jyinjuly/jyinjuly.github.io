@@ -159,3 +159,37 @@ protected void configure(HttpSecurity http) throws Exception {
 
 测试结果：
 ![禁止登录.png](禁止登录.png)
+
+# 分布式Session
+实际生产中，一个服务往往是多实例的，并通过Nginx做负载均衡，将请求分发到不同的实例上。这就会存在分布式Session的问题：假设有1和2两个实例，由Nginx轮询分发请求。此时用户请求`/main.html`，触发登录，然后服务端将会创建Session。我们假设此次请求被分发到实例1上，理所应当地，Session也将会存储在实例1上。然后用户再次访问`/main.html`，这次的请求被分配到实例2上，由于实例2并不存在Session，因此会再次触发登录，这对于用户来说是不合理的现象。
+![分布式Session1.png](分布式Session1.png)
+解决这个问题的思路是用户登录的会话信息不再存储到某个具体的服务实例中，而是保存到另一个第三方介质中，比如redis、mongodb等。所有的服务实例都从这个第三方介质来获取Session信息。比如：用户在实例1上登录，然后将会话信息保存到redis中，用户的下次请求被分配到实例2上，实例2再从redis中检查Session是否已经存在，如果存在就不用再登录，可以直接访问服务了。
+![分布式Session2.png](分布式Session2.png)
+具体做法如下：
+1. 引入Spring Session依赖
+```xml
+<dependency>
+    <groupId>org.springframework.session</groupId>
+    <artifactId>spring-session-data-redis</artifactId>
+</dependency>
+
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-redis</artifactId>
+</dependency>
+```
+2. 配置Session存储方式
+```yml
+spring:
+  session:
+    store-type: redis
+  redis:
+    host: 192.168.175.175
+    port: 6379
+```
+
+测试分布式Session：
+1. 8080端口启动服务
+2. 8081端口启动服务
+3. 访问`http://localhost:8080/main.html`，触发登录
+4. 访问`http://localhost:8081/main.html`，直接访问
