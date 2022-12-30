@@ -43,3 +43,7 @@ categories: ["Spring Security"]
 8. 浏览器Cookie刷新Session和RememberMe
 9. 如果RememberMe过期，则需要重新登录
 
+# RememberMe失效
+1. 过期自动失效
+2. 退出登录立即失效
+
