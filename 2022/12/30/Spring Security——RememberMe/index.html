@@ -36,7 +36,7 @@
 <meta property="og:image" content="https://jyinjuly.github.io/2022/12/30/Spring%20Security%E2%80%94%E2%80%94RememberMe/session6.png">
 <meta property="og:image" content="https://jyinjuly.github.io/2022/12/30/Spring%20Security%E2%80%94%E2%80%94RememberMe/RememberMe.png">
 <meta property="article:published_time" content="2022-12-30T13:44:16.203Z">
-<meta property="article:modified_time" content="2022-12-30T16:11:20.254Z">
+<meta property="article:modified_time" content="2022-12-30T16:15:56.856Z">
 <meta property="article:author" content="Jyinjuly">
 <meta property="article:tag" content="Session">
 <meta property="article:tag" content="RememberMe">
@@ -302,6 +302,10 @@
 <li>浏览器Cookie刷新Session和RememberMe</li>
 <li>如果RememberMe过期，则需要重新登录</li>
 </ol>
+<h1 id="RememberMe失效"><a href="#RememberMe失效" class="headerlink" title="RememberMe失效"></a>RememberMe失效</h1><ol>
+<li>过期自动失效</li>
+<li>退出登录立即失效</li>
+</ol>
 
     </div>
 
@@ -386,7 +390,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#RememberMe%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">RememberMe简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E4%BD%BF%E7%94%A8RememberMe%E7%8E%B0%E8%B1%A1"><span class="nav-number">1.1.</span> <span class="nav-text">不使用RememberMe现象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8RememberMe%E7%8E%B0%E8%B1%A1"><span class="nav-number">1.2.</span> <span class="nav-text">使用RememberMe现象</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RememberMe%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">RememberMe原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#remember-me%E7%94%9F%E6%88%90%E8%A7%84%E5%88%99"><span class="nav-number">2.1.</span> <span class="nav-text">remember-me生成规则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RememberMe%E8%AE%BF%E9%97%AE%E6%B5%81%E7%A8%8B"><span class="nav-number">2.2.</span> <span class="nav-text">RememberMe访问流程</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#RememberMe%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">RememberMe简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E4%BD%BF%E7%94%A8RememberMe%E7%8E%B0%E8%B1%A1"><span class="nav-number">1.1.</span> <span class="nav-text">不使用RememberMe现象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8RememberMe%E7%8E%B0%E8%B1%A1"><span class="nav-number">1.2.</span> <span class="nav-text">使用RememberMe现象</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RememberMe%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">RememberMe原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#remember-me%E7%94%9F%E6%88%90%E8%A7%84%E5%88%99"><span class="nav-number">2.1.</span> <span class="nav-text">remember-me生成规则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RememberMe%E8%AE%BF%E9%97%AE%E6%B5%81%E7%A8%8B"><span class="nav-number">2.2.</span> <span class="nav-text">RememberMe访问流程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RememberMe%E5%A4%B1%E6%95%88"><span class="nav-number">3.</span> <span class="nav-text">RememberMe失效</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
