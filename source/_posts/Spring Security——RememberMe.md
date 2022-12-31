@@ -5,6 +5,7 @@ categories: ["Spring Security"]
 ---
 # RememberMe简介
 通常用户登录成功后，服务端会创建与之应的会话信息，也就是Session，用来保存其登录状态。但这个Session是有时效性的，比如5分钟。如果用户在这5分钟内没有任何操作的话，那么Session将会失效，用户再次访问则需要重新登录。诚然，这是出于安全考虑的一种设计。但有时候，这种频繁的登录会给我们带来苦恼。比如：PC通常只有个人使用。某天我们去浏览一个网站，然后起身上了个厕所，回来发现Sesssion失效了，重新登录一遍。过了一会，又起身接了杯水喝，回来发现Session又失效了，又得重新登录一遍，这是不是很麻烦？那么有没有一种办法，即使Session过期了，还能够保持登录状态呢？有，RememberMe就是为此而生的。RememberMe是一种服务器端的行为，其本质上和Session的类似，都是基于Cookie的实现的。
+<!-- more -->
 
 ## 不使用RememberMe现象
 不使用RememberMe，每次Session过期都需要重新登录，其现象如下：
@@ -42,6 +43,48 @@ categories: ["Spring Security"]
 7. 服务端重新生成Session和RememberMe
 8. 浏览器Cookie刷新Session和RememberMe
 9. 如果RememberMe过期，则需要重新登录
+
+# RememberMe使用
+## 创建数据库表
+```sql
+create table persistent_logins (
+    username varchar(64) not null, 
+    series varchar(64) primary key, 
+    token varchar(64) not null, 
+    last_used timestamp not null
+)
+```
+## 配置RememberMe
+```java
+@Configuration
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private DataSource dataSource;
+
+    @Autowired
+    private MyUserDetailsService myUserDetailsService;
+
+    
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        
+        // 记住我
+        http.rememberMe()
+                .tokenRepository(persistentTokenRepository())
+                .tokenValiditySeconds(3600)
+                .userDetailsService(myUserDetailsService);
+
+        
+    }
+
+    private PersistentTokenRepository persistentTokenRepository() {
+        JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
+        jdbcTokenRepository.setDataSource(dataSource);
+        return jdbcTokenRepository;
+    }
+}
+```
 
 # RememberMe失效
 1. 过期自动失效
