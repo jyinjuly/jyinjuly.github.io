@@ -315,6 +315,8 @@
     <title>Spring Security——RememberMe</title>
     <url>/2022/12/30/Spring%20Security%E2%80%94%E2%80%94RememberMe/</url>
     <content><![CDATA[<h1 id="RememberMe简介"><a href="#RememberMe简介" class="headerlink" title="RememberMe简介"></a>RememberMe简介</h1><p>通常用户登录成功后，服务端会创建与之应的会话信息，也就是Session，用来保存其登录状态。但这个Session是有时效性的，比如5分钟。如果用户在这5分钟内没有任何操作的话，那么Session将会失效，用户再次访问则需要重新登录。诚然，这是出于安全考虑的一种设计。但有时候，这种频繁的登录会给我们带来苦恼。比如：PC通常只有个人使用。某天我们去浏览一个网站，然后起身上了个厕所，回来发现Sesssion失效了，重新登录一遍。过了一会，又起身接了杯水喝，回来发现Session又失效了，又得重新登录一遍，这是不是很麻烦？那么有没有一种办法，即使Session过期了，还能够保持登录状态呢？有，RememberMe就是为此而生的。RememberMe是一种服务器端的行为，其本质上和Session的类似，都是基于Cookie的实现的。</p>
+<span id="more"></span>
+
 <h2 id="不使用RememberMe现象"><a href="#不使用RememberMe现象" class="headerlink" title="不使用RememberMe现象"></a>不使用RememberMe现象</h2><p>不使用RememberMe，每次Session过期都需要重新登录，其现象如下：<br><img src="/2022/12/30/Spring%20Security%E2%80%94%E2%80%94RememberMe/session1.png" alt="session1.png"><br>然后我们登录，不勾选“记住我”，结果如下：<br><img src="/2022/12/30/Spring%20Security%E2%80%94%E2%80%94RememberMe/session2.png" alt="session2.png"><br>等待60s（我们配置的Session过期时间），再次访问，结果如下：<br><img src="/2022/12/30/Spring%20Security%E2%80%94%E2%80%94RememberMe/session3.png" alt="session3.png"></p>
 <h2 id="使用RememberMe现象"><a href="#使用RememberMe现象" class="headerlink" title="使用RememberMe现象"></a>使用RememberMe现象</h2><p>使用RememberMe，即使Session过期也不需要重新登录，其现象如下：<br><img src="/2022/12/30/Spring%20Security%E2%80%94%E2%80%94RememberMe/session1.png" alt="session1.png"><br>然后我们登录，勾选“记住我”，结果如下：<br><img src="/2022/12/30/Spring%20Security%E2%80%94%E2%80%94RememberMe/session4.png" alt="session4.png"><br>然后立刻再次访问（60s之内），结果如下：<br><img src="/2022/12/30/Spring%20Security%E2%80%94%E2%80%94RememberMe/session5.png" alt="session5.png"><br>60s之后（Session已过期），再次访问，结果如下：<br><img src="/2022/12/30/Spring%20Security%E2%80%94%E2%80%94RememberMe/session6.png" alt="session6.png"></p>
 <h1 id="RememberMe原理"><a href="#RememberMe原理" class="headerlink" title="RememberMe原理"></a>RememberMe原理</h1><h2 id="remember-me生成规则"><a href="#remember-me生成规则" class="headerlink" title="remember-me生成规则"></a>remember-me生成规则</h2><p>我们发现，当使用了RememberMe功能时，Cookie中多了一个<code>remember-me</code>。它同样是由服务端生成的，具体规则如下：</p>
@@ -336,6 +338,9 @@
 <li>浏览器Cookie刷新Session和RememberMe</li>
 <li>如果RememberMe过期，则需要重新登录</li>
 </ol>
+<h1 id="RememberMe使用"><a href="#RememberMe使用" class="headerlink" title="RememberMe使用"></a>RememberMe使用</h1><h2 id="创建数据库表"><a href="#创建数据库表" class="headerlink" title="创建数据库表"></a>创建数据库表</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> persistent_logins (</span><br><span class="line">    username <span class="type">varchar</span>(<span class="number">64</span>) <span class="keyword">not</span> <span class="keyword">null</span>, </span><br><span class="line">    series <span class="type">varchar</span>(<span class="number">64</span>) <span class="keyword">primary</span> key, </span><br><span class="line">    token <span class="type">varchar</span>(<span class="number">64</span>) <span class="keyword">not</span> <span class="keyword">null</span>, </span><br><span class="line">    last_used <span class="type">timestamp</span> <span class="keyword">not</span> <span class="keyword">null</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h2 id="配置RememberMe"><a href="#配置RememberMe" class="headerlink" title="配置RememberMe"></a>配置RememberMe</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">WebSecurityConfig</span> <span class="keyword">extends</span> <span class="title class_">WebSecurityConfigurerAdapter</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> DataSource dataSource;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> MyUserDetailsService myUserDetailsService;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 记住我</span></span><br><span class="line">        http.rememberMe()</span><br><span class="line">                .tokenRepository(persistentTokenRepository())</span><br><span class="line">                .tokenValiditySeconds(<span class="number">3600</span>)</span><br><span class="line">                .userDetailsService(myUserDetailsService);</span><br><span class="line"></span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> PersistentTokenRepository <span class="title function_">persistentTokenRepository</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">JdbcTokenRepositoryImpl</span> <span class="variable">jdbcTokenRepository</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">JdbcTokenRepositoryImpl</span>();</span><br><span class="line">        jdbcTokenRepository.setDataSource(dataSource);</span><br><span class="line">        <span class="keyword">return</span> jdbcTokenRepository;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h1 id="RememberMe失效"><a href="#RememberMe失效" class="headerlink" title="RememberMe失效"></a>RememberMe失效</h1><ol>
 <li>过期自动失效</li>
 <li>退出登录立即失效</li>
@@ -555,6 +560,43 @@
       </tags>
   </entry>
   <entry>
+    <title>Zookeeper分布式锁原理</title>
+    <url>/2022/11/06/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%8E%9F%E7%90%86/</url>
+    <content><![CDATA[<h1 id="Zookeeper分布式锁简单实现"><a href="#Zookeeper分布式锁简单实现" class="headerlink" title="Zookeeper分布式锁简单实现"></a>Zookeeper分布式锁简单实现</h1><p>Zookeeper分布式锁的原理很简单，核心就是依托Zookeeper节点唯一性来展开实现的。<br><img src="/2022/11/06/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%8E%9F%E7%90%86/%E8%8A%82%E7%82%B9%E5%94%AF%E4%B8%80%E6%80%A7.png" alt="节点唯一性.png"></p>
+<span id="more"></span>
+<p>具体来说：假如有10个线程同时创建节点<code>/lock</code>（前提是该节点不存在），肯定只有1个线程（T1）能创建成功，其余的9个线程(T2 ~ T10)创建失败（失败并不灰心，它们要监听<code>/lock</code>节点的删除事件，以便于后续的尝试）。我们就说线程T1获得了锁，获得了执行后续操作的权利。当线程T1执行完后续操作之后，它就会将<code>/lock</code>节点删除，于此同时线程T2 ~ T10得到通知，便一股脑的都去请求Zookeeper服务端，尝试获取锁（也就是创建节点<code>/lock</code>）。一样的，这次还是只有一个线程能成功获取到锁，执行完后续操作之后再将锁释放，如此周而复始，实现并发请求的串行化。该原理流程图如下：<br><img src="/2022/11/06/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%8E%9F%E7%90%86/%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0.png" alt="简单实现.png"></p>
+<blockquote>
+<p>基于以上原理的Zookeeper分布式锁简单实现其实存在一些弊端，比如：非公平锁和羊群效应</p>
+</blockquote>
+<h2 id="非公平锁"><a href="#非公平锁" class="headerlink" title="非公平锁"></a>非公平锁</h2><p>经过以上分析我们可以发现一个问题：那就是每次在争抢锁的时候，大家获得锁的概率是随机的，并没有一个先来后到的机制，也就是所谓的不公平。比如：线程T1首先获得了锁，然后线程T2、T3……T9、T10依次来请求获取锁。但是当线程T1释放锁之后，并不是由线程T2直接接棒，而是大家同时争抢，谁抢到了算谁的。假如此刻线程T10抢到了，是不是对其余线程来说就很不公平。</p>
+<h2 id="羊群效应"><a href="#羊群效应" class="headerlink" title="羊群效应"></a>羊群效应</h2><p>我们想一个问题：每次当一个线程将锁释放之后发生了什么事情呢？答案：其余线程得到通知，然后一股脑的都向Zookeeper服务端发送创建节点请求，但是最终只有一个线程创建成功。我们思考一下，这会带来一个什么问题呢？这样，我们假设有10000并发，第一次争抢锁时会有10000个请求打到Zookeeper服务端，第二次会有9999，第三次会有9998……当最终这10000的并发全部执行完，Zookeeper服务端处理了多少请求呢？等差数列：（10000 + 1） * 10000 &#x2F; 2 &#x3D; 50005000，而且其中只有10000个请求是有效的，这无形之中给Zookeeper服务端带来了巨大的压力，也浪费了服务器的资源。</p>
+<blockquote>
+<p>羊群效应：一群羊在羊圈外边吃草，突然来了一只狼。羊们害怕极了，都抢着往羊圈里跑。但是羊圈的入口只有一个，大家都挤到了一起，谁都不让谁。就这样，羊入圈的效率极其低下，白白牺牲了好多羊。</p>
+</blockquote>
+<h1 id="Zookeeper分布式锁进阶实现"><a href="#Zookeeper分布式锁进阶实现" class="headerlink" title="Zookeeper分布式锁进阶实现"></a>Zookeeper分布式锁进阶实现</h1><p>Zookeeper的进阶实现巧妙地规避了简单实现的两个问题：非公平和羊群效应。其实现原理大致分为如下几步：</p>
+<ol>
+<li>首先判断父节点<code>/lock</code>是否存在，如果不存在，则创建（容器）父节点</li>
+<li>然后在父节点下创建（临时序号）子节点<code>/x-000000n</code></li>
+<li>判断自己是不是父节点下的最小子结点<br> 3.1 如果是，则获取锁<br> 3.2 如果不是，则监听前一个节点</li>
+<li>获得锁的节点完成业务处理，释放锁，即删除节点</li>
+<li>前一个节点得到通知，重复第3步的判断</li>
+<li>某客户端由于异常原因导致断开连接，其所对应的子结点自动删除，其后一个节点得到通知，重复第3步的判断</li>
+<li>所有子结点均删除，（容器）父节点自动删除</li>
+</ol>
+<p>该原理的流程图如下：<br><img src="/2022/11/06/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%8E%9F%E7%90%86/%E8%BF%9B%E9%98%B6%E5%AE%9E%E7%8E%B0.png" alt="进阶实现.png"><br>该过程对应的Zookeeper节点结构如下：<br><img src="/2022/11/06/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%8E%9F%E7%90%86/%E8%8A%82%E7%82%B9%E7%BB%93%E6%9E%84.png" alt="节点结构.png"></p>
+<h1 id="Curator实现分布式锁源码分析"><a href="#Curator实现分布式锁源码分析" class="headerlink" title="Curator实现分布式锁源码分析"></a>Curator实现分布式锁源码分析</h1><h2 id="锁的实例化"><a href="#锁的实例化" class="headerlink" title="锁的实例化"></a>锁的实例化</h2><p><img src="/2022/11/06/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%8E%9F%E7%90%86/%E9%94%81%E7%9A%84%E5%AE%9E%E4%BE%8B%E5%8C%96.png" alt="锁的实例化.png"><br>实例化完成之后的锁如下：<br><img src="/2022/11/06/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%8E%9F%E7%90%86/%E9%94%81%E5%AE%9E%E4%BE%8B.png" alt="锁实例.png"></p>
+<h2 id="获取锁"><a href="#获取锁" class="headerlink" title="获取锁"></a>获取锁</h2><p><img src="/2022/11/06/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%8E%9F%E7%90%86/%E8%8E%B7%E5%8F%96%E9%94%81.png" alt="获取锁.png"></p>
+<h2 id="释放锁"><a href="#释放锁" class="headerlink" title="释放锁"></a>释放锁</h2><p><img src="/2022/11/06/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%8E%9F%E7%90%86/%E9%87%8A%E6%94%BE%E9%94%81.png" alt="释放锁.png"></p>
+]]></content>
+      <categories>
+        <category>Zookeeper</category>
+      </categories>
+      <tags>
+        <tag>Zookeeper</tag>
+        <tag>分布式锁</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Windows安装Nginx</title>
     <url>/2022/10/16/Windows%E5%AE%89%E8%A3%85Nginx/</url>
     <content><![CDATA[<h1 id="下载安装包"><a href="#下载安装包" class="headerlink" title="下载安装包"></a>下载安装包</h1><p>官网地址：<code>http://nginx.org/en/download.html</code><br><img src="/2022/10/16/Windows%E5%AE%89%E8%A3%85Nginx/Nginx%E4%B8%8B%E8%BD%BD.png" alt="Nginx下载.png"></p>
@@ -618,43 +660,6 @@
 <h1 id="Zookeeper分布式锁"><a href="#Zookeeper分布式锁" class="headerlink" title="Zookeeper分布式锁"></a>Zookeeper分布式锁</h1><p>分布式锁有很多种实现，比如Redis分布式锁、Zookeeper分布式锁等等，这里我们使用的是Zookeeper版本，而且还是Curator框架封装好的工具类。</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@GetMapping(&quot;/deduct&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">deduct</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    <span class="comment">// zookeeper分布式锁</span></span><br><span class="line">    <span class="type">InterProcessMutex</span> <span class="variable">processMutex</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">InterProcessMutex</span>(curatorFramework, <span class="string">&quot;/product_1&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        processMutex.acquire();</span><br><span class="line">        <span class="type">Product</span> <span class="variable">product</span> <span class="operator">=</span> productService.selectProduct(<span class="number">1L</span>);</span><br><span class="line">        log.info(<span class="string">&quot;当前库存：&#123;&#125;&quot;</span>, product.getNumber());</span><br><span class="line">        <span class="keyword">if</span> (product.getNumber() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            product.setNumber(product.getNumber()-<span class="number">1</span>);</span><br><span class="line">            productService.updateProduct(product);</span><br><span class="line">            log.info(<span class="string">&quot;出库成功，剩余库存：&#123;&#125;&quot;</span>, product.getNumber());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        processMutex.release();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>然后模拟并发请求，结果如下，首先，初始库存：<br><img src="/2022/10/30/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%BA%94%E7%94%A8%E2%80%94%E2%80%94%E7%A7%92%E6%9D%80%E6%B4%BB%E5%8A%A8/%E5%88%9D%E5%A7%8B%E5%BA%93%E5%AD%98.png" alt="初始库存.png"><br>并发请求之后的库存：<br><img src="/2022/10/30/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%BA%94%E7%94%A8%E2%80%94%E2%80%94%E7%A7%92%E6%9D%80%E6%B4%BB%E5%8A%A8/%E5%89%A9%E4%BD%99%E5%BA%93%E5%AD%98.png" alt="剩余库存.png"><br>由此可见，使用分布式锁，分布式环境下的并发问题得以解决。</p>
-]]></content>
-      <categories>
-        <category>Zookeeper</category>
-      </categories>
-      <tags>
-        <tag>Zookeeper</tag>
-        <tag>分布式锁</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Zookeeper分布式锁原理</title>
-    <url>/2022/11/06/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%8E%9F%E7%90%86/</url>
-    <content><![CDATA[<h1 id="Zookeeper分布式锁简单实现"><a href="#Zookeeper分布式锁简单实现" class="headerlink" title="Zookeeper分布式锁简单实现"></a>Zookeeper分布式锁简单实现</h1><p>Zookeeper分布式锁的原理很简单，核心就是依托Zookeeper节点唯一性来展开实现的。<br><img src="/2022/11/06/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%8E%9F%E7%90%86/%E8%8A%82%E7%82%B9%E5%94%AF%E4%B8%80%E6%80%A7.png" alt="节点唯一性.png"></p>
-<span id="more"></span>
-<p>具体来说：假如有10个线程同时创建节点<code>/lock</code>（前提是该节点不存在），肯定只有1个线程（T1）能创建成功，其余的9个线程(T2 ~ T10)创建失败（失败并不灰心，它们要监听<code>/lock</code>节点的删除事件，以便于后续的尝试）。我们就说线程T1获得了锁，获得了执行后续操作的权利。当线程T1执行完后续操作之后，它就会将<code>/lock</code>节点删除，于此同时线程T2 ~ T10得到通知，便一股脑的都去请求Zookeeper服务端，尝试获取锁（也就是创建节点<code>/lock</code>）。一样的，这次还是只有一个线程能成功获取到锁，执行完后续操作之后再将锁释放，如此周而复始，实现并发请求的串行化。该原理流程图如下：<br><img src="/2022/11/06/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%8E%9F%E7%90%86/%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0.png" alt="简单实现.png"></p>
-<blockquote>
-<p>基于以上原理的Zookeeper分布式锁简单实现其实存在一些弊端，比如：非公平锁和羊群效应</p>
-</blockquote>
-<h2 id="非公平锁"><a href="#非公平锁" class="headerlink" title="非公平锁"></a>非公平锁</h2><p>经过以上分析我们可以发现一个问题：那就是每次在争抢锁的时候，大家获得锁的概率是随机的，并没有一个先来后到的机制，也就是所谓的不公平。比如：线程T1首先获得了锁，然后线程T2、T3……T9、T10依次来请求获取锁。但是当线程T1释放锁之后，并不是由线程T2直接接棒，而是大家同时争抢，谁抢到了算谁的。假如此刻线程T10抢到了，是不是对其余线程来说就很不公平。</p>
-<h2 id="羊群效应"><a href="#羊群效应" class="headerlink" title="羊群效应"></a>羊群效应</h2><p>我们想一个问题：每次当一个线程将锁释放之后发生了什么事情呢？答案：其余线程得到通知，然后一股脑的都向Zookeeper服务端发送创建节点请求，但是最终只有一个线程创建成功。我们思考一下，这会带来一个什么问题呢？这样，我们假设有10000并发，第一次争抢锁时会有10000个请求打到Zookeeper服务端，第二次会有9999，第三次会有9998……当最终这10000的并发全部执行完，Zookeeper服务端处理了多少请求呢？等差数列：（10000 + 1） * 10000 &#x2F; 2 &#x3D; 50005000，而且其中只有10000个请求是有效的，这无形之中给Zookeeper服务端带来了巨大的压力，也浪费了服务器的资源。</p>
-<blockquote>
-<p>羊群效应：一群羊在羊圈外边吃草，突然来了一只狼。羊们害怕极了，都抢着往羊圈里跑。但是羊圈的入口只有一个，大家都挤到了一起，谁都不让谁。就这样，羊入圈的效率极其低下，白白牺牲了好多羊。</p>
-</blockquote>
-<h1 id="Zookeeper分布式锁进阶实现"><a href="#Zookeeper分布式锁进阶实现" class="headerlink" title="Zookeeper分布式锁进阶实现"></a>Zookeeper分布式锁进阶实现</h1><p>Zookeeper的进阶实现巧妙地规避了简单实现的两个问题：非公平和羊群效应。其实现原理大致分为如下几步：</p>
-<ol>
-<li>首先判断父节点<code>/lock</code>是否存在，如果不存在，则创建（容器）父节点</li>
-<li>然后在父节点下创建（临时序号）子节点<code>/x-000000n</code></li>
-<li>判断自己是不是父节点下的最小子结点<br> 3.1 如果是，则获取锁<br> 3.2 如果不是，则监听前一个节点</li>
-<li>获得锁的节点完成业务处理，释放锁，即删除节点</li>
-<li>前一个节点得到通知，重复第3步的判断</li>
-<li>某客户端由于异常原因导致断开连接，其所对应的子结点自动删除，其后一个节点得到通知，重复第3步的判断</li>
-<li>所有子结点均删除，（容器）父节点自动删除</li>
-</ol>
-<p>该原理的流程图如下：<br><img src="/2022/11/06/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%8E%9F%E7%90%86/%E8%BF%9B%E9%98%B6%E5%AE%9E%E7%8E%B0.png" alt="进阶实现.png"><br>该过程对应的Zookeeper节点结构如下：<br><img src="/2022/11/06/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%8E%9F%E7%90%86/%E8%8A%82%E7%82%B9%E7%BB%93%E6%9E%84.png" alt="节点结构.png"></p>
-<h1 id="Curator实现分布式锁源码分析"><a href="#Curator实现分布式锁源码分析" class="headerlink" title="Curator实现分布式锁源码分析"></a>Curator实现分布式锁源码分析</h1><h2 id="锁的实例化"><a href="#锁的实例化" class="headerlink" title="锁的实例化"></a>锁的实例化</h2><p><img src="/2022/11/06/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%8E%9F%E7%90%86/%E9%94%81%E7%9A%84%E5%AE%9E%E4%BE%8B%E5%8C%96.png" alt="锁的实例化.png"><br>实例化完成之后的锁如下：<br><img src="/2022/11/06/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%8E%9F%E7%90%86/%E9%94%81%E5%AE%9E%E4%BE%8B.png" alt="锁实例.png"></p>
-<h2 id="获取锁"><a href="#获取锁" class="headerlink" title="获取锁"></a>获取锁</h2><p><img src="/2022/11/06/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%8E%9F%E7%90%86/%E8%8E%B7%E5%8F%96%E9%94%81.png" alt="获取锁.png"></p>
-<h2 id="释放锁"><a href="#释放锁" class="headerlink" title="释放锁"></a>释放锁</h2><p><img src="/2022/11/06/Zookeeper%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%8E%9F%E7%90%86/%E9%87%8A%E6%94%BE%E9%94%81.png" alt="释放锁.png"></p>
 ]]></content>
       <categories>
         <category>Zookeeper</category>
