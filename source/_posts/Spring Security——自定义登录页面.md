@@ -90,6 +90,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 }
 ```
+```java
+@Controller
+@RequestMapping("/login")
+public class LoginController {
+
+    @RequestMapping("/toMain")
+    public String toMain() {
+        return "redirect:/main.html";
+    }
+
+    @RequestMapping("/toError")
+    public String toError() {
+        return "redirect:/error.html";
+    }
+
+}
+```
 # 登录测试
 ![tryLogin5.png](tryLogin5.png)
 登录成功：
