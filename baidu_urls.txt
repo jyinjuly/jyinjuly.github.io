@@ -1,3 +1,5 @@
+https://jyinjuly.github.io/2023/04/09/%E6%89%8B%E5%86%99%E6%A8%A1%E6%8B%9FDubbo%E4%B9%8BHttp%E5%8D%8F%E8%AE%AE/
+https://jyinjuly.github.io/2023/04/09/Dubbo%E6%A1%86%E6%9E%B6%E4%BB%8B%E7%BB%8D/
 https://jyinjuly.github.io/2023/01/02/Spring%20Security%E2%80%94%E2%80%94%E9%80%80%E5%87%BA%E7%99%BB%E5%BD%95/
 https://jyinjuly.github.io/2022/12/30/Spring%20Security%E2%80%94%E2%80%94RememberMe/
 https://jyinjuly.github.io/2022/12/27/Docker%E5%AE%89%E8%A3%85Redis/
