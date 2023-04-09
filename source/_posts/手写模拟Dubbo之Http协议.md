@@ -12,6 +12,8 @@ categories: ["Dubbo"]
 
 本篇手写模拟Dubbo的http通信协议（基于JDK 11）。
 
+<!-- more -->
+
 # 整体项目布局
 创建maven项目，引入依赖：
 ```xml
